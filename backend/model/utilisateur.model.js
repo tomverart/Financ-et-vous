@@ -23,7 +23,7 @@ class UTILISATEUR {
             INSERT INTO ${UTILISATEUR.tableName} (stringUtilisateur) VALUES ($1)`,
       values: [newUtilisateur]
     });
-    console.log(result);
+    console.log(result.rows);
   }
 
   static async deleteUtilisateurs (idUtilisateur) {
@@ -32,7 +32,7 @@ class UTILISATEUR {
             DELETE FROM ${UTILISATEUR.tableName} where idUtilisateur = ($1)`,
       values: [idUtilisateur]
     });
-    console.log(result);
+    console.log(result.rows);
   }
 
   static async selectAllUtilisateurs () {
@@ -40,7 +40,7 @@ class UTILISATEUR {
       text: `
             SELECT * FROM ${UTILISATEUR.tableName}`
     });
-    console.log(result);
+    console.log(result.rows);
   }
 
   static async selectByIdUtilisateurs (idUtilisateur) {
@@ -49,7 +49,7 @@ class UTILISATEUR {
             SELECT * FROM ${UTILISATEUR.tableName} where idUtilisateur = ($1)`,
       values: [idUtilisateur]
     });
-    console.log(result);
+    console.log(result.rows);
   }
 }
 

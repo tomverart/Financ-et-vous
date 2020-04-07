@@ -21,10 +21,45 @@ class InitBDD {
           await this.pool.query(query);
         }
       } else {
-        console.log(q);
+        // console.log(q);
         await this.pool.query(q);
       }
     }
+  }
+
+  async initBaseValuesRole () {
+    const nomsRoles = [
+      'Administrateur',
+      'Comptable',
+      'Employé'
+    ];
+
+    for (let i = 0; i < nomsRoles.length; i++) {
+      await this.pool.query({
+        text: 'INSERT INTO ROLE(stringRole) VALUES($1)',
+        values: [nomsRoles[i]]
+      }
+      );
+    }
+
+    const Role = require('./role.model.js');
+    Role.selectAllRoles();
+  }
+
+  async initBaseValuesEtatsNotes () {
+    const nomsRoles = [
+      'En attente',
+      'Acceptée',
+      'Refusée'
+    ];
+
+    const etatNote = require('./etatNote.model.js');
+
+    for (let i = 0; i < nomsRoles.length; i++) {
+      await etatNote.createEtatNotes(nomsRoles[i]);
+    }
+
+    etatNote.selectAllEtatNotes();
   }
 
   async reset () {
@@ -44,6 +79,8 @@ class InitBDD {
 
     await this.buildTables();
 
+    await this.initBaseValuesRole();
+    await this.initBaseValuesEtatsNotes();
     console.log('bravo ca marche');
   }
 }

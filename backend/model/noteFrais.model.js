@@ -21,7 +21,7 @@ class NOTEFRAIS {
             INSERT INTO ${NOTEFRAIS.tableName} (stringNoteFrais) VALUES ($1)`,
       values: [newNoteFrais]
     });
-    console.log(result);
+    console.log(result.rows);
   }
 
   static async deleteNoteFrais (idNoteFrais) {
@@ -30,7 +30,7 @@ class NOTEFRAIS {
             DELETE FROM ${NOTEFRAIS.tableName} where idNoteFrais = ($1)`,
       values: [idNoteFrais]
     });
-    console.log(result);
+    console.log(result.rows);
   }
 
   static async selectAllNoteFrais () {
@@ -38,7 +38,7 @@ class NOTEFRAIS {
       text: `
             SELECT * FROM ${NOTEFRAIS.tableName}`
     });
-    console.log(result);
+    console.log(result.rows);
   }
 
   static async selectByIdNoteFrais (idNoteFrais) {
@@ -47,7 +47,7 @@ class NOTEFRAIS {
             SELECT * FROM ${NOTEFRAIS.tableName} where idNoteFrais = ($1)`,
       values: [idNoteFrais]
     });
-    console.log(result);
+    console.log(result.rows);
   }
 }
 
