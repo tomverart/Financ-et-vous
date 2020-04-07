@@ -1,7 +1,7 @@
-const database = require('./database');
+const database = require('./initBDD');
 
 class ROLE {
-  static toSqltable () {
+  static toSqlTable () {
     return `
         CREATE TABLE ${ROLE.tableName} (
             -- idRole, stringRole

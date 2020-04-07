@@ -1,8 +1,8 @@
-const database = require('./database');
+const database = require('./initBDD');
 const Role = require('./role.model.js');
 
 class UTILISATEUR {
-  static toSqltable () {
+  static toSqlTable () {
     return `
         CREATE TABLE ${UTILISATEUR.tableName} (
             -- idUtilisateur, loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, #idRole

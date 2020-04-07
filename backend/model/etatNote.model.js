@@ -1,7 +1,7 @@
-const database = require('./database');
+const database = require('./initBDD');
 
 class ETATNOTE {
-  static toSqltable () {
+  static toSqlTable () {
     return `
         CREATE TABLE ${ETATNOTE.tableName} (
             -- idEtatNote, stringEtatNote

@@ -1,8 +1,8 @@
-const database = require('./database');
+const database = require('./initBDD');
 const NOTEFRAIS = require('./noteFrais.model.js');
 
 class FRAIS {
-  static toSqltable () {
+  static toSqlTable () {
     return `
         CREATE TABLE ${FRAIS.tableName} (
             -- idFrais, montantFrais, descriptionFrais, fichierFrais, #idNoteFrais
