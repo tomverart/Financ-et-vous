@@ -7,6 +7,7 @@ class InitBDD {
   async init () {
     this.pool = new pg.Pool(config.postgres);
     this.client = await this.pool.connect();
+    console.log('Connecté.');
   }
 
   async buildTables () {
