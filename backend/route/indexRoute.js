@@ -4,7 +4,7 @@ var router = express.Router();
 // Template de controlleur get
 var getBase = require('../controllers/baseControllers/get.base');
 
-// Tempalte de base pour routing
+// Template de base pour routing
 router.get('/base', getBase);
 
 // app.post('/', (req, res) => {

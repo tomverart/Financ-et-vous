@@ -17,13 +17,22 @@ class UTILISATEUR {
     `;
   }
 
-  static async createUtilisateurs (newUtilisateur) {
-    const result = await database.client.query({
-      text: `
-            INSERT INTO ${UTILISATEUR.tableName} (stringUtilisateur) VALUES ($1)`,
-      values: [newUtilisateur]
-    });
-    console.log(result.rows);
+  // Création d'un utilisateur
+  static async createUtilisateurs (loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, idRole) {
+    try {
+      // Vérifie si le rôle existe, si il n'existe pas, renvoie une erreur
+      if (await Role.selectByIdRoles(idRole) === undefined) throw new Error("L'idRole est incorrect.");
+
+      // Création de l'utilisateur
+      const result = await database.client.query({
+        text: `
+              INSERT INTO ${UTILISATEUR.tableName} (loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, idRole) VALUES ($1, $2, $3, $4, $5)`,
+        values: [loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, idRole]
+      });
+      console.log(result.rows);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   static async deleteUtilisateurs (idUtilisateur) {
