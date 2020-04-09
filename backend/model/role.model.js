@@ -11,13 +11,14 @@ class ROLE {
     `;
   }
 
-  static async createRoles (newRole) {
-    const result = await database.client.query({
+  static async createRole (newRole) {
+    // const result =
+    await database.client.query({
       text: `
             INSERT INTO ${ROLE.tableName} (stringRole) VALUES ($1)`,
       values: [newRole]
     });
-    console.log(result.rows);
+    // console.log(result.rows);
   }
 
   static async selectAllRoles () {

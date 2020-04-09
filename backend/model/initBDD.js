@@ -33,21 +33,17 @@ class InitBDD {
       'Comptable',
       'Employé'
     ];
+    const Role = require('./role.model.js');
 
     for (let i = 0; i < nomsRoles.length; i++) {
-      await this.pool.query({
-        text: 'INSERT INTO ROLE(stringRole) VALUES($1)',
-        values: [nomsRoles[i]]
-      }
-      );
+      await Role.createRole(nomsRoles[i]);
     }
 
-    const Role = require('./role.model.js');
-    Role.selectAllRoles();
+    await Role.selectAllRoles();
   }
 
   async initBaseValuesEtatsNotes () {
-    const nomsRoles = [
+    const nomsEtatsNotes = [
       'En attente',
       'Acceptée',
       'Refusée'
@@ -55,11 +51,11 @@ class InitBDD {
 
     const etatNote = require('./etatNote.model.js');
 
-    for (let i = 0; i < nomsRoles.length; i++) {
-      await etatNote.createEtatNotes(nomsRoles[i]);
+    for (let i = 0; i < nomsEtatsNotes.length; i++) {
+      await etatNote.createEtatNote(nomsEtatsNotes[i]);
     }
 
-    etatNote.selectAllEtatNotes();
+    await etatNote.selectAllEtatNotes();
   }
 
   async reset () {
