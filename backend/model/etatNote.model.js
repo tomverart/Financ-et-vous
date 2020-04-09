@@ -11,13 +11,14 @@ class ETATNOTE {
     `;
   }
 
-  static async createEtatNotes (newEtatNote) {
-    const result = await database.client.query({
+  static async createEtatNote (newEtatNote) {
+    // const result =
+    await database.client.query({
       text: `
             INSERT INTO ${ETATNOTE.tableName} (stringEtatNote) VALUES ($1)`,
       values: [newEtatNote]
     });
-    console.log(result);
+    // console.log(result.rows);
   }
 
   static async selectAllEtatNotes () {
@@ -25,7 +26,7 @@ class ETATNOTE {
       text: `
             SELECT * FROM ${ETATNOTE.tableName}`
     });
-    console.log(result);
+    console.log(result.rows);
   }
 
   static async selectByIdEtatNotes (idEtatNote) {
@@ -34,7 +35,7 @@ class ETATNOTE {
             SLECT * FROM ${ETATNOTE.tableName} where idEtatNote = ($1)`,
       values: [idEtatNote]
     });
-    console.log(result);
+    console.log(result.rows);
   }
 }
 

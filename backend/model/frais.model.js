@@ -22,7 +22,7 @@ class FRAIS {
             INSERT INTO ${FRAIS.tableName} (stringFrais) VALUES ($1)`,
       values: [newFrais]
     });
-    console.log(result);
+    console.log(result.rows);
   }
 
   static async deleteFrais (idFrais) {
@@ -31,7 +31,7 @@ class FRAIS {
             DELETE FROM ${FRAIS.tableName} where idFrais = ($1)`,
       values: [idFrais]
     });
-    console.log(result);
+    console.log(result.rows);
   }
 
   static async selectAllFrais () {
@@ -39,7 +39,7 @@ class FRAIS {
       text: `
             SELECT * FROM ${FRAIS.tableName}`
     });
-    console.log(result);
+    console.log(result.rows);
   }
 
   static async selectByIdFrais (idFrais) {
@@ -48,7 +48,7 @@ class FRAIS {
             SELECT * FROM ${FRAIS.tableName} where idFrais = ($1)`,
       values: [idFrais]
     });
-    console.log(result);
+    console.log(result.rows);
   }
 }
 
