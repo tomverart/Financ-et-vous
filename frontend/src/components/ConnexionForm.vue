@@ -1,12 +1,13 @@
 <template>
   <div>
-      <label for="login">login</label>
-      <input v-model="login" type="text" id="login"/>
+      <label for="login">Login</label>
+      <input v-model="login" type="text" id="login" class="form-control"/>
 
-      <label for="password">password</label>
-      <input v-model="password" type="text" id="password">
-
-      <button v-on:click="sendData">envoyer donnée</button>
+      <br/>
+      <label for="password">Password</label>
+      <input v-model="password" type="text" id="password" class="form-control">
+      <br/>
+      <button class="btn btn-primary" v-on:click="sendData">envoyer donnée</button>
   </div>
 </template>
 
