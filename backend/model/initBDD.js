@@ -7,6 +7,7 @@ class InitBDD {
   async init () {
     this.pool = new pg.Pool(config.postgres);
     this.client = await this.pool.connect();
+    console.log('Connecté.');
   }
 
   async buildTables () {
@@ -20,10 +21,41 @@ class InitBDD {
           await this.pool.query(query);
         }
       } else {
-        console.log(q);
+        // console.log(q);
         await this.pool.query(q);
       }
     }
+  }
+
+  async initBaseValuesRole () {
+    const nomsRoles = [
+      'Administrateur',
+      'Comptable',
+      'Employé'
+    ];
+    const Role = require('./role.model.js');
+
+    for (let i = 0; i < nomsRoles.length; i++) {
+      await Role.createRole(nomsRoles[i]);
+    }
+
+    await Role.selectAllRoles();
+  }
+
+  async initBaseValuesEtatsNotes () {
+    const nomsEtatsNotes = [
+      'En attente',
+      'Acceptée',
+      'Refusée'
+    ];
+
+    const etatNote = require('./etatNote.model.js');
+
+    for (let i = 0; i < nomsEtatsNotes.length; i++) {
+      await etatNote.createEtatNote(nomsEtatsNotes[i]);
+    }
+
+    await etatNote.selectAllEtatNotes();
   }
 
   async reset () {
@@ -43,6 +75,8 @@ class InitBDD {
 
     await this.buildTables();
 
+    await this.initBaseValuesRole();
+    await this.initBaseValuesEtatsNotes();
     console.log('bravo ca marche');
   }
 }

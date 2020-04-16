@@ -11,13 +11,14 @@ class ROLE {
     `;
   }
 
-  static async createRoles (newRole) {
-    const result = await database.client.query({
+  static async createRole (newRole) {
+    // const result =
+    await database.client.query({
       text: `
             INSERT INTO ${ROLE.tableName} (stringRole) VALUES ($1)`,
       values: [newRole]
     });
-    console.log(result);
+    // console.log(result.rows);
   }
 
   static async selectAllRoles () {
@@ -25,7 +26,7 @@ class ROLE {
       text: `
             SELECT * FROM ${ROLE.tableName}`
     });
-    console.log(result);
+    console.log(result.rows);
   }
 
   static async selectByIdRoles (idRole) {
@@ -34,7 +35,7 @@ class ROLE {
             SELECT * FROM ${ROLE.tableName} where idRole = ($1)`,
       values: [idRole]
     });
-    console.log(result);
+    console.log(result.rows);
   }
 }
 
