@@ -21,15 +21,16 @@ class UTILISATEUR {
   static async createUtilisateurs (loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, idRole) {
     try {
       // Vérifie si le rôle existe, si il n'existe pas, renvoie une erreur
-      if (await Role.selectByIdRoles(idRole) === undefined) throw new Error("L'idRole est incorrect.");
+      if (!await Role.existsByIdRole(idRole)) throw new Error("L'idRole est incorrect.");
 
       // Création de l'utilisateur
-      const result = await database.client.query({
+      // const result = await database.client.query({
+      await database.client.query({
         text: `
               INSERT INTO ${UTILISATEUR.tableName} (loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, idRole) VALUES ($1, $2, $3, $4, $5)`,
         values: [loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, idRole]
       });
-      console.log(result.rows);
+      // console.log(result.rows);
     } catch (err) {
       console.log(err);
     }

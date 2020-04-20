@@ -10,18 +10,19 @@ class NOTEFRAIS {
 
             idNoteFrais SERIAL PRIMARY KEY,
             idUtilisateur INTEGER REFERENCES ${UTILISATEUR.tableName}(idUtilisateur),
-            idEtatNote INTEGER REFERENCES ${ETATNOTE.tableName}(idEtatNote)
+            idEtatNote INTEGER REFERENCES ${ETATNOTE.tableName}(idEtatNote) DEFAULT 1
         )
     `;
   }
 
-  static async createNoteFrais (newNoteFrais) {
-    const result = await database.client.query({
+  static async createNoteFrais (idUtilisateur) {
+    // const result = await database.client.query({
+    await database.client.query({
       text: `
-            INSERT INTO ${NOTEFRAIS.tableName} (stringNoteFrais) VALUES ($1)`,
-      values: [newNoteFrais]
+            INSERT INTO ${NOTEFRAIS.tableName} (idUtilisateur) VALUES ($1)`,
+      values: [idUtilisateur]
     });
-    console.log(result.rows);
+    // console.log(result.rows);
   }
 
   static async deleteNoteFrais (idNoteFrais) {
@@ -38,7 +39,8 @@ class NOTEFRAIS {
       text: `
             SELECT * FROM ${NOTEFRAIS.tableName}`
     });
-    console.log(result.rows);
+    // console.log(result.rows);
+    return result.rows;
   }
 
   static async selectAllNoteFraisByIdEtatNote (idEtatNote) {
@@ -60,12 +62,22 @@ class NOTEFRAIS {
   }
 
   static async updateByIdNoteFrais (idNoteFrais, idEtatNote) {
-    const result = await database.client.query({
+    // const result = await database.client.query({
+    await database.client.query({
       text: `
             UPDATE ${NOTEFRAIS.tableName} SET idEtatNote = ($2) WHERE idNoteFrais = ($1)`,
       values: [idNoteFrais, idEtatNote]
     });
-    console.log(result.rows);
+    // console.log(result.rows);
+  }
+
+  static async existsByIdNoteFrais (idNoteFrais) {
+    const result = await database.client.query({
+      text: `
+            SELECT exists(SELECT 1 FROM ${NOTEFRAIS.tableName} where idNoteFrais = ($1))`,
+      values: [idNoteFrais]
+    });
+    return result.rows[0].exists;
   }
 }
 
