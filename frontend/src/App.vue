@@ -1,7 +1,6 @@
 <template>
 <div>
   <head>
-
     <!-- Bootstrap -->
     <link
       rel="stylesheet"
@@ -10,25 +9,27 @@
       crossorigin="anonymous"
     />
   </head>
-  
+
   <!-- Barre de navigation-->
   <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand" href="/">Fianc-et-vous</a>
   </nav>
 
   <div class="mx-auto" style="width: 500px;">
-    <connexion-form v-on:log="connexion" style="padding-top: 50px;"/>
+    <!-- <connexion-form v-on:log="connexion" style="padding-top: 50px;"/> -->
+    <router-view>
+    </router-view>
   </div>
 </div>
 </template>
 
 <script>
-import ConnexionForm from "./components/ConnexionForm.vue";
+// import ConnexionForm from "./components/ConnexionForm.vue";
 
 export default {
   name: "App",
   components: {
-    ConnexionForm
+    // ConnexionForm
   },
   methods: {
     connexion(logs) {
