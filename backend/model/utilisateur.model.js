@@ -50,6 +50,7 @@ class UTILISATEUR {
             SELECT * FROM ${UTILISATEUR.tableName}`
     });
     console.log(result.rows);
+    return result.rows;
   }
 
   static async selectByIdUtilisateurs (idUtilisateur) {
@@ -59,6 +60,21 @@ class UTILISATEUR {
       values: [idUtilisateur]
     });
     console.log(result.rows);
+  }
+
+  /** faire un requette lié pour retourner l'id ET le role du l'utilisateur si le mdp et login concordent
+ *
+ */
+  static async userAuth (login, password) {
+    const result = await database.client.query({
+      text: `
+      SELECT idutilisateur, stringrole
+      FROM utilisateur, role 
+      WHERE loginutilisateur = $1
+      AND mdputilisateur = $2 `,
+      values: [login, password]
+    });
+    console.log(result);
   }
 }
 

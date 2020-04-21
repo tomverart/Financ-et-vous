@@ -33,6 +33,7 @@ export default {
   },
   methods: {
     connexion(logs) {
+      
       console.log(logs.Login, logs.Password);
     }
   }
