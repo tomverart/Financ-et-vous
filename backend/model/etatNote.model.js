@@ -26,7 +26,8 @@ class ETATNOTE {
       text: `
             SELECT * FROM ${ETATNOTE.tableName}`
     });
-    console.log(result.rows);
+    // console.log(result.rows);
+    return result.rows;
   }
 
   static async selectByIdEtatNotes (idEtatNote) {
