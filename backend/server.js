@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
-const test = require('./controllers/utilisateurControllers/get.utilisateur.js');
 
 // Connection à la base de données
 var database = require('./model/initBDD');
@@ -16,9 +15,5 @@ app.use(bodyParser(bodyParser.json()));
 // Redirection vers le ficheir des routes
 var indexRouter = require('./route/indexRoute.js');
 app.use('/', indexRouter);
-setTimeout(function () {
-  test.connex('roger', 'roger');
-}
-, 2000);
 
 app.listen(3000);
