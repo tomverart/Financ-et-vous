@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  data() {},
+  //data() {},
   mounted() {
     // Reidirige vers /login parceque voilà
     this.$router.push("/login");

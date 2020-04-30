@@ -8,12 +8,12 @@ var getBase = require('../controllers/baseControllers/get.base');
 var getNoteFraisComptable = require('../controllers/noteFraisControllers/getComptable.notefrais');
 var updateNoteFrais = require('../controllers/noteFraisControllers/update.notefrais');
 
+var getUtilisateur = require('../controllers/utilisateurControllers/get.utilisateur.js');
 // Template de base pour routing
 router.get('/base', getBase);
-
 // router.post('/', (req, res) => {
 // });
-
+router.post('/utilisateur', getUtilisateur);
 router.get('/noteFrais', getNoteFraisComptable);
 router.put('/noteFrais', updateNoteFrais);
 
