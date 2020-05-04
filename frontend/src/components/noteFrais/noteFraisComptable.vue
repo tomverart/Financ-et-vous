@@ -43,7 +43,7 @@ export default {
       this.listNoteFrais = response.data;
     });
 
-    await this.$axios.put
+    // await this.$axios.put
   }
 };
 </script>
