@@ -12,7 +12,7 @@
 
   <!-- Barre de navigation-->
   <nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" @click="clickRoute('/noteFrais')">Fianc-et-vous</a>
+    <a class="navbar-brand" @click="clickRoute('/')">Fianc-et-vous</a>
   </nav>
 
   <div class="mx-auto" style="width: 500px;">
