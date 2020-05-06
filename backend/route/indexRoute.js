@@ -14,6 +14,11 @@ var getUtilisateur = require('../controllers/utilisateurControllers/get.utilisat
 router.get('/base', getBase);
 // router.post('/', (req, res) => {
 // });
+router.post('/utilisateur', getUtilisateur);
+router.get('/noteFrais', getNoteFraisComptable);
+router.put('/noteFrais', updateNoteFrais);
+
+router.get('/etatNote', getEtatNote);
 
 router.get('/employee_dashboard', getNoteFraisComptable);
 router.post('/new_report', (req, res)=> {
