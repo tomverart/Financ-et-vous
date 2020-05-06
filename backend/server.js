@@ -9,7 +9,10 @@ var database = require('./model/initBDD');
 database.init();
 
 // ?
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:8080'
+}))
 app.use(bodyParser(bodyParser.json()));
 
 // Redirection vers le ficheir des routes
