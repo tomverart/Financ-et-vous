@@ -75,7 +75,7 @@ class UTILISATEUR {
       AND mdputilisateur = $2 `,
       values: [login, password]
     });
-    console.log(result);
+    //console.log(result);
   }
 }
 

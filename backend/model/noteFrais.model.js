@@ -82,6 +82,6 @@ class NOTEFRAIS {
 }
 
 /** @type {String} **/
-NOTEFRAIS.tableName = 'NOTEFRAIS';
+NOTEFRAIS.tableName = 'notefrais';
 
 module.exports = NOTEFRAIS;
