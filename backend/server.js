@@ -14,7 +14,7 @@ app.use(cors({
     credentials : true, 
     origin : 'http://localhost:8080'
 }));
-app.use(session({secret: 'trucmuche'}))
+app.use(session({secret: ''}))
 app.use(bodyParser(bodyParser.json()));
 
 // Redirection vers le fichier des routes
