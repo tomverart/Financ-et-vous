@@ -15,6 +15,17 @@ router.get('/base', getBase);
 // router.post('/', (req, res) => {
 // });
 router.post('/utilisateur', getUtilisateur);
+
+router.use((req,res, next) => {
+  if(req.session.userId){    
+    console.log('salut a tous c squezzie');
+
+    next();
+    return;
+  } 
+  res.sendStatus(401);
+})
+
 router.get('/noteFrais', getNoteFraisComptable);
 router.put('/noteFrais', updateNoteFrais);
 
