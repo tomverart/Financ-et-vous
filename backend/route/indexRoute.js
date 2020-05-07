@@ -30,6 +30,14 @@ router.get('/noteFrais', getNoteFraisComptable);
 router.put('/noteFrais', updateNoteFrais);
 
 router.get('/etatNote', getEtatNote);
+
+router.get('/employee_dashboard', getNoteFraisComptable);
+router.post('/new_report', (req, res)=> {
+  console.log('req.body', req.body)
+  console.log('req.query', req.query)
+  res.json({st:"cooo"})
+})
+//router.post('/dashboard/employee', updateNoteFrais);
 // router.delete('/', (req, res) => {
 // });
 

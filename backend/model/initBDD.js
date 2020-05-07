@@ -27,6 +27,7 @@ class InitBDD {
     }
   }
 
+  // Valeurs de bases pour les rôles
   async initBaseValuesRole () {
     const nomsRoles = [
       'Administrateur',
@@ -42,6 +43,7 @@ class InitBDD {
     await Role.selectAllRoles();
   }
 
+  // Valeurs de bases pour les états des notes
   async initBaseValuesEtatsNotes () {
     const nomsEtatsNotes = [
       'En attente',
