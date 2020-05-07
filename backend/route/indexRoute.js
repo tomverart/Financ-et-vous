@@ -18,7 +18,6 @@ router.post('/utilisateur', getUtilisateur);
 
 router.use((req,res, next) => {
   if(req.session.userId){    
-    console.log('salut a tous c squezzie');
 
     next();
     return;
