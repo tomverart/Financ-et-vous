@@ -25,34 +25,22 @@ export default {
   props: {},
   methods: {
     async sendData() {
-      const user = await fetch(`${this.SERVER_URL}/utilisateur`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          login: this.login,
-          password: this.password
-        })
-      })
-        .then(resp => {
-          
-          return resp.json();
-        })
-        .then(data => {
-          return data;
-        });
+      const resp = await this.$axios.post("/utilisateur", {
+        login: this.login,
+        password: this.password
+      });
+      const user = resp.data;
 
-        user;
-
-//     this.$router.push / replace?("/login");
-
-        
+      if (user.stringrole == "comptable") {   //pensre a mettre des utilisateurs dans la BDD avec comme role comptable et employe
+        this.$router.push("/noteFrais");
+      } else if (user.stringrole == "employe") {
+        this.$router.push("/");               //inserer ici le liens vers la page des employés
+      } 
     }
   }
 };
 </script>
-// 
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>

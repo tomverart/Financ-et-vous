@@ -3,16 +3,21 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
+const session = require('express-session');
 
 // Connection à la base de données
 var database = require('./model/initBDD');
 database.init();
 
 // ?
-app.use(cors());
+app.use(cors({
+    credentials : true, 
+    origin : 'http://localhost:8080'
+}));
+app.use(session({secret: 'trucmuche'}))
 app.use(bodyParser(bodyParser.json()));
 
-// Redirection vers le ficheir des routes
+// Redirection vers le fichier des routes
 var indexRouter = require('./route/indexRoute.js');
 app.use('/', indexRouter);
 
