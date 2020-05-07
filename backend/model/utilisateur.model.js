@@ -67,15 +67,16 @@ class UTILISATEUR {
  *
  */
   static async userAuth (login, password) {
+    console.log(login, password);
     const result = await database.client.query({
       text: `
       SELECT idutilisateur, stringrole
-      FROM utilisateur, role 
+      FROM utilisateur INNER JOIN role ON (utilisateur.idRole = role.idRole)
       WHERE loginutilisateur = $1
       AND mdputilisateur = $2 `,
       values: [login, password]
     });
-    console.log(result);
+    console.log(result.rows[0]);
     return result.rows[0];
   }
 }

@@ -26,7 +26,7 @@ router.use((req,res, next) => {
 })
 
 router.get('/noteFrais', getNoteFraisComptable);
-router.put('/noteFrais', updateNoteFrais);
+router.post('/noteFrais', updateNoteFrais);
 
 router.get('/etatNote', getEtatNote);
 
