@@ -31,11 +31,13 @@ export default {
       });
       const user = resp.data;
 
-      if (user.stringrole == "comptable") {   //pensre a mettre des utilisateurs dans la BDD avec comme role comptable et employe
+      if (user.stringrole == "Comptable") {   //pensre a mettre des utilisateurs dans la BDD avec comme role comptable et employe
         this.$router.push("/noteFrais");
-      } else if (user.stringrole == "employe") {
+      } else if (user.stringrole == "Employe") {
         this.$router.push("/");               //inserer ici le liens vers la page des employés
-      } 
+      } else {
+        console.log('vous etes ici')
+      }
     }
   }
 };

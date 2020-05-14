@@ -17,8 +17,10 @@ var getUtilisateur = require('../controllers/utilisateurControllers/get.utilisat
 router.post('/utilisateur', getUtilisateur);
 
 router.use((req,res, next) => {
+  console.log(req.session);
   if(req.session.userId){
 
+    
     next();
     return;
   } 
