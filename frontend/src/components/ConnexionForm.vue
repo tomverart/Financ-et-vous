@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mx-auto" style="width: 35rem;">
     <label for="login">Login</label>
     <input v-model="login" type="text" id="login" class="form-control" />
 

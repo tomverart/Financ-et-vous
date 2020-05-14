@@ -12,27 +12,23 @@
 
   <!-- Barre de navigation-->
   <nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" @click="clickRoute('/')">Fianc-et-vous</a>
+    <a class="navbar-brand" @click="clickRoute('/')" style="cursor: pointer;">Financ-et-vous</a>
   </nav>
 
-  <div class="mx-auto" style="width: 500px;">
+  <div>
     <router-view></router-view>
   </div>
 </div>
 </template>
 
 <script>
-
 export default {
   name: "App",
   data() {
-    return {
-    };
+    return {};
   },
-  components: {
-  },
-  mounted () {
-  },
+  components: {},
+  mounted() {},
   methods: {
     connexion(logs) {
       console.log(logs.Login, logs.Password);
