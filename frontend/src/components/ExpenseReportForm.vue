@@ -2,19 +2,18 @@ expenseForm
 
 <template>
   <div>
-    <div>
+    <h3>Nouvelle note de frais</h3>
+    <form @submit.prevent="reportAddition">
       <label for="reportLabel">Libellé</label>
-      <input id="reportLabel" type="text" v-model="label" />
+      <input id="reportLabel" type="text" v-model="label" /> <br />
       <label for="reportDescription">Description</label>
-      <input id="reportDescription" type="text" v-model="description" />
-      <button @click="reportAddition">Ajouter</button>
-    </div>
+      <textarea id="reportDescription" placeholder="ajoutez une description" v-model="description"></textarea>
+      <input type="submit" value="Ajouter" />
+    </form>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "ExpenseReportForm",
   data() {
@@ -24,39 +23,14 @@ export default {
     };
   },
   methods: {
-    async reportAddition() {
-      axios({
-        method: "post",
-        url: "/new_Report",
-        data: {
-          label: this.label,
-          description: this.description
-        },
-        baseURL: "http://localhost:3000"
-      })
-        .then(result => {
-          console.log("response(form): ", result);
-        })
-        .catch(err => {
-          console.log("error(form) : ", err);
-        });
-      /*await axios
-        .post("/new_report", {
-          data: {
+    reportAddition(event) {
+      event.target.reset();
+      this.$emit("reportAdded", {
             label: this.label,
             description: this.description
-          },
-          baseURL: 'http://localhost:3000'
-        })
-        .then(result => {
-          console.log("response(form): ", result);
-          //this.$emit("reportAdded", this.label, this.description);
-        })
-        .catch(err => {
-          console.log("error(form) : ", err);
-        });*/
+          });
     }
   }
 };
-</script>
+</script> 
 

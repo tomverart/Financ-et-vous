@@ -16,8 +16,7 @@ const routes = [
 
   { path: '/login', component: Login }, 
 
-  { path: '/noteFrais', component: noteFraisComptable },
-  { path: '/employee_dashboard', component: EmployeeDashboard }
+  { path: '/dashboard/:userType/:userId', component: EmployeeDashboard }
 ];
 
 export default new VueRouter({
