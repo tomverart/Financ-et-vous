@@ -70,7 +70,7 @@ class UTILISATEUR {
     const result = await database.client.query({
       text: `
       SELECT idutilisateur, stringrole
-      FROM utilisateur, role 
+      FROM ${UTILISATEUR.tableName} uti INNER JOIN ${Role.tableName} role ON (uti.idRole = role.idRole)
       WHERE loginutilisateur = $1
       AND mdputilisateur = $2 `,
       values: [login, password]
