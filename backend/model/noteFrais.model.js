@@ -10,19 +10,20 @@ class NOTEFRAIS {
 
             idNoteFrais SERIAL PRIMARY KEY,
             idUtilisateur INTEGER REFERENCES ${UTILISATEUR.tableName}(idUtilisateur),
+            libelle VARCHAR NOT NULL,
+            description VARCHAR NOT NULL,
+            date DATE,
             idEtatNote INTEGER REFERENCES ${ETATNOTE.tableName}(idEtatNote) DEFAULT 1
         )
     `;
   }
 
-  static async createNoteFrais (idUtilisateur) {
-    // const result = await database.client.query({
+  static async createNoteFrais (userId, label, description, publishDate) {
     await database.client.query({
       text: `
-            INSERT INTO ${NOTEFRAIS.tableName} (idUtilisateur) VALUES ($1)`,
-      values: [idUtilisateur]
+            INSERT INTO ${NOTEFRAIS.tableName}(idutilisateur, libelle, description, date) VALUES ($1, $2, $3, $4)`,
+      values: [userId, label, description, publishDate]
     });
-    // console.log(result.rows);
   }
 
   static async deleteNoteFrais (idNoteFrais) {
@@ -39,7 +40,7 @@ class NOTEFRAIS {
       text: `
             SELECT * FROM ${NOTEFRAIS.tableName}`
     });
-    // console.log(result.rows);
+    console.log(result.rows);
     return result.rows;
   }
 
@@ -50,6 +51,16 @@ class NOTEFRAIS {
       values: [idEtatNote]
     });
     console.log(result.rows);
+  }
+
+  static async selectByUserId (idUser) {
+    const result = await database.client.query({
+      text: `
+            SELECT * FROM ${NOTEFRAIS.tableName} where idutilisateur = ($1)`,
+      values: [idUser]
+    });
+
+    return result.rows;
   }
 
   static async selectByIdNoteFrais (idNoteFrais) {
@@ -82,6 +93,6 @@ class NOTEFRAIS {
 }
 
 /** @type {String} **/
-NOTEFRAIS.tableName = 'notefrais';
+NOTEFRAIS.tableName = 'NOTEFRAIS';
 
 module.exports = NOTEFRAIS;

@@ -6,19 +6,19 @@ var getBase = require('../controllers/baseControllers/get.base');
 
 // Controlleurs des notes de frais
 var getNoteFraisComptable = require('../controllers/noteFraisControllers/getComptable.notefrais');
+var getEmployeeExpenseReports = require('../controllers/noteFraisControllers/getEmployee.expensereports');
+var addExpenseReport = require('../controllers/noteFraisControllers/add.expenseReport');
 var updateNoteFrais = require('../controllers/noteFraisControllers/update.notefrais');
 var getEtatNote = require('../controllers/etatNoteControllers/get.etatNote');
 
 var getUtilisateur = require('../controllers/utilisateurControllers/get.utilisateur.js');
-// Template de base pour routing
-router.get('/base', getBase);
-// router.post('/', (req, res) => {
-// });
+
+// Login
 router.post('/utilisateur', getUtilisateur);
 
 router.use((req,res, next) => {
   console.log(req.session);
-  if(req.session.userId){    
+  if(req.session.userId){
 
     
     next();
@@ -27,20 +27,25 @@ router.use((req,res, next) => {
   res.sendStatus(401);
 })
 
+
+router.get('/employee_dashboard', getNoteFraisComptable);   //changer employee_dashboard en dashboard/accountant et adapter else if
+router.get('/dashboard/:userType/:userId', (req, res) => { 
+  if(req.params.userType === "employee") {
+    getEmployeeExpenseReports(req, res);
+  } else if(req.params.userType === "accountant") {
+    console.log("it's an accountant");
+  } else {
+    console.log("URL unkown");
+  }
+});
+router.post('/dashboard/:userType/:userId', addExpenseReport);
+
+// Comptable - Note de frais
 router.get('/noteFrais', getNoteFraisComptable);
-router.put('/noteFrais', updateNoteFrais);
+router.post('/noteFrais', updateNoteFrais);
 
 router.get('/etatNote', getEtatNote);
 
-router.get('/employee_dashboard', getNoteFraisComptable);
-router.post('/new_report', (req, res)=> {
-  console.log('req.body', req.body)
-  console.log('req.query', req.query)
-  res.json({st:"cooo"})
-})
-//router.post('/dashboard/employee', updateNoteFrais);
-// router.delete('/', (req, res) => {
-// });
 
 // Renvoie une erreur 404 en cas de requête avec une route inconnue
 router.get('/*', function (req, res) {
