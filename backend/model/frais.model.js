@@ -50,6 +50,15 @@ class FRAIS {
     });
     console.log(result.rows);
   }
+
+  static async selectByIdNoteFrais (idNoteFrais) {
+    const result = await database.client.query({
+      text: `
+            SELECT * FROM ${FRAIS.tableName} where idnotefrais = ($1)`,
+      values: [idNoteFrais]
+    });
+    console.log(result.rows);
+  }
 }
 
 /** @type {String} **/
