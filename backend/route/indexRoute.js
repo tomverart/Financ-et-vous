@@ -17,8 +17,10 @@ router.get('/base', getBase);
 router.post('/utilisateur', getUtilisateur);
 
 router.use((req,res, next) => {
+  console.log(req.session);
   if(req.session.userId){    
 
+    
     next();
     return;
   } 
