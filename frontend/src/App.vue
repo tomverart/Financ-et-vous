@@ -1,19 +1,47 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+<div>
+  <head>
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <!-- Barre de navigation-->
+  <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" @click="clickRoute('/')">Fianc-et-vous</a>
+  </nav>
+
+  <div class="mx-auto" style="width: 500px;">
+    <router-view></router-view>
   </div>
+</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'App',
+  name: "App",
+  data() {
+    return {
+    };
+  },
   components: {
-    HelloWorld
+  },
+  mounted () {
+  },
+  methods: {
+    connexion(logs) {
+      console.log(logs.Login, logs.Password);
+    },
+    clickRoute(pathToRoute) {
+      this.$router.push(pathToRoute);
+    }
   }
-}
+};
 </script>
 
 <style>

@@ -1,7 +1,7 @@
-const database = require('./database');
+const database = require('./initBDD');
 
 class ROLE {
-  static toSqltable () {
+  static toSqlTable () {
     return `
         CREATE TABLE ${ROLE.tableName} (
             -- idRole, stringRole
@@ -11,13 +11,14 @@ class ROLE {
     `;
   }
 
-  static async createRoles (newRole) {
-    const result = await database.client.query({
+  static async createRole (newRole) {
+    // const result =
+    await database.client.query({
       text: `
             INSERT INTO ${ROLE.tableName} (stringRole) VALUES ($1)`,
       values: [newRole]
     });
-    console.log(result);
+    // console.log(result.rows);
   }
 
   static async selectAllRoles () {
@@ -25,16 +26,25 @@ class ROLE {
       text: `
             SELECT * FROM ${ROLE.tableName}`
     });
-    console.log(result);
+    console.log(result.rows);
   }
 
   static async selectByIdRoles (idRole) {
     const result = await database.client.query({
       text: `
-            SELECT * FROM ${ROLE.tableName} where idRole = ($1)`,
+            SELECT stringRole FROM ${ROLE.tableName} where idRole = ($1)`,
       values: [idRole]
     });
-    console.log(result);
+    return result.rows[0].stringrole;
+  }
+
+  static async existsByIdRole (idRole) {
+    const result = await database.client.query({
+      text: `
+            SELECT exists(SELECT 1 FROM ${ROLE.tableName} where idRole = ($1))`,
+      values: [idRole]
+    });
+    return result.rows[0].exists;
   }
 }
 
