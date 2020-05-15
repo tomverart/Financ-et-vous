@@ -20,3 +20,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+backend/ressources/imageFrais/*
+!backend/ressources/imageFrais/.gitkeep
