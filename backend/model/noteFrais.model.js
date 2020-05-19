@@ -44,6 +44,17 @@ class NOTEFRAIS {
     return result.rows;
   }
 
+  static async selectNomPrenomAllNoteFrais () {
+    const result = await database.client.query({
+      text: `
+            SELECT idNoteFrais, ntfrais.idUtilisateur, idEtatNote, nomUtilisateur, prenomUtilisateur
+            FROM ${NOTEFRAIS.tableName} ntfrais INNER JOIN ${UTILISATEUR.tableName} uti ON ntfrais.idUtilisateur = uti.idUtilisateur`
+    });
+    // console.log(result.rows);
+    return result.rows;
+  }
+
+
   static async selectAllNoteFraisByIdEtatNote (idEtatNote) {
     const result = await database.client.query({
       text: `
