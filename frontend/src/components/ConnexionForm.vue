@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mx-auto" style="width: 35rem;">
     <label for="login">Login</label>
     <input v-model="login" type="text" id="login" class="form-control" />
 
@@ -30,9 +30,9 @@ export default {
         password: this.password
       });
       const user = resp.data;
-
+      
       if (user.stringrole == "Comptable") {   //pensre a mettre des utilisateurs dans la BDD avec comme role comptable et employe
-        this.$router.push("/noteFrais");
+        this.$router.push("/dashboard");
       } else if (user.stringrole == "Employe") {
         this.$router.push("/");               //inserer ici le liens vers la page des employés
       } else {

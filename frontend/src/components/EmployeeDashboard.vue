@@ -1,6 +1,11 @@
 <template>
   <div>
-    <ExpenseReportForm @reportAdded="reportAddition" :userId="this.$route.params.userId" :userType="this.$route.params.userType"></ExpenseReportForm><br />
+    <ExpenseReportForm
+      @reportAdded="reportAddition"
+      :userId="this.$route.params.userId"
+      :userType="this.$route.params.userType"
+    ></ExpenseReportForm>
+    <br />
     <ExpenseReportList :reportsList="reports"></ExpenseReportList>
   </div>
 </template>
@@ -26,7 +31,7 @@ export default {
   },
   methods: {
     async reportsLoad() {
-      let urlString = "/dashboard/" + this.$route.params.userType + "/" + this.$route.params.userId;
+      let urlString = "/dashboard";
       await axios
         .get(urlString, {
           baseURL: "http://localhost:3000"
@@ -37,20 +42,20 @@ export default {
         .catch(err => {
           console.log("error from ExpenseReportList.vue: ", err);
         });
-    }, 
-  async reportAddition(newReport) {
-    await axios
-        .post("/dashboard/" + this.$route.params.userType + "/" + this.$route.params.userId, newReport, {
-            baseURL: "http://localhost:3000"
-          }
-        )
+    },
+    async reportAddition(newReport) {
+      let urlString = "/dashboard";
+      await axios
+        .post(urlString, newReport, {
+          baseURL: "http://localhost:3000"
+        })
         .then(() => {
           this.reportsLoad();
         })
         .catch(err => {
           console.log("error(form) : ", err);
         });
-  }
+    }
   }
 };
 </script>

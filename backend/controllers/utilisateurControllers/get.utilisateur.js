@@ -16,4 +16,4 @@ async function connex (req, res) {
 
 }
 // si tosend vide, res.json(error 401)
-module.exports = connex;
+module.exports = connex; 
