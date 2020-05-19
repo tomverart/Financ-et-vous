@@ -23,8 +23,10 @@ router.use((req,res, next) => {
     
     next();
     return;
-  } 
+  } else {
+    console.log('c ici que ca plante');
   res.sendStatus(401);
+  }
 })
 
 
