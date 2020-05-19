@@ -16,13 +16,17 @@ var getUtilisateur = require('../controllers/utilisateurControllers/get.utilisat
 // Login
 router.post('/utilisateur', getUtilisateur);
 
-router.use((req, res, next) => {
-  if (req.session.userId) {
+router.use((req,res, next) => {
+  console.log(req.session);
+  if(req.session.userId){
 
+    
     next();
     return;
-  }
+  } else {
+    console.log('c ici que ca plante');
   res.sendStatus(401);
+  }
 })
 
 router.get('/dashboard', (req, res) => {
