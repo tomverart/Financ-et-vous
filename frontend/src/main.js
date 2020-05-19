@@ -5,6 +5,8 @@ import axios from 'axios';
 axios.defaults.withCredentials = true;
 Vue.config.productionTip = false;
 
+console.log('bonjour, tu est passé dans le main.js')
+
 // Variable $axios sur le port 3000 pour les requêtes au backend
 Vue.use({
   install (Vue) {
@@ -14,7 +16,9 @@ Vue.use({
   }
 });
 
+
 new Vue({
   router,
   render: h => h(App)
 }).$mount('#app');
+
