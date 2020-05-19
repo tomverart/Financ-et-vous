@@ -60,7 +60,8 @@ class UTILISATEUR {
             SELECT * FROM ${UTILISATEUR.tableName} where idUtilisateur = ($1)`,
       values: [idUtilisateur]
     });
-    console.log(result.rows);
+
+    return result.rows;
   }
 
   /** faire un requette lié pour retourner l'id ET le role du l'utilisateur si le mdp et login concordent

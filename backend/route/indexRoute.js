@@ -10,42 +10,53 @@ var getEmployeeExpenseReports = require('../controllers/noteFraisControllers/get
 var addExpenseReport = require('../controllers/noteFraisControllers/add.expenseReport');
 var updateNoteFrais = require('../controllers/noteFraisControllers/update.notefrais');
 var getEtatNote = require('../controllers/etatNoteControllers/get.etatNote');
-
+var getRole = require('../controllers/utilisateurControllers/getRole');
 var getUtilisateur = require('../controllers/utilisateurControllers/get.utilisateur.js');
 
 // Login
 router.post('/utilisateur', getUtilisateur);
 
-router.use((req,res, next) => {
-  console.log(req.session);
-  if(req.session.userId){
+router.use((req, res, next) => {
+  if (req.session.userId) {
 
-    
     next();
     return;
-  } 
+  }
   res.sendStatus(401);
 })
 
-
-router.get('/employee_dashboard', getNoteFraisComptable);   //changer employee_dashboard en dashboard/accountant et adapter else if
-router.get('/dashboard/:userType/:userId', (req, res) => { 
-  if(req.params.userType === "employee") {
-    getEmployeeExpenseReports(req, res);
-  } else if(req.params.userType === "accountant") {
-    console.log("it's an accountant");
-  } else {
-    console.log("URL unkown");
-  }
+router.get('/dashboard', (req, res) => {
+  let theRole = getRole(req.session.userId);
+  theRole.then(role => {
+    if (role === 1) {
+      console.log("connected as admin")
+    } else if (role === 2) {    //partie comptable
+      getNoteFraisComptable(req, res);
+    } else if (role === 3) {
+      getEmployeeExpenseReports(req, res);
+    } else {
+      console.log("unknown role : ", getRole(req.session.userId))
+      res.sendStatus(404);
+    }
+  })
 });
-router.post('/dashboard/:userType/:userId', addExpenseReport);
-
-// Comptable - Note de frais
-router.get('/noteFrais', getNoteFraisComptable);
-router.post('/noteFrais', updateNoteFrais);
+router.post('/dashboard', (req, res) => {
+  let theRole = getRole(req.session.userId);
+  theRole.then(role => {
+    if (role === 1) {
+      console.log("connected as admin")
+    } else if (role === 2) {    //partie comptable
+      updateNoteFrais(req, res);
+    } else if (role === 3) {
+      addExpenseReport(req, res);
+    } else {
+      console.log("unknown role : ", getRole(req.session.userId))
+      res.sendStatus(404);
+    }
+  })
+});
 
 router.get('/etatNote', getEtatNote);
-
 
 // Renvoie une erreur 404 en cas de requête avec une route inconnue
 router.get('/*', function (req, res) {
