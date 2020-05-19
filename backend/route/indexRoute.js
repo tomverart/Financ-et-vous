@@ -11,26 +11,24 @@ var addExpenseReport = require('../controllers/noteFraisControllers/add.expenseR
 var updateNoteFrais = require('../controllers/noteFraisControllers/update.notefrais');
 var getEtatNote = require('../controllers/etatNoteControllers/get.etatNote');
 var getRole = require('../controllers/utilisateurControllers/getRole');
-var getUtilisateur = require('../controllers/utilisateurControllers/get.utilisateur.js');
+var login = require('../controllers/utilisateurControllers/login.js');
 
 // Login
-router.post('/utilisateur', getUtilisateur);
+router.post('/utilisateur', login);
 
 router.use((req,res, next) => {
-  console.log(req.session);
-  if(req.session.userId){
-
-    
+  if(req.session.login){
     next();
+
     return;
   } else {
-    console.log('c ici que ca plante');
-  res.sendStatus(401);
+
+    res.sendStatus(401);
   }
 })
 
 router.get('/dashboard', (req, res) => {
-  let theRole = getRole(req.session.userId);
+  /*let theRole = getRole(req.session.login);
   theRole.then(role => {
     if (role === 1) {
       console.log("connected as admin")
@@ -39,13 +37,14 @@ router.get('/dashboard', (req, res) => {
     } else if (role === 3) {
       getEmployeeExpenseReports(req, res);
     } else {
-      console.log("unknown role : ", getRole(req.session.userId))
+      console.log("unknown role : ", getRole(req.session.login))
       res.sendStatus(404);
     }
-  })
+  })*/
 });
+
 router.post('/dashboard', (req, res) => {
-  let theRole = getRole(req.session.userId);
+  /*let theRole = getRole(req.session.userId);
   theRole.then(role => {
     if (role === 1) {
       console.log("connected as admin")
@@ -57,7 +56,7 @@ router.post('/dashboard', (req, res) => {
       console.log("unknown role : ", getRole(req.session.userId))
       res.sendStatus(404);
     }
-  })
+  })*/
 });
 
 router.get('/etatNote', getEtatNote);

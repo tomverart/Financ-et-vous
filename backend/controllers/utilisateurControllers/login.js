@@ -7,7 +7,7 @@ async function connex (req, res) {
   const toSend = await user.userAuth(login, passw);
 
   if(toSend){
-    req.session.userId = toSend.idutilisateur;  
+    req.session.login = toSend.loginutilisateur;
     res.json(toSend);
 
   } else {
