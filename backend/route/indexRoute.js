@@ -17,12 +17,14 @@ var login = require('../controllers/utilisateurControllers/login.js');
 router.post('/utilisateur', login);
 
 router.use((req,res, next) => {
+  console.log(req.session);
+  console.log(req.session.login);
   if(req.session.login){
     next();
 
     return;
   } else {
-
+    console.log(req.session.login);
     res.sendStatus(401);
   }
 })

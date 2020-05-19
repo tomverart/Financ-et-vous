@@ -71,7 +71,7 @@ class UTILISATEUR {
     // console.log(login, password);
     const result = await database.client.query({
       text: `
-      SELECT idutilisateur, stringrole
+      SELECT loginutilisateur, stringrole
       FROM ${UTILISATEUR.tableName} uti INNER JOIN ${Role.tableName} role ON (uti.idRole = role.idRole)
       WHERE loginutilisateur = $1
       AND mdputilisateur = $2 `,

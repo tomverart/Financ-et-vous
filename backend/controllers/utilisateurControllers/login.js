@@ -7,6 +7,7 @@ async function connex (req, res) {
   const toSend = await user.userAuth(login, passw);
 
   if(toSend){
+    console.log(toSend);
     req.session.login = toSend.loginutilisateur;
     res.json(toSend);
 
