@@ -60,6 +60,24 @@ class InitBDD {
     await etatNote.selectAllEtatNotes();
   }
 
+  async testnoteFraisComtpable () {
+    const noteFrais = require('./noteFrais.model');
+    const utilisateur = require('./utilisateur.model');
+
+    await utilisateur.createUtilisateurs('JE', 'soleil123', 'Jean', 'Michel', 3);
+    await utilisateur.createUtilisateurs('JC', 'soleil123', 'Jean', 'MichelMichel', 2);
+
+    // await utilisateur.selectAllUtilisateurs();
+    await noteFrais.createNoteFrais(1, 'blabla', 'desc');
+    await noteFrais.createNoteFrais(1, 'blabla', 'desc');
+    await noteFrais.createNoteFrais(1, 'blabla', 'desc');
+    await noteFrais.createNoteFrais(1, 'blabla', 'desc');
+    await noteFrais.createNoteFrais(1, 'blabla', 'desc');
+    await noteFrais.createNoteFrais(1, 'blabla', 'desc');
+
+    // await noteFrais.selectAllNoteFrais();
+  }
+
   async reset () {
     const conf = {
       user: config.postgres.user,
@@ -79,6 +97,9 @@ class InitBDD {
 
     await this.initBaseValuesRole();
     await this.initBaseValuesEtatsNotes();
+
+    await this.testnoteFraisComtpable();
+
     console.log('bravo ca marche');
   }
 }

@@ -16,13 +16,13 @@ class FRAIS {
     `;
   }
 
-  static async createFrais (newFrais) {
-    const result = await database.client.query({
+  static async createFrais (montantFrais, descriptionFrais, fichierFrais, idNoteFrais) {
+    await database.client.query({
       text: `
-            INSERT INTO ${FRAIS.tableName} (stringFrais) VALUES ($1)`,
-      values: [newFrais]
+            INSERT INTO ${FRAIS.tableName} (montantFrais, descriptionFrais, fichierFrais, idNoteFrais) VALUES ($1, $2, $3, $4)`,
+      values: [montantFrais, descriptionFrais, fichierFrais, idNoteFrais]
     });
-    console.log(result.rows);
+    return;
   }
 
   static async deleteFrais (idFrais) {
@@ -58,6 +58,20 @@ class FRAIS {
       values: [idNoteFrais]
     });
     console.log(result.rows);
+  }
+
+  static async getMaxIdFrais(){
+    const result = await database.client.query({
+      text:`
+        SELECT max(idFrais) FROM ${FRAIS.tableName};
+      `
+    });
+    let maxId = result.rows[0].max;
+    // if(maxId === null) console.log(0);
+    if(maxId === null) return 0;
+    // else console.log(maxId);
+    else return maxId;
+  
   }
 }
 
