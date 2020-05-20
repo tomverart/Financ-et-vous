@@ -5,7 +5,7 @@ import VueRouter from 'vue-router';
 import Home from './components/Home.vue';
 import Login from './components/ConnexionForm.vue';
 import noteFraisComptable from './components/noteFrais/noteFraisComptable.vue';
-import viewFrais from './components/noteFrais/viewFrais.vue';
+// import viewFrais from './components/noteFrais/viewFrais.vue';
 import EmployeeDashboard from './components/EmployeeDashboard.vue'
 
 Vue.use(VueRouter);
