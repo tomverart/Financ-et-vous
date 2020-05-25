@@ -15,12 +15,12 @@ var getEtatNote = require('../controllers/etatNoteControllers/get.etatNote');
 
 // Controlleurs des frais
 var createFrais = require('../controllers/fraisControllers/create.frais');
-var getFrais2 = require('../controllers/fraisControllers/get.frais2');
+var getImage = require('../controllers/fraisControllers/getImage.frais');
 // Controlleurs utilisateur
 var getUtilisateur = require('../controllers/utilisateurControllers/get.utilisateur.js');
 
 router.post('/uploadImage', upload.single('file'), createFrais);
-router.get('/downloadImage', getFrais2);
+router.get('/downloadImage', getImage);
 
 // Login
 router.post('/utilisateur', getUtilisateur);
