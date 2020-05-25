@@ -33,8 +33,8 @@ export default {
 
       if (user.stringrole == "Comptable") {   //pensre a mettre des utilisateurs dans la BDD avec comme role comptable et employe
         this.$router.push("/noteFrais");
-      } else if (user.stringrole == "Employe") {
-        this.$router.push("/");               //inserer ici le liens vers la page des employés
+      } else if (user.stringrole == "Employé") {
+        this.$router.push("/viewFrais");               //inserer ici le liens vers la page des employés
       } else {
         console.log('vous etes ici')
       }

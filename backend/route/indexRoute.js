@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+const multer = require('multer');
+const upload = multer({ dest: './ressources/tempImageFrais' });
 
 // Template de controlleur get
 var getBase = require('../controllers/baseControllers/get.base');
@@ -11,31 +13,36 @@ var addExpenseReport = require('../controllers/noteFraisControllers/add.expenseR
 var updateNoteFrais = require('../controllers/noteFraisControllers/update.notefrais');
 var getEtatNote = require('../controllers/etatNoteControllers/get.etatNote');
 
+// Controlleurs des frais
+var createFrais = require('../controllers/fraisControllers/create.frais');
+var getFrais2 = require('../controllers/fraisControllers/get.frais2');
+// Controlleurs utilisateur
 var getUtilisateur = require('../controllers/utilisateurControllers/get.utilisateur.js');
+
+router.post('/uploadImage', upload.single('file'), createFrais);
+router.get('/downloadImage', getFrais2);
 
 // Login
 router.post('/utilisateur', getUtilisateur);
 
-router.use((req,res, next) => {
-  console.log(req.session);
-  if(req.session.userId){
-
-    
-    next();
-    return;
-  } 
-  res.sendStatus(401);
-})
+// router.use((req, res, next) => {
+//   console.log(req.session);
+//   if (req.session.userId) {
+//     next();
+//     return;
+//   }
+//   res.sendStatus(401);
+// })
 
 
 router.get('/employee_dashboard', getNoteFraisComptable);   //changer employee_dashboard en dashboard/accountant et adapter else if
-router.get('/dashboard/:userType/:userId', (req, res) => { 
-  if(req.params.userType === "employee") {
+router.get('/dashboard/:userType/:userId', (req, res) => {
+  if (req.params.userType === "employee") {
     getEmployeeExpenseReports(req, res);
-  } else if(req.params.userType === "accountant") {
+  } else if (req.params.userType === "accountant") {
     console.log("it's an accountant");
   } else {
-    console.log("URL unkown");
+    console.log("URL unknown");
   }
 });
 router.post('/dashboard/:userType/:userId', addExpenseReport);
