@@ -32,7 +32,6 @@ class NOTEFRAIS {
             DELETE FROM ${NOTEFRAIS.tableName} where idNoteFrais = ($1)`,
       values: [idNoteFrais]
     });
-    console.log(result.rows);
   }
 
   static async selectAllNoteFrais () {
@@ -80,7 +79,8 @@ class NOTEFRAIS {
             SELECT * FROM ${NOTEFRAIS.tableName} where idNoteFrais = ($1)`,
       values: [idNoteFrais]
     });
-    console.log(result.rows);
+    
+    return result.rows[0];
   }
 
   static async updateByIdNoteFrais (idNoteFrais, idEtatNote) {

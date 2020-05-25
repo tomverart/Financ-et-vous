@@ -8,18 +8,18 @@ var getBase = require('../controllers/baseControllers/get.base');
 var getNoteFraisComptable = require('../controllers/noteFraisControllers/getComptable.notefrais');
 var getEmployeeExpenseReports = require('../controllers/noteFraisControllers/getEmployee.expensereports');
 var addExpenseReport = require('../controllers/noteFraisControllers/add.expenseReport');
+var deleteExpenseReport = require('../controllers/noteFraisControllers/delete.expenseReport');
 var updateNoteFrais = require('../controllers/noteFraisControllers/update.notefrais');
 var getEtatNote = require('../controllers/etatNoteControllers/get.etatNote');
-var getRole = require('../controllers/utilisateurControllers/getRole');
+var getUserByLogin = require('../controllers/utilisateurControllers/getUserByLogin');
 var login = require('../controllers/utilisateurControllers/login.js');
+var getExpenseReport = require('../controllers/noteFraisControllers/getExpenseReport');
 
 // Login
 router.post('/utilisateur', login);
 
-router.use((req,res, next) => {
-  console.log(req.session);
-  console.log(req.session.login);
-  if(req.session.login){
+router.use((req, res, next) => {
+  if (req.session.login) {
     next();
 
     return;
@@ -27,38 +27,55 @@ router.use((req,res, next) => {
     console.log(req.session.login);
     res.sendStatus(401);
   }
-})
+});
 
 router.get('/dashboard', (req, res) => {
-  /*let theRole = getRole(req.session.login);
-  theRole.then(role => {
-    if (role === 1) {
-      console.log("connected as admin")
-    } else if (role === 2) {    //partie comptable
+  let theUser = getUserByLogin(req.session.login);
+  theUser.then(user => {
+    if (user.idrole === 1) {
+      console.log("connected as admin");
+    } else if (user.idrole === 2) {    //partie comptable
       getNoteFraisComptable(req, res);
-    } else if (role === 3) {
-      getEmployeeExpenseReports(req, res);
+    } else if (user.idrole === 3) {   //employee
+      if (req.query.action) {
+        switch (req.query.action) {
+          case "view":
+            if (req.query.id) {
+              getExpenseReport(req, res);
+            }
+            break;
+          case "delete":
+            if (req.query.id) {
+              deleteExpenseReport(req, res);
+            }
+            break;
+          default:
+            break;
+        }
+      } else {
+        getEmployeeExpenseReports(req, res);
+      }
     } else {
-      console.log("unknown role : ", getRole(req.session.login))
+      console.log("unknown role : ");
       res.sendStatus(404);
     }
-  })*/
+  })
 });
 
 router.post('/dashboard', (req, res) => {
-  /*let theRole = getRole(req.session.userId);
-  theRole.then(role => {
-    if (role === 1) {
-      console.log("connected as admin")
-    } else if (role === 2) {    //partie comptable
-      updateNoteFrais(req, res);
-    } else if (role === 3) {
+  let theUser = getUserByLogin(req.session.login);
+  theUser.then(user => {
+    if (user.idrole === 1) {
+      console.log("admin post request")
+    } else if (user.idrole === 2) {    //partie comptable
+      console.log("accountant post request")
+    } else if (user.idrole === 3) {
       addExpenseReport(req, res);
     } else {
-      console.log("unknown role : ", getRole(req.session.userId))
+      console.log("unknown role post request")
       res.sendStatus(404);
     }
-  })*/
+  })
 });
 
 router.get('/etatNote', getEtatNote);
