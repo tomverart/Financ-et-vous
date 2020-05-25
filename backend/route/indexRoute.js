@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const multer = require('multer');
-const upload = multer({ dest: './ressources/tempImageFrais' });
+const upload = multer({ dest: './ressources/tempImagesFrais' });
 
 // Template de controlleur get
 var getBase = require('../controllers/baseControllers/get.base');

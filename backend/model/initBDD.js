@@ -1,6 +1,6 @@
 const pg = require('pg');
 const pgtools = require('pgtools');
-
+const fs = require('fs');
 const config = require('../config/db.config.js');
 
 class InitBDD {
@@ -78,6 +78,31 @@ class InitBDD {
     // await noteFrais.selectAllNoteFrais();
   }
 
+
+  // Supprime toutes les images liées aux frais
+  clearImagesFrais () {
+    // Chemin des images des frais
+    const pathImagesFrais = './ressources/imagesFrais/';
+
+    // Récupère les noms de tous les fichiers dans le répertoire
+    fs.readdir(pathImagesFrais, function (err, files) {
+      // Ignore le .gitkeep
+      let findGitKeep = files.indexOf('.gitkeep');
+      if (findGitKeep !== -1) {
+        files.splice(findGitKeep, 1);
+      }
+
+      // Supprime les fichiers
+      files.forEach(file => {
+        fs.unlink(pathImagesFrais + file, function (err) {
+          if (err) throw err;
+          console.log(file + ' deleted');
+        });
+      });
+    });
+
+  }
+
   async reset () {
     const conf = {
       user: config.postgres.user,
@@ -90,6 +115,9 @@ class InitBDD {
     } catch (err) {
       console.log("error but don't care", err);
     }
+    
+    this.clearImagesFrais();
+
     await pgtools.createdb(conf, config.postgres.database);
     await this.init();
 
