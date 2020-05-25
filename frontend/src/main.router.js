@@ -5,7 +5,8 @@ import VueRouter from 'vue-router';
 import Home from './components/Home.vue';
 import Login from './components/ConnexionForm.vue';
 import noteFraisComptable from './components/noteFrais/noteFraisComptable.vue';
-import EmployeeDashboard from './components/EmployeeDashboard.vue'
+import EmployeeDashboard from './components/EmployeeDashboard.vue';
+import Loading from './components/Loading.vue';
 
 Vue.use(VueRouter);
 
@@ -16,7 +17,9 @@ const routes = [
   { path: '/login', component: Login }, 
   
   { path: '/noteFrais', component: noteFraisComptable },
-  
+
+  { path: '/adele', component: Loading },
+
   { path: '/dashboard', component: EmployeeDashboard }
 ];
 
