@@ -83,6 +83,14 @@ class NOTEFRAIS {
     return result.rows[0];
   }
 
+  static async modifyByIdNoteFrais (idNoteFrais, label, description) {
+    await database.client.query({
+      text: `
+            UPDATE ${NOTEFRAIS.tableName} SET libelle = ($1), description = ($2) WHERE idNoteFrais = ($3)`,
+      values: [label, description, idNoteFrais]
+    });
+  }
+
   static async updateByIdNoteFrais (idNoteFrais, idEtatNote) {
     // const result = await database.client.query({
     await database.client.query({
