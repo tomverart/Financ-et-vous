@@ -12,8 +12,13 @@
           ></ExpenseReportsList>
         </td>
         <td>
-          <div v-if="oneReportView">
-            <ExpenseReportView :reportToDisplay="reportToShow" @reportDeleted="reportDeletion"></ExpenseReportView>
+          <div v-if="onView">
+            <ExpenseReportView
+              :reportToDisplay="reportToShow"
+              @reportDeleted="reportDeletion"
+              @reportModified="reportModification"
+              @hide="stopViewing"
+            ></ExpenseReportView>
           </div>
         </td>
       </tr>
@@ -39,7 +44,8 @@ export default {
     return {
       reports: null,
       reportToShow: null,
-      oneReportView: false
+      onView: false,
+    //  doneSendingAndReceivingRequestFromServer: false
     };
   },
   mounted() {
@@ -60,21 +66,21 @@ export default {
         });
     },
     async reportDisplay() {
-      this.oneReportView = true;
-      let urlString = "dashboard?action=view&id=" + this.$route.query.id;
+      let urlString = "dashboard?id=" + this.$route.query.id;
       await axios
         .get(urlString, {
           baseURL: "http://localhost:3000"
         })
         .then(response => {
           this.reportToShow = response.data;
+          this.onView = true;
         })
         .catch(err => {
           console.log("error from ExpenseReportList.vue: ", err);
         });
     },
     async reportAddition(newReport) {
-      let urlString = "/dashboard";
+      let urlString = "/dashboard/add";
       await axios
         .post(urlString, newReport, {
           baseURL: "http://localhost:3000"
@@ -87,21 +93,38 @@ export default {
         });
     },
     async reportDeletion() {
-      let urlString = "/dashboard?action=delete&id=" + this.$route.query.id;
+      let urlString = "/dashboard/delete";
       await axios
-        .get(
+        .post(
           urlString,
+          { id: this.$route.query.id },
           {
             baseURL: "http://localhost:3000"
-          },
-          { params: { id: this.id } }
+          }
         )
-        .then(() => {   //response.status = 204
+        .then(() => {
+          //response.status = 204
           this.reportsLoad();
         })
         .catch(err => {
           console.log("error(list) : ", err);
         });
+    },
+    async reportModification(report) {
+      let urlString = "/dashboard/update";
+      await axios
+        .post(urlString, report, {
+          baseURL: "http://localhost:3000"
+        })
+        .then(() => {
+          this.reportsLoad();
+        })
+        .catch(err => {
+          console.log("error(list) : ", err);
+        });
+    },
+    stopViewing() {
+      this.onView = false;
     }
   }
 };

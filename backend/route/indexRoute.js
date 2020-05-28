@@ -29,7 +29,7 @@ router.use((req, res, next) => {
   }
 });
 
-router.get('/dashboard', (req, res) => {
+router.get('/dashboard?:id', (req, res) => {
   let theUser = getUserByLogin(req.session.login);
   theUser.then(user => {
     if (user.idrole === 1) {
@@ -37,21 +37,8 @@ router.get('/dashboard', (req, res) => {
     } else if (user.idrole === 2) {    //partie comptable
       getNoteFraisComptable(req, res);
     } else if (user.idrole === 3) {   //employee
-      if (req.query.action) {
-        switch (req.query.action) {
-          case "view":
-            if (req.query.id) {
-              getExpenseReport(req, res);
-            }
-            break;
-          case "delete":
-            if (req.query.id) {
-              deleteExpenseReport(req, res);
-            }
-            break;
-          default:
-            break;
-        }
+      if (req.query.id) {
+        getExpenseReport(req, res);
       } else {
         getEmployeeExpenseReports(req, res);
       }
@@ -62,7 +49,7 @@ router.get('/dashboard', (req, res) => {
   })
 });
 
-router.post('/dashboard', (req, res) => {
+router.post('/dashboard/:action', (req, res) => {
   let theUser = getUserByLogin(req.session.login);
   theUser.then(user => {
     if (user.idrole === 1) {
@@ -70,7 +57,26 @@ router.post('/dashboard', (req, res) => {
     } else if (user.idrole === 2) {    //partie comptable
       console.log("accountant post request")
     } else if (user.idrole === 3) {
-      addExpenseReport(req, res);
+      if (req.params.action) {
+        switch (req.params.action) {
+          case "add":
+            addExpenseReport(req, res);
+            break;
+          case "update":
+            if (req.body.idnotefrais) {
+              updateNoteFrais(req, res);
+            }
+            break;
+          case "delete":
+            if (req.body.id) {
+              deleteExpenseReport(req, res);
+            }
+            break;
+          default:
+            break;
+        }
+      }
+
     } else {
       console.log("unknown role post request")
       res.sendStatus(404);
