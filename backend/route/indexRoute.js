@@ -39,7 +39,6 @@ router.use((req, res, next) => {
     res.sendStatus(401);
   }
 });
-router.post('/dashboard/:userId', addExpenseReport);
 
 router.get('/dashboard?:id', (req, res) => {
   let theUser = getUserByLogin(req.session.login);
@@ -68,6 +67,18 @@ router.post('/dashboard/:action', (req, res) => {
       console.log("admin post request")
     } else if (user.idrole === 2) {    //partie comptable
       console.log("accountant post request")
+      switch (req.params.action) {
+        case "add":
+          addExpenseReport(req, res);
+          break;
+        case "update":
+          if (req.body.idnotefrais) {
+            updateNoteFrais(req, res);
+          }
+          break;
+          default:
+            break;
+        }
     } else if (user.idrole === 3) {
       if (req.params.action) {
         switch (req.params.action) {

@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto" style="width: 50rem;">
-    <h1>Création de note de frais</h1>
+    <h1>Nouvelle note de frais</h1>
     <form v-on:submit.prevent="onSubmit">
       <label for="libelle">Objet</label>
       <input v-model="libelle" style="width: 25rem;" type="text" class="form-control" id="libelle" />
@@ -23,7 +23,7 @@ export default {
   methods: {
     async onSubmit() {
       await this.$axios
-        .post("/dashboard/2", {
+        .post("/dashboard/add", {
           label: this.libelle
         })
         .then(response => {

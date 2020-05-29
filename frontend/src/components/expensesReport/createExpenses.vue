@@ -63,6 +63,9 @@ import createExpensesComponent from "./createExpenses.vue";
 
 export default {
   name: "viewfrais",
+  components:{
+    createExpensesComponent
+  },
   props: {
     idnotefraisprops: {
       type: Number,

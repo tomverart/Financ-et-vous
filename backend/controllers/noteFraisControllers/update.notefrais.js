@@ -15,7 +15,7 @@ async function toExport(req, res) {
       NoteFrais.modifyByIdNoteFrais(req.body.idnotefrais, req.body.libelle, req.body.description);
       res.json("Done");
     } else {
-      NoteFrais.updateByIdNoteFrais(req.body.idNoteFrais, req.body.idEtatNote);
+      NoteFrais.updateByIdNoteFrais(req.body.idnotefrais, req.body.idetatnote);
       res.json("Done");
     }
   }).catch((err) => {

@@ -8,7 +8,8 @@ async function toExport (req, res) {
   let publishDate = new Date(Date.UTC(year, month-1, day, hour, minute));
   let user = await User.selectByLogin(req.session.login);
 
-  var expensereports = await Notefrais.createNoteFrais(user[0].idutilisateur, req.body.label, req.body.description, publishDate);
+  var expensereports = await Notefrais.createNoteFrais(user[0].idutilisateur, req.body.label, publishDate);
+  // var expensereports = await Notefrais.createNoteFrais(user[0].idutilisateur, req.body.label, req.body.description, publishDate);
 
   res.json(expensereports);
 }

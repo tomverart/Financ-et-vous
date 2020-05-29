@@ -71,16 +71,16 @@ export default {
   methods: {
     // Renvoie les notes de frais
     async getFullListNoteFrais() {
-      return await this.$axios.get("/noteFrais").then(response => {
+      return await this.$axios.get("/dashboard?id=0").then(response => {
         return response.data;
       });
     },
     // Met à jour l'état de la note de frais
     async updateEtatNote(noteFrais, idEtatNoteToChange) {
       await this.$axios
-        .post("/noteFrais", {
-          idNoteFrais: noteFrais.idnotefrais,
-          idEtatNote: idEtatNoteToChange
+        .post("/dashboard/update", {
+          idnotefrais: noteFrais.idnotefrais,
+          idetatnote: idEtatNoteToChange
         })
         .then(response => {
           if (response.status === 200) {

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <ExpenseReportForm @reportAdded="reportAddition"></ExpenseReportForm>
+    <!-- <ExpenseReportForm @reportAdded="reportAddition"></ExpenseReportForm> -->
+    <createExpensesReport />
     <br />
     <table>
       <tr>
@@ -27,16 +28,18 @@
 </template>
 
 <script>
-import ExpenseReportForm from "./ExpenseReportForm";
+// import ExpenseReportForm from "./ExpenseReportForm";
 import ExpenseReportsList from "./ExpenseReportsList";
 import ExpenseReportView from "./ExpenseReportView";
+import createExpensesReport from "./expensesReport/createExpensesReport"
 
 import axios from "axios";
 
 export default {
   name: "EmployeeDashboard",
   components: {
-    ExpenseReportForm,
+    // ExpenseReportForm,
+    createExpensesReport,
     ExpenseReportsList,
     ExpenseReportView
   },
