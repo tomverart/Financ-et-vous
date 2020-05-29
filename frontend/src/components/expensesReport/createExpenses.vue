@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import createFraisComponent from "./createFrais.vue";
+import createExpensesComponent from "./createExpenses.vue";
 
 export default {
   name: "viewfrais",
@@ -131,7 +131,7 @@ export default {
         });
 
       if (addFrais) {
-        this.fraisSup.push(createFraisComponent);
+        this.fraisSup.push(createExpensesComponent);
         console.log(this.fraisSup);
         this.validatedExpense = true;
       }

@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: "createfrais",
+  name: "createExpenses",
   data() {
     return {
       libelle: ""
@@ -30,7 +30,7 @@ export default {
           if (response.status === 200) {
             console.log(response.data.idnotefrais);
             this.$router.push({
-              name: "createFrais",
+              name: "createExpenses",
               params: { idnotefraisprops: response.data.idnotefrais }
             });
           }
