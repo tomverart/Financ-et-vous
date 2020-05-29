@@ -19,10 +19,10 @@ const routes = [
   { path: '/login', component: Login },
 
   { path: '/noteFrais', component: noteFraisComptable },
-  { path: '/dashboard', component: EmployeeDashboard }
+  { path: '/dashboard', component: EmployeeDashboard },
   { path: '/adele', component: Loading },
   { path: '/createExpenses', component: createExpenses, props: true, name: 'createExpenses' },
-  { path: '/createExpensesReport', component: createExpensesReport },
+  { path: '/createExpensesReport', component: createExpensesReport }
 ];
 
 export default new VueRouter({

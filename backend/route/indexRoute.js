@@ -1,10 +1,13 @@
 var express = require('express');
 var router = express.Router();
 const multer = require('multer');
+// Répertoire des images temporaires
 const upload = multer({ dest: './ressources/tempImagesFrais' });
 
-// Template de controlleur get
-var getBase = require('../controllers/baseControllers/get.base');
+
+// Controlleurs utilisateur
+var getUserByLogin = require('../controllers/utilisateurControllers/getUserByLogin');
+var login = require('../controllers/utilisateurControllers/login.js');
 
 // Controlleurs des notes de frais
 var getNoteFraisComptable = require('../controllers/noteFraisControllers/getComptable.notefrais');
@@ -13,16 +16,13 @@ var addExpenseReport = require('../controllers/noteFraisControllers/add.expenseR
 var deleteExpenseReport = require('../controllers/noteFraisControllers/delete.expenseReport');
 var updateNoteFrais = require('../controllers/noteFraisControllers/update.notefrais');
 var getEtatNote = require('../controllers/etatNoteControllers/get.etatNote');
-var getUserByLogin = require('../controllers/utilisateurControllers/getUserByLogin');
-var login = require('../controllers/utilisateurControllers/login.js');
 var getExpenseReport = require('../controllers/noteFraisControllers/getExpenseReport');
 
 // Controlleurs des frais
 var createFrais = require('../controllers/fraisControllers/create.frais');
 var getImage = require('../controllers/fraisControllers/getImage.frais');
-// Controlleurs utilisateur
-var getUtilisateur = require('../controllers/utilisateurControllers/get.utilisateur.js');
 
+// Controlleurs de gestion d'images
 router.post('/uploadImage', upload.single('file'), createFrais);
 router.get('/downloadImage', getImage);
 
