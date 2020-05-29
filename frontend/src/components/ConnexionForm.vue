@@ -31,12 +31,14 @@ export default {
       });
       const user = resp.data;
 
-      if (user.stringrole == "Comptable") {   //pensre a mettre des utilisateurs dans la BDD avec comme role comptable et employe
-        this.$router.push("/noteFrais");
+      if (user.stringrole == "Comptable") {
+        this.$router.push("/dashboard");
       } else if (user.stringrole == "Employé") {
-        this.$router.push("/viewFrais");               //inserer ici le liens vers la page des employés
+        this.$router.push("/dashboard");
+      } else if (user.stringrole == "Administrateur") {
+        console.log("it's an admin");
       } else {
-        console.log('vous etes ici')
+        console.log("unknown role");
       }
     }
   }

@@ -8,6 +8,7 @@ import noteFraisComptable from './components/expensesReport/noteFraisComptable.v
 import createExpensesReport from './components/expensesReport/createExpensesReport.vue';
 import createExpenses from './components/expensesReport/createExpenses.vue';
 import EmployeeDashboard from './components/EmployeeDashboard.vue';
+import Loading from './components/Loading.vue';
 
 Vue.use(VueRouter);
 
@@ -18,9 +19,10 @@ const routes = [
   { path: '/login', component: Login },
 
   { path: '/noteFrais', component: noteFraisComptable },
-  { path: '/createExpensesReport', component: createExpensesReport },
+  { path: '/dashboard', component: EmployeeDashboard }
+  { path: '/adele', component: Loading },
   { path: '/createExpenses', component: createExpenses, props: true, name: 'createExpenses' },
-  { path: '/dashboard/:userType/:userId', component: EmployeeDashboard }
+  { path: '/createExpensesReport', component: createExpensesReport },
 ];
 
 export default new VueRouter({

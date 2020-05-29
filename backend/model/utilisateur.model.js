@@ -60,25 +60,36 @@ class UTILISATEUR {
             SELECT * FROM ${UTILISATEUR.tableName} where idUtilisateur = ($1)`,
       values: [idUtilisateur]
     });
-    console.log(result.rows);
+
+    return result.rows;
+  }
+
+  static async selectByLogin (userLogin) {
+    const result = await database.client.query({
+      text: `
+            SELECT * FROM ${UTILISATEUR.tableName} where loginutilisateur = ($1)`,
+      values: [userLogin]
+    });
+
+    return result.rows;
   }
 
   /** faire un requette lié pour retourner l'id ET le role du l'utilisateur si le mdp et login concordent
  *
  */
-  static async userAuth (login, password) {
-    // console.log(login, password);
-    const result = await database.client.query({
-      text: `
-      SELECT idutilisateur, stringrole
-      FROM ${UTILISATEUR.tableName} uti INNER JOIN ${Role.tableName} role ON (uti.idRole = role.idRole)
-      WHERE loginutilisateur = $1
-      AND mdputilisateur = $2 `,
-      values: [login, password]
-    });
-    // console.log(result.rows[0]);
-    return result.rows[0];
-  }
+static async userAuth (login, password) {
+  // console.log(login, password);
+  const result = await database.client.query({
+    text: `
+    SELECT loginutilisateur, stringrole
+    FROM ${UTILISATEUR.tableName} uti INNER JOIN ${Role.tableName} role ON (uti.idRole = role.idRole)
+    WHERE loginutilisateur = $1
+    AND mdputilisateur = $2 `,
+    values: [login, password]
+  });
+  // console.log(result.rows[0]);
+  return result.rows[0];
+}
 }
 
 /** @type {String} **/

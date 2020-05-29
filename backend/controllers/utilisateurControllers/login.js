@@ -7,7 +7,8 @@ async function connex (req, res) {
   const toSend = await user.userAuth(login, passw);
 
   if(toSend){
-    req.session.userId = toSend.idutilisateur;  
+    console.log(toSend);
+    req.session.login = toSend.loginutilisateur;
     res.json(toSend);
 
   } else {
@@ -16,4 +17,4 @@ async function connex (req, res) {
 
 }
 // si tosend vide, res.json(error 401)
-module.exports = connex;
+module.exports = connex; 

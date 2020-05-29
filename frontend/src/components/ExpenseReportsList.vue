@@ -11,9 +11,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="report in reportsList" v-bind:key="report.idnotefrais">
-          <td>
-            <router-link to="#">{{ report.libelle }}</router-link>
+        <tr v-for="report in reportsList" :key="report.idnotefrais">
+          <td @click="reportView(report.idnotefrais)">
+            <router-link :to="{ path : 'dashboard', query : { id : report.idnotefrais }}">{{ report.libelle }}</router-link> 
           </td>
           <td>{{ report.description }}</td>
           <td>{{ report.date }}</td>
@@ -25,13 +25,20 @@
 </template>
 
 <script>
-export default {
-  name: "ExpenseReportList",
+export default {  
+  name: "ExpenseReportsList",
   data() {
-    return {};
+    return {
+      selectedReport: null
+    };
   },
   props: {
-    reportsList: null
+    reportsList: null,
+  },
+  methods:{
+    async reportView () {
+      this.$emit("reportViewed")
+    }
   }
 };
 </script>
