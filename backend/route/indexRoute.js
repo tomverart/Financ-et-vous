@@ -34,31 +34,12 @@ router.use((req, res, next) => {
     next();
 
     return;
-<<<<<<<
-  }
-  res.sendStatus(401);
-})
-
-
-router.get('/employee_dashboard', getNoteFraisComptable);   //changer employee_dashboard en dashboard/accountant et adapter else if
-router.get('/dashboard/:userType/:userId', (req, res) => {
-  if (req.params.userType === "employee") {
-    getEmployeeExpenseReports(req, res);
-  } else if (req.params.userType === "accountant") {
-    console.log("it's an accountant");
-=======
-
->>>>>>>
   } else {
     console.log(req.session.login);
     res.sendStatus(401);
   }
 });
-<<<<<<<
 router.post('/dashboard/:userId', addExpenseReport);
-=======
-
->>>>>>>
 
 router.get('/dashboard?:id', (req, res) => {
   let theUser = getUserByLogin(req.session.login);
