@@ -66,16 +66,6 @@ class InitBDD {
 
     await utilisateur.createUtilisateurs('JE', 'soleil123', 'Jean', 'Michel', 3);
     await utilisateur.createUtilisateurs('JC', 'soleil123', 'Jean', 'MichelMichel', 2);
-
-    // await utilisateur.selectAllUtilisateurs();
-    await noteFrais.createNoteFrais(1, 'blabla', 'desc');
-    await noteFrais.createNoteFrais(1, 'blabla', 'desc');
-    await noteFrais.createNoteFrais(1, 'blabla', 'desc');
-    await noteFrais.createNoteFrais(1, 'blabla', 'desc');
-    await noteFrais.createNoteFrais(1, 'blabla', 'desc');
-    await noteFrais.createNoteFrais(1, 'blabla', 'desc');
-
-    // await noteFrais.selectAllNoteFrais();
   }
 
 

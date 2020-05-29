@@ -25,14 +25,14 @@ router.get('/downloadImage', getImage);
 // Login
 router.post('/utilisateur', getUtilisateur);
 
-// router.use((req, res, next) => {
-//   console.log(req.session);
-//   if (req.session.userId) {
-//     next();
-//     return;
-//   }
-//   res.sendStatus(401);
-// })
+router.use((req, res, next) => {
+  console.log(req.session);
+  if (req.session.userId) {
+    next();
+    return;
+  }
+  res.sendStatus(401);
+})
 
 
 router.get('/employee_dashboard', getNoteFraisComptable);   //changer employee_dashboard en dashboard/accountant et adapter else if
@@ -45,7 +45,7 @@ router.get('/dashboard/:userType/:userId', (req, res) => {
     console.log("URL unknown");
   }
 });
-router.post('/dashboard/:userType/:userId', addExpenseReport);
+router.post('/dashboard/:userId', addExpenseReport);
 
 // Comptable - Note de frais
 router.get('/noteFrais', getNoteFraisComptable);

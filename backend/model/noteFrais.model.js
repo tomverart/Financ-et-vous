@@ -11,19 +11,20 @@ class NOTEFRAIS {
             idNoteFrais SERIAL PRIMARY KEY,
             idUtilisateur INTEGER REFERENCES ${UTILISATEUR.tableName}(idUtilisateur),
             libelle VARCHAR NOT NULL,
-            description VARCHAR NOT NULL,
+            description VARCHAR,
             date DATE,
             idEtatNote INTEGER REFERENCES ${ETATNOTE.tableName}(idEtatNote) DEFAULT 1
         )
     `;
   }
 
-  static async createNoteFrais (userId, label, description, publishDate) {
-    await database.client.query({
+  static async createNoteFrais (userId, label, publishDate) {
+    const result = await database.client.query({
       text: `
-            INSERT INTO ${NOTEFRAIS.tableName}(idutilisateur, libelle, description, date) VALUES ($1, $2, $3, $4)`,
-      values: [userId, label, description, publishDate]
+            INSERT INTO ${NOTEFRAIS.tableName}(idutilisateur, libelle, date) VALUES ($1, $2, $3) RETURNING idNoteFrais`,
+      values: [userId, label, publishDate]
     });
+    return result.rows[0];
   }
 
   static async deleteNoteFrais (idNoteFrais) {
@@ -47,7 +48,7 @@ class NOTEFRAIS {
   static async selectNomPrenomAllNoteFrais () {
     const result = await database.client.query({
       text: `
-            SELECT idNoteFrais, ntfrais.idUtilisateur, idEtatNote, nomUtilisateur, prenomUtilisateur
+            SELECT idNoteFrais, ntfrais.idUtilisateur, idEtatNote, nomUtilisateur, prenomUtilisateur, libelle
             FROM ${NOTEFRAIS.tableName} ntfrais INNER JOIN ${UTILISATEUR.tableName} uti ON ntfrais.idUtilisateur = uti.idUtilisateur`
     });
     // console.log(result.rows);

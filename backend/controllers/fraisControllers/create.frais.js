@@ -20,7 +20,8 @@ async function toExport (req, res) {
       }
     });
 
-    fraisModel.createFrais(0, 'test', file, 1);
+    
+    fraisModel.createFrais(req.body.montantfrais, req.body.descfrais, file, req.body.idnotefrais);
   }
   catch (err) {
     res.status(401).send(err);
