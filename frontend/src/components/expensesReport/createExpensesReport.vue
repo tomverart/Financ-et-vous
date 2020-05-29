@@ -21,6 +21,7 @@ export default {
   },
   async mounted() {},
   methods: {
+    // Création de la note de frais
     async onSubmit() {
       await this.$axios
         .post("/dashboard/add", {
@@ -28,7 +29,6 @@ export default {
         })
         .then(response => {
           if (response.status === 200) {
-            console.log(response.data.idnotefrais);
             this.$router.push({
               name: "createExpenses",
               params: { idnotefraisprops: response.data.idnotefrais }

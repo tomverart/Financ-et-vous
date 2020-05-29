@@ -70,12 +70,12 @@ class InitBDD {
 
 
   // Supprime toutes les images liées aux frais
-  clearImagesFrais () {
+  clearImagesExpenses () {
     // Chemin des images des frais
-    const pathImagesFrais = './ressources/imagesFrais/';
+    const pathImagesExpenses = './ressources/imagesFrais/';
 
     // Récupère les noms de tous les fichiers dans le répertoire
-    fs.readdir(pathImagesFrais, function (err, files) {
+    fs.readdir(pathImagesExpenses, function (err, files) {
       // Ignore le .gitkeep
       let findGitKeep = files.indexOf('.gitkeep');
       if (findGitKeep !== -1) {
@@ -84,9 +84,9 @@ class InitBDD {
 
       // Supprime les fichiers
       files.forEach(file => {
-        fs.unlink(pathImagesFrais + file, function (err) {
+        fs.unlink(pathImagesExpenses + file, function (err) {
           if (err) throw err;
-          console.log(file + ' deleted');
+          console.log(file + ' supprimé');
         });
       });
     });
@@ -105,8 +105,8 @@ class InitBDD {
     } catch (err) {
       console.log("error but don't care", err);
     }
-    
-    this.clearImagesFrais();
+
+    this.clearImagesExpenses();
 
     await pgtools.createdb(conf, config.postgres.database);
     await this.init();

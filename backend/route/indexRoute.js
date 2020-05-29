@@ -76,9 +76,9 @@ router.post('/dashboard/:action', (req, res) => {
             updateNoteFrais(req, res);
           }
           break;
-          default:
-            break;
-        }
+        default:
+          break;
+      }
     } else if (user.idrole === 3) {
       if (req.params.action) {
         switch (req.params.action) {

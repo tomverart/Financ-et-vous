@@ -60,18 +60,16 @@ class FRAIS {
     console.log(result.rows);
   }
 
-  static async getMaxIdFrais(){
+  static async getMaxIdFrais () {
     const result = await database.client.query({
-      text:`
+      text: `
         SELECT max(idFrais) FROM ${FRAIS.tableName};
       `
     });
     let maxId = result.rows[0].max;
-    // if(maxId === null) console.log(0);
-    if(maxId === null) return 0;
-    // else console.log(maxId);
+    if (maxId === null) return 0;
     else return maxId;
-  
+
   }
 }
 

@@ -1,11 +1,13 @@
 <template>
   <div class="mx-auto" style="width: 50rem;">
-    <!-- <h1>Frais</h1> -->
-    <!-- <span v-if="image === null">chargement...</span>
+    <!-- Merci de ne pas supprimer ça, je le ferais bientôt -->
+    <!-- <h1>Frais</h1>
+    <span v-if="image === null">chargement...</span>
     <span v-else>
     <img style="max-width: 30rem; max-height: 30rem;" :src="image" alt="Base64 encoded image" />
     </span>-->
 
+    <!-- Composant supplémentaire -->
     <div v-for="(fraisAdd, index) in fraisSup" :key="index">
       <component :is="fraisAdd" :idnotefraisprops="idnotefrais" />
     </div>
@@ -63,7 +65,7 @@ import createExpensesComponent from "./createExpenses.vue";
 
 export default {
   name: "viewfrais",
-  components:{
+  components: {
     createExpensesComponent
   },
   props: {
@@ -72,7 +74,6 @@ export default {
       required: true
     }
   },
-  // props: ['idnotefrais']
   data() {
     return {
       file: null,
@@ -81,46 +82,24 @@ export default {
       idnotefrais: this.idnotefraisprops,
       fraisSup: [],
       validatedExpense: false
+      // Merci de ne pas supprimer ça, je le ferais bientôt
       // image: "http://localhost:3000/downloadImage"
     };
   },
-  mounted() {
-    // console.log('mounted: ' + this.idnote);
-    // console.log(idNoteFrais);
-    // return
-    // this.file = await this.$axios.get("/downloadImage").then(response => {
-    // await this.$axios.get("/downloadImage").then(response => {
-    // return response;
-    // this.image = 'data:image/jpg;base64,' + response.data;
-    // });
-    // console.log(this.image);
-  },
+  mounted() {},
   methods: {
-    hexToBase64(str) {
-      return btoa(
-        String.fromCharCode.apply(
-          null,
-          str
-            .replace(/\r|\n/g, "")
-            .replace(/([\da-fA-F]{2}) ?/g, "0x$1 ")
-            .replace(/ +$/, "")
-            .split(" ")
-        )
-      );
-    },
+    // Envoie des données renseignées pour la création de frais
     async sendData(addFrais) {
-      // Initialize the form data
+      // Récupère les données du form
       let formData = new FormData();
 
-      /*
-                Add the form data we need to submit
-            */
       formData.append("file", this.file);
       formData.append("idnotefrais", this.idnotefrais);
       formData.append("montantfrais", this.montantFrais);
       formData.append("descfrais", this.descFrais);
 
-      const resp = await this.$axios
+      // Crée le frais
+      await this.$axios
         .post("/uploadImage", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
@@ -133,18 +112,22 @@ export default {
           console.log("failure");
         });
 
+      // Si le bouton "Valider et ajouter un autre frais" est cliqué
       if (addFrais) {
+        // Ajoute ce composant en composant supplémentaire
+        // TODO : Virer le tableau.
         this.fraisSup.push(createExpensesComponent);
-        console.log(this.fraisSup);
+        // Désactive les champs et boutons du composant actuel
         this.validatedExpense = true;
       }
-      console.log(resp);
     },
+    // Récupère le fichier téléversé
     handleFileUpload() {
       this.file = this.$refs.file.files[0];
     },
+    // Empêche le changement de page du form
     onSubmit() {
-      console.log("prevent");
+      // console.log("prevent");
     }
   }
 };
