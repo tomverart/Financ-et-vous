@@ -9,7 +9,7 @@
             :reportsList="reports"
             @reportDeleted="reportDeletion"
             @reportViewed="reportDisplay"
-          ></ListExpenseReports>
+          />
         </td>
         <td>
           <div v-if="onView">
@@ -18,12 +18,12 @@
               @reportDeleted="reportDeletion"
               @reportModified="reportModification"
               @hide="stopViewing"
-            ></ViewExpenseReports>
+            />
           </div>
         </td>
       </tr>
     </table>
-  </div>
+  </div> 
 </template>
 
 <script>

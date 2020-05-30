@@ -23,7 +23,7 @@ export default {
     };
   },
   methods: {
-    reportAddition(event) {
+    reportAddition(event) { 
       event.target.reset();
       this.$emit("reportAdded", {
             label: this.label,

@@ -34,7 +34,7 @@ export default {
       if (user.stringrole == "Comptable") {
         this.$router.push("/noteFrais"); 
       } else if (user.stringrole == "Employé") {
-        this.$router.push("/dashboard");
+        this.$router.push("/dashboard"); 
       } else if (user.stringrole == "Administrateur") {
         console.log("it's an admin");
       } else {

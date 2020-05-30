@@ -17,7 +17,7 @@
           </td>
           <td>{{ report.description }}</td>
           <td>{{ report.date }}</td>
-          <td>{{ report.idetatnote }}</td>
+          <td>{{ report.idetatnote }}</td> 
         </tr>
       </tbody>
     </table>

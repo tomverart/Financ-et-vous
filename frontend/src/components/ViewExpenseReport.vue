@@ -23,7 +23,7 @@
           <td>
             <button @click="deletion">Supprimer</button>
           </td>
-        </tr>
+        </tr> 
       </table>
       <h5>Description : {{ reportToDisplay.description }}</h5>
       <div>(ici prochainement les frais lié à cette NF)</div>
