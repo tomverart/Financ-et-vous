@@ -32,7 +32,7 @@ export default {
       const user = resp.data;
 
       if (user.stringrole == "Comptable") {
-        this.$router.push("/dashboard");
+        this.$router.push("/noteFrais"); 
       } else if (user.stringrole == "Employé") {
         this.$router.push("/dashboard");
       } else if (user.stringrole == "Administrateur") {

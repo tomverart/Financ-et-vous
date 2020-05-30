@@ -1,25 +1,24 @@
 <template>
   <div>
-    <!-- <ExpenseReportForm @reportAdded="reportAddition"></ExpenseReportForm> -->
-    <createExpensesReport />
+    <CreateExpensesReport />
     <br />
     <table>
       <tr>
         <td>
-          <ExpenseReportsList
+          <ListExpenseReports
             :reportsList="reports"
             @reportDeleted="reportDeletion"
             @reportViewed="reportDisplay"
-          ></ExpenseReportsList>
+          ></ListExpenseReports>
         </td>
         <td>
           <div v-if="onView">
-            <ExpenseReportView
+            <ViewExpenseReports
               :reportToDisplay="reportToShow"
               @reportDeleted="reportDeletion"
               @reportModified="reportModification"
               @hide="stopViewing"
-            ></ExpenseReportView>
+            ></ViewExpenseReports>
           </div>
         </td>
       </tr>
@@ -29,9 +28,9 @@
 
 <script>
 // import ExpenseReportForm from "./ExpenseReportForm";
-import ExpenseReportsList from "./ExpenseReportsList";
-import ExpenseReportView from "./ExpenseReportView";
-import createExpensesReport from "./expensesReport/createExpensesReport"
+import ListExpenseReports from "./ListExpenseReports";
+import ViewExpenseReports from "./ViewExpenseReport";
+import CreateExpensesReport from "./CreateExpenseReport"
 
 import axios from "axios";
 
@@ -39,16 +38,15 @@ export default {
   name: "EmployeeDashboard",
   components: {
     // ExpenseReportForm,
-    createExpensesReport,
-    ExpenseReportsList,
-    ExpenseReportView
+    CreateExpensesReport,
+    ListExpenseReports,
+    ViewExpenseReports
   },
   data() {
     return {
       reports: null,
       reportToShow: null,
       onView: false,
-    //  doneSendingAndReceivingRequestFromServer: false
     };
   },
   mounted() {

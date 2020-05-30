@@ -15,7 +15,7 @@ expenseForm
 
 <script>
 export default {
-  name: "ExpenseReportForm",
+  name: "CreateExpenseReport",
   data() {
     return {
       label: null,

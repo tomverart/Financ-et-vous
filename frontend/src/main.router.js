@@ -12,9 +12,6 @@ import noteFraisComptable from './components/expensesReport/noteFraisComptable.v
 import createExpensesReport from './components/expensesReport/createExpensesReport.vue';
 import createExpenses from './components/expensesReport/createExpenses.vue';
 
-// Utilitaire
-import Loading from './components/Loading.vue';
-
 Vue.use(VueRouter);
 
 // Nom des routes liés aux composants
@@ -22,7 +19,6 @@ const routes = [
   { path: '/', component: Home },
 
   { path: '/login', component: Login },
-  { path: '/adele', component: Loading },
 
   { path: '/noteFrais', component: noteFraisComptable },
   { path: '/dashboard', component: EmployeeDashboard },

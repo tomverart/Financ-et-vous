@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: "ExpenseReportView",
+  name: "ViewExpenseReport",
   data() {
     return {
       onModify: false,

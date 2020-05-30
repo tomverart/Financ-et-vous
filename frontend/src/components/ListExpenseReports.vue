@@ -26,7 +26,7 @@
 
 <script>
 export default {  
-  name: "ExpenseReportsList",
+  name: "ListExpenseReports",
   data() {
     return {
       selectedReport: null
