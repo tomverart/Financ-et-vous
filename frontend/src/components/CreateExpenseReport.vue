@@ -15,7 +15,7 @@ expenseForm
 
 <script>
 export default {
-  name: "ExpenseReportForm",
+  name: "CreateExpenseReport",
   data() {
     return {
       label: null,
@@ -23,7 +23,7 @@ export default {
     };
   },
   methods: {
-    reportAddition(event) {
+    reportAddition(event) { 
       event.target.reset();
       this.$emit("reportAdded", {
             label: this.label,

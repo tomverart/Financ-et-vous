@@ -1,33 +1,56 @@
 <template>
   <div>
-    <ExpenseReportForm
-      @reportAdded="reportAddition"
-      :userId="this.$route.params.userId"
-      :userType="this.$route.params.userType"
-    ></ExpenseReportForm>
+    <CreateExpensesReport />
     <br />
-    <ExpenseReportList :reportsList="reports"></ExpenseReportList>
-  </div>
+    <table>
+      <tr>
+        <td>
+          <ListExpenseReports
+            :reportsList="reports"
+            @reportDeleted="reportDeletion"
+            @reportViewed="reportDisplay"
+          />
+        </td>
+        <td>
+          <div v-if="onView">
+            <ViewExpenseReports
+              :reportToDisplay="reportToShow"
+              @reportDeleted="reportDeletion"
+              @reportModified="reportModification"
+              @hide="stopViewing"
+            />
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div> 
 </template>
 
 <script>
-import ExpenseReportForm from "./ExpenseReportForm";
-import ExpenseReportList from "./ExpenseReportList";
+// import ExpenseReportForm from "./ExpenseReportForm";
+import ListExpenseReports from "./ListExpenseReports";
+import ViewExpenseReports from "./ViewExpenseReport";
+import CreateExpensesReport from "./CreateExpenseReport"
+
 import axios from "axios";
 
 export default {
   name: "EmployeeDashboard",
   components: {
-    ExpenseReportForm,
-    ExpenseReportList
+    // ExpenseReportForm,
+    CreateExpensesReport,
+    ListExpenseReports,
+    ViewExpenseReports
   },
   data() {
     return {
-      reports: null
+      reports: null,
+      reportToShow: null,
+      onView: false,
     };
   },
   mounted() {
-    this.reportsLoad("page loading");
+    this.reportsLoad();
   },
   methods: {
     async reportsLoad() {
@@ -43,8 +66,22 @@ export default {
           console.log("error from ExpenseReportList.vue: ", err);
         });
     },
+    async reportDisplay() {
+      let urlString = "dashboard?id=" + this.$route.query.id;
+      await axios
+        .get(urlString, {
+          baseURL: "http://localhost:3000"
+        })
+        .then(response => {
+          this.reportToShow = response.data;
+          this.onView = true;
+        })
+        .catch(err => {
+          console.log("error from ExpenseReportList.vue: ", err);
+        });
+    },
     async reportAddition(newReport) {
-      let urlString = "/dashboard";
+      let urlString = "/dashboard/add";
       await axios
         .post(urlString, newReport, {
           baseURL: "http://localhost:3000"
@@ -55,6 +92,40 @@ export default {
         .catch(err => {
           console.log("error(form) : ", err);
         });
+    },
+    async reportDeletion() {
+      let urlString = "/dashboard/delete";
+      await axios
+        .post(
+          urlString,
+          { id: this.$route.query.id },
+          {
+            baseURL: "http://localhost:3000"
+          }
+        )
+        .then(() => {
+          //response.status = 204
+          this.reportsLoad();
+        })
+        .catch(err => {
+          console.log("error(list) : ", err);
+        });
+    },
+    async reportModification(report) {
+      let urlString = "/dashboard/update";
+      await axios
+        .post(urlString, report, {
+          baseURL: "http://localhost:3000"
+        })
+        .then(() => {
+          this.reportsLoad();
+        })
+        .catch(err => {
+          console.log("error(list) : ", err);
+        });
+    },
+    stopViewing() {
+      this.onView = false;
     }
   }
 };

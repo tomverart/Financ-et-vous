@@ -11,19 +11,20 @@ class NOTEFRAIS {
             idNoteFrais SERIAL PRIMARY KEY,
             idUtilisateur INTEGER REFERENCES ${UTILISATEUR.tableName}(idUtilisateur),
             libelle VARCHAR NOT NULL,
-            description VARCHAR NOT NULL,
+            description VARCHAR,
             date DATE,
             idEtatNote INTEGER REFERENCES ${ETATNOTE.tableName}(idEtatNote) DEFAULT 1
         )
     `;
   }
 
-  static async createNoteFrais (userId, label, description, publishDate) {
-    await database.client.query({
+  static async createNoteFrais (userId, label, publishDate) {
+    const result = await database.client.query({
       text: `
-            INSERT INTO ${NOTEFRAIS.tableName}(idutilisateur, libelle, description, date) VALUES ($1, $2, $3, $4)`,
-      values: [userId, label, description, publishDate]
+            INSERT INTO ${NOTEFRAIS.tableName}(idutilisateur, libelle, date) VALUES ($1, $2, $3) RETURNING idNoteFrais`,
+      values: [userId, label, publishDate]
     });
+    return result.rows[0];
   }
 
   static async deleteNoteFrais (idNoteFrais) {
@@ -32,7 +33,6 @@ class NOTEFRAIS {
             DELETE FROM ${NOTEFRAIS.tableName} where idNoteFrais = ($1)`,
       values: [idNoteFrais]
     });
-    console.log(result.rows);
   }
 
   static async selectAllNoteFrais () {
@@ -47,7 +47,7 @@ class NOTEFRAIS {
   static async selectNomPrenomAllNoteFrais () {
     const result = await database.client.query({
       text: `
-            SELECT idNoteFrais, ntfrais.idUtilisateur, idEtatNote, nomUtilisateur, prenomUtilisateur
+            SELECT idNoteFrais, ntfrais.idUtilisateur, idEtatNote, nomUtilisateur, prenomUtilisateur, libelle
             FROM ${NOTEFRAIS.tableName} ntfrais INNER JOIN ${UTILISATEUR.tableName} uti ON ntfrais.idUtilisateur = uti.idUtilisateur`
     });
     // console.log(result.rows);
@@ -67,7 +67,7 @@ class NOTEFRAIS {
   static async selectByUserId (idUser) {
     const result = await database.client.query({
       text: `
-            SELECT * FROM ${NOTEFRAIS.tableName} where idutilisateur = ($1)`,
+            SELECT * FROM ${NOTEFRAIS.tableName} where idutilisateur = ($1) ORDER BY ${NOTEFRAIS.tableName}.idnotefrais DESC`,
       values: [idUser]
     });
 
@@ -80,7 +80,16 @@ class NOTEFRAIS {
             SELECT * FROM ${NOTEFRAIS.tableName} where idNoteFrais = ($1)`,
       values: [idNoteFrais]
     });
-    console.log(result.rows);
+    
+    return result.rows[0];
+  }
+
+  static async modifyByIdNoteFrais (idNoteFrais, label, description) {
+    await database.client.query({
+      text: `
+            UPDATE ${NOTEFRAIS.tableName} SET libelle = ($1), description = ($2) WHERE idNoteFrais = ($3)`,
+      values: [label, description, idNoteFrais]
+    });
   }
 
   static async updateByIdNoteFrais (idNoteFrais, idEtatNote) {

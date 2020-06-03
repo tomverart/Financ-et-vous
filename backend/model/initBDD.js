@@ -1,6 +1,6 @@
 const pg = require('pg');
 const pgtools = require('pgtools');
-
+const fs = require('fs');
 const config = require('../config/db.config.js');
 
 class InitBDD {
@@ -60,6 +60,39 @@ class InitBDD {
     await etatNote.selectAllEtatNotes();
   }
 
+  async testnoteFraisComtpable () {
+    const noteFrais = require('./noteFrais.model');
+    const utilisateur = require('./utilisateur.model');
+
+    await utilisateur.createUtilisateurs('JE', 'soleil123', 'Jean', 'Michel', 3);
+    await utilisateur.createUtilisateurs('JC', 'soleil123', 'Jean', 'MichelMichel', 2);
+  }
+
+
+  // Supprime toutes les images liées aux frais
+  clearImagesExpenses () {
+    // Chemin des images des frais
+    const pathImagesExpenses = './ressources/imagesFrais/';
+
+    // Récupère les noms de tous les fichiers dans le répertoire
+    fs.readdir(pathImagesExpenses, function (err, files) {
+      // Ignore le .gitkeep
+      let findGitKeep = files.indexOf('.gitkeep');
+      if (findGitKeep !== -1) {
+        files.splice(findGitKeep, 1);
+      }
+
+      // Supprime les fichiers
+      files.forEach(file => {
+        fs.unlink(pathImagesExpenses + file, function (err) {
+          if (err) throw err;
+          console.log(file + ' supprimé');
+        });
+      });
+    });
+
+  }
+
   async reset () {
     const conf = {
       user: config.postgres.user,
@@ -72,6 +105,9 @@ class InitBDD {
     } catch (err) {
       console.log("error but don't care", err);
     }
+
+    this.clearImagesExpenses();
+
     await pgtools.createdb(conf, config.postgres.database);
     await this.init();
 
@@ -79,6 +115,9 @@ class InitBDD {
 
     await this.initBaseValuesRole();
     await this.initBaseValuesEtatsNotes();
+
+    await this.testnoteFraisComtpable();
+
     console.log('bravo ca marche');
   }
 }

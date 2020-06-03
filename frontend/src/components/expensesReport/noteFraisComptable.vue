@@ -18,6 +18,7 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Utilisateur</th>
+            <th scope="col">Libelle</th>
             <th scope="col">Etat</th>
             <th scope="col">Actions</th>
           </tr>
@@ -26,6 +27,7 @@
           <tr v-for="noteFrais of ListNoteFraisToShow" :key="noteFrais.idnotefrais">
             <th scope="row">{{noteFrais.idnotefrais}}</th>
             <td>{{noteFrais.nomutilisateur}} {{noteFrais.prenomutilisateur}}</td>
+            <td>{{noteFrais.libelle}}</td>
             <td>{{listEtatNote[noteFrais.idetatnote -1]}}</td>
             <td>
               <button class="btn" @click="updateEtatNote(noteFrais, 2)">✔</button>
@@ -69,16 +71,16 @@ export default {
   methods: {
     // Renvoie les notes de frais
     async getFullListNoteFrais() {
-      return await this.$axios.get("/noteFrais").then(response => {
+      return await this.$axios.get("/dashboard?id=0").then(response => {
         return response.data;
       });
     },
     // Met à jour l'état de la note de frais
     async updateEtatNote(noteFrais, idEtatNoteToChange) {
       await this.$axios
-        .post("/noteFrais", {
-          idNoteFrais: noteFrais.idnotefrais,
-          idEtatNote: idEtatNoteToChange
+        .post("/dashboard/update", {
+          idnotefrais: noteFrais.idnotefrais,
+          idetatnote: idEtatNoteToChange
         })
         .then(response => {
           if (response.status === 200) {
