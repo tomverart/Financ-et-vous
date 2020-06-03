@@ -19,7 +19,7 @@
     <br /> 
 
     <label for="idRole">id Role </label>
-    <input v-model="idRole" type="text" id="idRole" class="form-control" />
+    <input v-model="idRole" type="text" id="idRole" class="form-control" /> 
 
     <button class="btn btn-primary" v-on:click="sendData">envoyer donnée</button>
   </div>
@@ -27,6 +27,8 @@
 
 
 <script>
+
+// faire un bouton radio pour le choix du role comptable / employe 
 export default {
   name: "CreationForm",
   data() {
