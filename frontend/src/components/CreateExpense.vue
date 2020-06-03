@@ -93,26 +93,13 @@ export default {
     // Envoie des données renseignées pour la création de frais
     async sendData(addFrais) {
       // Récupère les données du form
-      let formData = new FormData();
+      let formData = {};
+      formData.file = this.file;
+      formData.idnotefrais = this.idnotefrais;
+      formData.montantfrais = this.montantFrais;
+      formData.descfrais = this.descFrais;
 
-      formData.append("file", this.file);
-      formData.append("idnotefrais", this.idnotefrais);
-      formData.append("montantfrais", this.montantFrais);
-      formData.append("descfrais", this.descFrais);
-
-      // Crée le frais
-      await this.$axios
-        .post("/uploadImage", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
-        .then(function() {
-          console.log("success");
-        })
-        .catch(function() {
-          console.log("failure");
-        });
+      this.$emit("expenseAdded", formData); 
 
       // Si le bouton "Valider et ajouter un autre frais" est cliqué
       if (addFrais) {
