@@ -8,6 +8,8 @@
     </span>-->
 
     <!-- Composant supplémentaire -->
+    <button class="btn btn-primary" @click="clickRoute('/dashboard')">Retour au tableau de bord</button>
+
     <div v-for="(fraisAdd, index) in fraisSup" :key="index">
       <component :is="fraisAdd" :idnotefraisprops="idnotefrais" />
     </div>
@@ -120,6 +122,9 @@ export default {
         // Désactive les champs et boutons du composant actuel
         this.validatedExpense = true;
       }
+      else{
+        this.$router.push('/dashboard');
+      }
     },
     // Récupère le fichier téléversé
     handleFileUpload() {
@@ -128,6 +133,9 @@ export default {
     // Empêche le changement de page du form
     onSubmit() {
       // console.log("prevent");
+    },
+    clickRoute(pathToRoute) {
+      this.$router.push(pathToRoute);
     }
   }
 };
