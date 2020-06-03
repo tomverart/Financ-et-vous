@@ -8,7 +8,7 @@ import Login from './components/ConnexionForm.vue';
 import EmployeeDashboard from './components/EmployeeDashboard.vue';
 
 // Notes de frais
-import noteFraisComptable from './components/expensesReport/noteFraisComptable.vue';
+import noteFraisComptable from './components/NoteFraisComptable.vue';
 import createExpenseReport from './components/CreateExpenseReport.vue';
 import createExpense from './components/CreateExpense.vue';
 
