@@ -70,7 +70,7 @@
 import createExpensesComponent from "./createExpenses.vue";
 
 export default {
-  name: "viewfrais",
+  name: "createExpenses",
   components: {
     createExpensesComponent
   },
