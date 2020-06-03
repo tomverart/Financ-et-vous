@@ -12,6 +12,7 @@ var updateNoteFrais = require('../controllers/noteFraisControllers/update.notefr
 var getEtatNote = require('../controllers/etatNoteControllers/get.etatNote');
 var getRole = require('../controllers/utilisateurControllers/getRole');
 var login = require('../controllers/utilisateurControllers/login.js');
+var createUser = require('../controllers/utilisateurControllers/createUser.js');
 
 // Login
 router.post('/utilisateur', login);
@@ -24,10 +25,13 @@ router.use((req,res, next) => {
 
     return;
   } else {
+    console.log('stop ici, la personne n est pas connecte')
     console.log(req.session.login);
     res.sendStatus(401);
   }
 })
+
+router.post('/createUser', createUser);
 
 router.get('/dashboard', (req, res) => {
   /*let theRole = getRole(req.session.login);
