@@ -1,29 +1,30 @@
-expenseForm
-
 <template>
-  <div>
-    <h3>Nouvelle note de frais</h3>
-    <form @submit.prevent="reportAddition">
-      <label for="reportLabel">Libellé</label>
-      <input id="reportLabel" type="text" v-model="label" /> <br />
+  <div class="mx-auto" style="width: 50rem;">
+    <h1>Nouvelle note de frais</h1>
+    <form v-on:submit.prevent="onSubmit">
+      <label for="label">Objet</label>
+      <input v-model="label" style="width: 25rem;" type="text" class="form-control" id="label" />
       <label for="reportDescription">Description</label>
       <textarea id="reportDescription" placeholder="ajoutez une description" v-model="description"></textarea>
-      <input type="submit" value="Ajouter" />
+      <br />
+      <button class="btn btn-dark">Créer</button>
     </form>
   </div>
 </template>
 
 <script>
 export default {
-  name: "CreateExpenseReport",
+  name: "createExpenses",
   data() {
     return {
-      label: null,
+      label: "",
       description: null
     };
   },
+  async mounted() {},
   methods: {
-    reportAddition(event) { 
+    // Création de la note de frais
+    async onSubmit() {
       event.target.reset();
       this.$emit("reportAdded", {
             label: this.label,
@@ -32,5 +33,4 @@ export default {
     }
   }
 };
-</script> 
-
+</script>
