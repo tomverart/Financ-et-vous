@@ -1,6 +1,11 @@
 <template>
   <div>
-    <CreateExpensesReport />
+    <div v-if="onAdd">
+      <CreateExpenseReport @reportAdded="reportAddition"/>
+    </div>
+    <div v-else>
+      <CreateExpense :idnotefrais="reportId"/>
+    </div>
     <br />
     <table>
       <tr>
@@ -27,10 +32,10 @@
 </template>
 
 <script>
-// import ExpenseReportForm from "./ExpenseReportForm";
 import ListExpenseReports from "./ListExpenseReports";
 import ViewExpenseReports from "./ViewExpenseReport";
-import CreateExpensesReport from "./CreateExpenseReport"
+import CreateExpenseReport from "./CreateExpenseReport";
+import CreateExpense from "./CreateExpense";
 
 import axios from "axios";
 
@@ -38,7 +43,8 @@ export default {
   name: "EmployeeDashboard",
   components: {
     // ExpenseReportForm,
-    CreateExpensesReport,
+    CreateExpenseReport,
+    CreateExpense,
     ListExpenseReports,
     ViewExpenseReports
   },
@@ -47,6 +53,8 @@ export default {
       reports: null,
       reportToShow: null,
       onView: false,
+      onAdd: true,
+      reportId: null
     };
   },
   mounted() {
@@ -87,6 +95,8 @@ export default {
           baseURL: "http://localhost:3000"
         })
         .then(() => {
+          this.onAdd = false;
+          this.reportId = this.$route.query.id;
           this.reportsLoad();
         })
         .catch(err => {

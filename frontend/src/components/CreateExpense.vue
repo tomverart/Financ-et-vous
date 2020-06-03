@@ -61,10 +61,10 @@
 </template>
 
 <script>
-import createExpensesComponent from "./createExpenses.vue";
+import createExpensesComponent from "./CreateExpense.vue";
 
 export default {
-  name: "viewfrais",
+  name: "createExpense",
   components: {
     createExpensesComponent
   },
