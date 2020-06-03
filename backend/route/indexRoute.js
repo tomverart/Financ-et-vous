@@ -18,6 +18,7 @@ var updateNoteFrais = require('../controllers/noteFraisControllers/update.notefr
 var getEtatNote = require('../controllers/etatNoteControllers/get.etatNote');
 var getExpenseReport = require('../controllers/noteFraisControllers/getExpenseReport');
 
+var createUser = require('../controllers/utilisateurControllers/createUser.js');
 // Controlleurs des frais
 var createFrais = require('../controllers/fraisControllers/create.frais');
 var getImage = require('../controllers/fraisControllers/getImage.frais');
@@ -35,10 +36,13 @@ router.use((req, res, next) => {
 
     return;
   } else {
+    console.log('stop ici, la personne n est pas connecte')
     console.log(req.session.login);
     res.sendStatus(401);
   }
 });
+
+router.post('/createUser', createUser);
 
 router.get('/dashboard?:id', (req, res) => {
   let theUser = getUserByLogin(req.session.login);
