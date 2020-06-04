@@ -12,7 +12,7 @@
       v-show="!validatedExpense"
       class="btn btn-primary"
       @click="returnToExpensesReport"
-    >Retour au tableau de bord</button>
+    >Retour à la création de note de frais</button>
     <div :disabled="validatedExpense" />
     <div v-for="(fraisAdd, index) in fraisSup" :key="index">
       <component :is="fraisAdd" :idnotefraisprops="idnotefrais" />
