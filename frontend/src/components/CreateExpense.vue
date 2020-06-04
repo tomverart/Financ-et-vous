@@ -15,7 +15,7 @@
     >Retour à la création de note de frais</button>
     <div :disabled="validatedExpense" />
     <div v-for="(fraisAdd, index) in fraisSup" :key="index">
-      <component :is="fraisAdd" :idnotefraisprops="idnotefrais" />
+      <component :is="fraisAdd" :idnotefraisprops="idnotefrais" @reportValidated="returnToExpensesReport"/>
     </div>
     <br />
     <form v-on:submit.prevent="onSubmit">
@@ -122,7 +122,7 @@ export default {
               this.validatedExpense = true;
             } else {
               // this.$router.push("/dashboard");
-              this.$emit("reportValidated");
+              this.returnToExpensesReport();
             }
           }
         })
