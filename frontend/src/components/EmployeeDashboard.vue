@@ -4,7 +4,7 @@
       <CreateExpenseReport @reportAdded="reportAddition"/>
     </div>
     <div v-else>
-      <CreateExpense :idnotefrais="reportId"/>
+      <CreateExpense :idnotefraisprops="reportId" @reportValidated="reportValidateExpense"/>
     </div>
     <br />
     <table>
@@ -94,14 +94,19 @@ export default {
         .post(urlString, newReport, {
           baseURL: "http://localhost:3000"
         })
-        .then(() => {
+        .then(response => {
           this.onAdd = false;
-          this.reportId = this.$route.query.id;
+          this.reportId = response.data.idnotefrais;
           this.reportsLoad();
         })
         .catch(err => {
           console.log("error(form) : ", err);
         });
+    },
+    async reportValidateExpense() {
+          this.onAdd = true;
+          this.reportId = null;
+          this.reportsLoad();
     },
     async reportDeletion() {
       let urlString = "/dashboard/delete";

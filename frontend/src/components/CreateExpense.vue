@@ -8,8 +8,12 @@
     </span>-->
 
     <!-- Composant supplémentaire -->
-    <button class="btn btn-primary" @click="clickRoute('/dashboard')">Retour au tableau de bord</button>
-
+    <button
+      v-show="!validatedExpense"
+      class="btn btn-primary"
+      @click="returnToExpensesReport"
+    >Retour au tableau de bord</button>
+    <div :disabled="validatedExpense" />
     <div v-for="(fraisAdd, index) in fraisSup" :key="index">
       <component :is="fraisAdd" :idnotefraisprops="idnotefrais" />
     </div>
@@ -50,13 +54,13 @@
       <button
         class="btn btn-primary"
         v-on:click="sendData(false)"
-        :disabled="validatedExpense"
+        v-show="!validatedExpense"
       >Valider</button>
       &nbsp;
       <button
         class="btn btn-primary"
         v-on:click="sendData(true)"
-        :disabled="validatedExpense"
+        v-show="!validatedExpense"
       >Valider et ajouter un autre frais</button>
     </form>
   </div>
@@ -107,24 +111,24 @@ export default {
             "Content-Type": "multipart/form-data"
           }
         })
-        .then(function() {
-          console.log("success");
+        .then(response => {
+          if (response.status === 200) {
+            // Si le bouton "Valider et ajouter un autre frais" est cliqué
+            if (addFrais) {
+              // Ajoute ce composant en composant supplémentaire
+              // TODO : Virer le tableau.
+              this.fraisSup.push(createExpensesComponent);
+              // Désactive les champs et boutons du composant actuel
+              this.validatedExpense = true;
+            } else {
+              // this.$router.push("/dashboard");
+              this.$emit("reportValidated");
+            }
+          }
         })
-        .catch(function() {
-          console.log("failure");
+        .catch(response => {
+          console.log(response);
         });
-
-      // Si le bouton "Valider et ajouter un autre frais" est cliqué
-      if (addFrais) {
-        // Ajoute ce composant en composant supplémentaire
-        // TODO : Virer le tableau.
-        this.fraisSup.push(createExpensesComponent);
-        // Désactive les champs et boutons du composant actuel
-        this.validatedExpense = true;
-      }
-      else{
-        this.$router.push('/dashboard');
-      }
     },
     // Récupère le fichier téléversé
     handleFileUpload() {
@@ -134,8 +138,8 @@ export default {
     onSubmit() {
       // console.log("prevent");
     },
-    clickRoute(pathToRoute) {
-      this.$router.push(pathToRoute);
+    returnToExpensesReport() {
+      this.$emit("reportValidated");
     }
   }
 };
