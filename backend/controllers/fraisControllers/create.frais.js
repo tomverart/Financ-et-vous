@@ -35,7 +35,6 @@ async function toExport (req, res) {
 
     }
     catch (err) {
-      console.log('unahut');
       res.status(401).send(err);
       return;
     }
