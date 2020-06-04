@@ -8,10 +8,14 @@
     </span>-->
 
     <!-- Composant supplémentaire -->
-    <button class="btn btn-primary" @click="clickRoute('/dashboard')">Retour au tableau de bord</button>
-
+    <button
+      v-show="!validatedExpense"
+      class="btn btn-primary"
+      @click="returnToExpensesReport"
+    >Retour à la création de note de frais</button>
+    <div :disabled="validatedExpense" />
     <div v-for="(fraisAdd, index) in fraisSup" :key="index">
-      <component :is="fraisAdd" :idnotefraisprops="idnotefrais" />
+      <component :is="fraisAdd" :idnotefraisprops="idnotefrais" @reportValidated="returnToExpensesReport"/>
     </div>
     <br />
     <form v-on:submit.prevent="onSubmit">
@@ -50,13 +54,13 @@
       <button
         class="btn btn-primary"
         v-on:click="sendData(false)"
-        :disabled="validatedExpense"
+        v-show="!validatedExpense"
       >Valider</button>
       &nbsp;
       <button
         class="btn btn-primary"
         v-on:click="sendData(true)"
-        :disabled="validatedExpense"
+        v-show="!validatedExpense"
       >Valider et ajouter un autre frais</button>
     </form>
   </div>
@@ -121,8 +125,8 @@ export default {
     onSubmit() {
       // console.log("prevent");
     },
-    clickRoute(pathToRoute) {
-      this.$router.push(pathToRoute);
+    returnToExpensesReport() {
+      this.$emit("reportValidated");
     }
   }
 };

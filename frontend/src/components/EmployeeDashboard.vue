@@ -4,7 +4,7 @@
       <CreateExpenseReport @reportAdded="reportAddition" />
     </div>
     <div v-else>
-      <CreateExpense :idnotefraisprops="reportOnAddId" @expenseAdded="expenseAddition" />
+      <CreateExpense :idnotefraisprops="reportOnAddId" @expenseAdded="expenseAddition" @reportValidated="reportValidateExpense" />
     </div>
     <br />
     <table>
@@ -102,6 +102,11 @@ export default {
         .catch(err => {
           console.log("error(form) : ", err);
         });
+    },
+    async reportValidateExpense() {
+          this.onAdd = true;
+          this.reportId = null;
+          this.reportsLoad();
     },
     async reportDeletion() {
       let urlString = "/dashboard/delete";
