@@ -25,11 +25,12 @@ export default {
   methods: {
     // Création de la note de frais
     async onSubmit() {
-      event.target.reset();
       this.$emit("reportAdded", {
             label: this.label,
             description: this.description
           });
+      event.target.reset();
+
     }
   }
 };

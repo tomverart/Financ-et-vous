@@ -23,9 +23,9 @@ var createUser = require('../controllers/utilisateurControllers/createUser.js');
 var createFrais = require('../controllers/fraisControllers/create.frais');
 var getImage = require('../controllers/fraisControllers/getImage.frais');
 
-// Controlleurs de gestion d'images
-//router.post('/uploadImage', upload.single('file'), createFrais);
-//router.get('/downloadImage', getImage);
+
+router.post('/uploadImage', upload.single('file'), createFrais);
+router.get('/downloadImage', getImage);
 
 // Login
 router.post('/utilisateur', login);
@@ -46,6 +46,10 @@ router.get('/connected', (req, res, next) => {
 });
 
 router.post('/createUser', createUser);
+
+// Routes de gestion d'images
+router.post('/uploadImage', upload.single('file'), createFrais);
+router.get('/downloadImage', getImage);
 
 router.get('/dashboard?:id', (req, res) => {
   let theUser = getUserByLogin(req.session.login);
