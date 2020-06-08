@@ -1,10 +1,10 @@
 <template>
   <div>
     <div v-if="onAdd">
-      <CreateExpenseReport @reportAdded="reportAddition"/>
+      <CreateExpenseReport @reportAdded="reportAddition" />
     </div>
     <div v-else>
-      <CreateExpense :idnotefrais="reportId"/>
+      <CreateExpense :idnotefraisprops="reportOnAddId" @expenseAdded="expenseAddition" @reportValidated="reportValidateExpense" />
     </div>
     <br />
     <table>
@@ -54,7 +54,7 @@ export default {
       reportToShow: null,
       onView: false,
       onAdd: true,
-      reportId: null
+      reportOnAddId: null
     };
   },
   mounted() {
@@ -94,14 +94,19 @@ export default {
         .post(urlString, newReport, {
           baseURL: "http://localhost:3000"
         })
-        .then(() => {
+        .then(response => {
           this.onAdd = false;
-          this.reportId = this.$route.query.id;
+          this.reportOnAddId = response.data.idnotefrais;
           this.reportsLoad();
         })
         .catch(err => {
           console.log("error(form) : ", err);
         });
+    },
+    async reportValidateExpense() {
+          this.onAdd = true;
+          this.reportId = null;
+          this.reportsLoad();
     },
     async reportDeletion() {
       let urlString = "/dashboard/delete";
@@ -136,6 +141,35 @@ export default {
     },
     stopViewing() {
       this.onView = false;
+    },
+    async expenseAddition(expense) {
+      let formData = new FormData();
+      formData.append("file", expense.file);
+      formData.append("idnotefrais", expense.idnotefrais);
+      formData.append("montantfrais", expense.montantfrais);
+      formData.append("descfrais", expense.descfrais);
+
+      let urlString = "/uploadImage";
+      await axios
+        .post(
+          urlString,
+          formData,
+          {
+            baseURL: "http://localhost:3000"
+          },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        )
+        .then(() => {
+          this.reportsLoad();
+          console.log("ajouté");
+        })
+        .catch(err => {
+          console.log("error(list) : ", err);
+        });
     }
   }
 };

@@ -8,10 +8,14 @@
     </span>-->
 
     <!-- Composant supplémentaire -->
-    <button class="btn btn-primary" @click="clickRoute('/dashboard')">Retour au tableau de bord</button>
-
+    <button
+      v-show="!validatedExpense"
+      class="btn btn-primary"
+      @click="returnToExpensesReport"
+    >Retour à la création de note de frais</button>
+    <div :disabled="validatedExpense" />
     <div v-for="(fraisAdd, index) in fraisSup" :key="index">
-      <component :is="fraisAdd" :idnotefraisprops="idnotefrais" />
+      <component :is="fraisAdd" :idnotefraisprops="idnotefrais" @reportValidated="returnToExpensesReport"/>
     </div>
     <br />
     <form v-on:submit.prevent="onSubmit">
@@ -50,13 +54,13 @@
       <button
         class="btn btn-primary"
         v-on:click="sendData(false)"
-        :disabled="validatedExpense"
+        v-show="!validatedExpense"
       >Valider</button>
       &nbsp;
       <button
         class="btn btn-primary"
         v-on:click="sendData(true)"
-        :disabled="validatedExpense"
+        v-show="!validatedExpense"
       >Valider et ajouter un autre frais</button>
     </form>
   </div>
@@ -93,26 +97,13 @@ export default {
     // Envoie des données renseignées pour la création de frais
     async sendData(addFrais) {
       // Récupère les données du form
-      let formData = new FormData();
+      let formData = {};
+      formData.file = this.file;
+      formData.idnotefrais = this.idnotefrais;
+      formData.montantfrais = this.montantFrais;
+      formData.descfrais = this.descFrais;
 
-      formData.append("file", this.file);
-      formData.append("idnotefrais", this.idnotefrais);
-      formData.append("montantfrais", this.montantFrais);
-      formData.append("descfrais", this.descFrais);
-
-      // Crée le frais
-      await this.$axios
-        .post("/uploadImage", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
-        .then(function() {
-          console.log("success");
-        })
-        .catch(function() {
-          console.log("failure");
-        });
+      this.$emit("expenseAdded", formData); 
 
       // Si le bouton "Valider et ajouter un autre frais" est cliqué
       if (addFrais) {
@@ -134,8 +125,8 @@ export default {
     onSubmit() {
       // console.log("prevent");
     },
-    clickRoute(pathToRoute) {
-      this.$router.push(pathToRoute);
+    returnToExpensesReport() {
+      this.$emit("reportValidated");
     }
   }
 };

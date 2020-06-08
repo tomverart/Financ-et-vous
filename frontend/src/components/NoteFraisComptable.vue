@@ -1,18 +1,23 @@
 <template>
   <div class="mx-auto" style="width: 50rem;">
+    <label for="boutonsTri">Tri :</label>
+    <br />
     <div
       class="btn-group"
       role="group"
       aria-label="Basic example"
-      style="padding-bottom: 2rem; padding-top: 1rem;"
+      style="padding-bottom: 2rem;"
+      id="boutonsTri"
     >
       <button type="button" class="btn btn-primary" @click="triListe(0)">Tout</button>
       <button type="button" class="btn btn-primary" @click="triListe(1)">En attente</button>
-      <button type="button" class="btn btn-primary" @click="triListe(2)">Validée</button>
-      <button type="button" class="btn btn-primary" @click="triListe(3)">Refusée</button>
+      <button type="button" class="btn btn-primary" @click="triListe(2)">Validées</button>
+      <button type="button" class="btn btn-primary" @click="triListe(3)">Refusées</button>
     </div>
 
     <div>
+      <h3>Notes de frais</h3>
+      <!-- <br /> -->
       <table class="table">
         <thead>
           <tr>
@@ -89,19 +94,18 @@ export default {
               this.fullListNoteFrais.indexOf(noteFrais)
             ].idetatnote = idEtatNoteToChange;
 
-            
             // Retire la note de la liste à afficher si toutes les listes ne sont pas affichées
-            if(this.currentTri !== 0)
-            this.ListNoteFraisToShow.splice(
-              this.ListNoteFraisToShow.indexOf(noteFrais), 1
-            );
+            if (this.currentTri !== 0)
+              this.ListNoteFraisToShow.splice(
+                this.ListNoteFraisToShow.indexOf(noteFrais),
+                1
+              );
           }
           // return response.data;
         });
-
     },
 
-//  TODO : Diviser le tri en trois listes et les remplir dans le mounted()
+    //  TODO : Diviser le tri en trois listes et les remplir dans le mounted()
     // Tri les notes de frais
     async triListe(idEtatNoteToSort) {
       let tempListTri = [];
@@ -111,7 +115,6 @@ export default {
         this.ListNoteFraisToShow = this.fullListNoteFrais;
       } else {
         for (var noteFrais of this.fullListNoteFrais) {
-
           if (noteFrais.idetatnote == idEtatNoteToSort) {
             tempListTri.push(noteFrais);
           }
