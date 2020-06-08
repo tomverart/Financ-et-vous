@@ -16,7 +16,7 @@
   </nav>
   <br />
   <div>
-    <router-view></router-view>
+    <router-view @login="connexion"></router-view>
   </div>
 </div>
 </template>
