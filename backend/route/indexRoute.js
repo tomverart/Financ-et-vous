@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-const multer = require('multer');
+//const multer = require('multer');
 // Répertoire des images temporaires
-const upload = multer({ dest: './ressources/tempImagesFrais' });
+//const upload = multer({ dest: './ressources/tempImagesFrais' });
 
 
 // Controlleurs utilisateur
@@ -24,15 +24,18 @@ var createFrais = require('../controllers/fraisControllers/create.frais');
 var getImage = require('../controllers/fraisControllers/getImage.frais');
 
 // Controlleurs de gestion d'images
-router.post('/uploadImage', upload.single('file'), createFrais);
-router.get('/downloadImage', getImage);
+//router.post('/uploadImage', upload.single('file'), createFrais);
+//router.get('/downloadImage', getImage);
 
 // Login
 router.post('/utilisateur', login);
 
-router.use((req, res, next) => {
+router.get('/connected', (req, res, next) => {
+  console.log(req.session);
   if (req.session.login) {
-    next();
+    res.json({
+      role: req.session.role
+    })
 
     return;
   } else {
