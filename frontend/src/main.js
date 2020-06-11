@@ -2,6 +2,9 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './main.router';
 import axios from 'axios';
+import { BootstrapVue } from 'bootstrap-vue';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 axios.defaults.withCredentials = true;
 Vue.config.productionTip = false;
 
@@ -15,7 +18,11 @@ Vue.use({
     });
   }
 });
-
+Vue.use(BootstrapVue, {
+  "BNavbar": {
+    "variant": null
+  }
+})
 
 new Vue({
   router,

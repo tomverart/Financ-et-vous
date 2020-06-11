@@ -1,5 +1,7 @@
 <template>
   <div>
+    <div v-if="onReportView">
+
     <div v-if="onModify">
       <h3>Modification</h3>
       <form @submit.prevent="modification">
@@ -11,8 +13,8 @@
         <input type="submit" value="Enregistrer" />
       </form>
     </div>
-    <div v-else>
-      <table>
+
+      <table v-else>
         <tr>
           <td>
             <h2>{{ reportToDisplay.libelle }}</h2>
@@ -44,6 +46,7 @@ export default {
   },
   props: {
     reportToDisplay: {},
+    onReportView: null
    // done: null
     /*,
         notes: []*/
