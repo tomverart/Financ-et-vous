@@ -55,26 +55,4 @@ export default {
 </script>
 
 <style scoped>
-/*#list {
-  border-collapse: collapse;
-}
-#list b-th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #932929;
-  color: white;
-}
-#list b-td,
-#list b-th {
-  border: 1px solid #932929;
-  padding: 8px;
-}
-#list b-tr {
-  background-color: #f2f2f2;
-}
-
-#list b-tr:hover {
-  cursor: pointer;
-}*/
 </style>

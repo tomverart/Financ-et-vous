@@ -38,36 +38,6 @@
         </div>
       </form>
     </div>
-    <!--<div v-else>
-      <form v-on:submit.prevent="onSubmit">
-        <div class="form-group">
-          <label for="label">Objet</label>
-          <input
-            v-model="label"
-            style="width: 50%;"
-            type="text"
-            class="form-control"
-            id="label"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="reportDescription">Description</label>
-          <textarea
-            class="form-control"
-            rows="4"
-            id="reportDescription"
-            placeholder="ajoutez une description"
-            v-model="description"
-            required
-          ></textarea>
-          <br />
-        </div>
-        <div class="form-group">
-          <button class="btn btn-dark">Créer</button>
-        </div>
-      </form>
-    </div>-->
   </div>
 </template>
 

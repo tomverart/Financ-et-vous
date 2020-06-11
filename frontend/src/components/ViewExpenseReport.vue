@@ -47,15 +47,7 @@ export default {
   props: {
     reportToDisplay: {},
     onReportView: null
-   // done: null
-    /*,
-        notes: []*/
-  },/*
-  watch: {
-    done: function() {
-      if (this.done) this.onModify = false;
-    }
-  },*/
+  },
   methods: {
     deletion() {
       this.$emit("reportDeleted");

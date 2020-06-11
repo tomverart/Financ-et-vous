@@ -1,5 +1,5 @@
-<template style="height: 200px">
-  <div id="content">
+<template>
+  <div>
     <!-- Barre de navigation-->
     <b-navbar toggleable="lg" type="light">
       <b-navbar-brand>
@@ -79,7 +79,6 @@ import axios from "axios";
 export default {
   name: "EmployeeDashboard",
   components: {
-    // ExpenseReportForm,
     CreateExpenseReport,
     CreateExpense,
     ListExpenseReports,
