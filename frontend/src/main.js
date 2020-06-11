@@ -15,8 +15,9 @@ import createExpenseReport from './components/CreateExpenseReport.vue';
 import createExpense from './components/CreateExpense.vue';
 import VueAxios from 'vue-axios'
 import axios from 'axios';
-Vue.use(VueAxios, axios);
-
+import { BootstrapVue } from 'bootstrap-vue';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 axios.defaults.withCredentials = true;
 Vue.config.productionTip = false;
 

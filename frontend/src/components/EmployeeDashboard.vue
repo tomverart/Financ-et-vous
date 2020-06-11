@@ -1,34 +1,71 @@
-<template>
-  <div>
-    <div v-if="onAdd">
-      <CreateExpenseReport @reportAdded="reportAddition" />
-    </div>
+<template style="height: 200px">
+  <div id="content">
+    <!-- Barre de navigation-->
+    <b-navbar toggleable="lg" type="light">
+      <b-navbar-brand>
+        <img style="margin-left:auto; margin-right: auto" src="../img/miniature_fond_fonce.png" />
+      </b-navbar-brand>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item>
+            <a href style="color: white">Déconnexion</a>
+          </b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
+
+    <button v-on:click="onListView = false">Déclarer note de frais</button>
+
+    <!--Tableau des notes de frais-->
+    <b-card-group deck v-if="onListView">
+      <b-card v-if="onReportView">
+        <ViewExpenseReports
+          :reportToDisplay="reportToShow"
+          :onReportView="onReportView"
+          @reportDeleted="reportDeletion"
+          @reportModified="reportModification"
+          @hide="stopViewing"
+        />
+      </b-card>
+      
+      <b-card v-else></b-card>
+      <b-card style="max-width: 41%;">
+        <ListExpenseReports
+          :reportsList="reports"
+          @reportDeleted="reportDeletion"
+          @reportViewed="reportDisplay"
+        />
+      </b-card>
+    </b-card-group>
+
+    <!--Ajout de notes de frais-->
     <div v-else>
-      <CreateExpense :idnotefraisprops="reportOnAddId" @expenseAdded="expenseAddition" @reportValidated="reportValidateExpense" />
-    </div>
-    <br />
-    <table>
-      <tr>
-        <td>
-          <ListExpenseReports
-            :reportsList="reports"
-            @reportDeleted="reportDeletion"
-            @reportViewed="reportDisplay"
-          />
-        </td>
-        <td>
-          <div v-if="onView">
-            <ViewExpenseReports
-              :reportToDisplay="reportToShow"
-              @reportDeleted="reportDeletion"
-              @reportModified="reportModification"
-              @hide="stopViewing"
+      <b-card-group deck>
+        <b-card>
+          <div v-if="onReportAdd">
+            <CreateExpenseReport
+              :addSuccess="added"
+              :newReport="reportOnAdd"
+              @expenseAddRequested="startExpenseAdd"
+              @reportAdded="reportAddition"
             />
           </div>
-        </td>
-      </tr>
-    </table>
-  </div> 
+          <div v-else>
+            <CreateExpense
+              :idnotefraisprops="reportOnAdd.idnotefrais"
+              @expenseAdded="expenseAddition"
+              @reportValidated="reportValidateExpense"
+            />
+          </div>
+        </b-card>
+        <b-card>
+          <h2>Some useful informations</h2>
+        </b-card>
+      </b-card-group>
+      <button v-on:click="onListView = true; onReportView = false">Retour</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -52,9 +89,12 @@ export default {
     return {
       reports: null,
       reportToShow: null,
-      onView: false,
-      onAdd: true,
-      reportOnAddId: null
+      onListView: true,
+      onReportAdd: true,
+      onExpenseAdd: false,
+      added: false,
+      reportOnAdd: null,
+      onReportView: false
     };
   },
   mounted() {
@@ -82,7 +122,7 @@ export default {
         })
         .then(response => {
           this.reportToShow = response.data;
-          this.onView = true;
+          this.onReportView = true;
         })
         .catch(err => {
           console.log("error from ExpenseReportList.vue: ", err);
@@ -95,18 +135,21 @@ export default {
           baseURL: "http://localhost:3000"
         })
         .then(response => {
-          this.onAdd = false;
-          this.reportOnAddId = response.data.idnotefrais;
-          this.reportsLoad();
+          if (response.data.date) {
+            //this.onReportAdd = false;
+            this.reportOnAdd = response.data;
+            this.added = true;
+            this.reportsLoad();
+          } else console.log("zero");
         })
         .catch(err => {
           console.log("error(form) : ", err);
         });
     },
     async reportValidateExpense() {
-          this.onAdd = true;
-          this.reportId = null;
-          this.reportsLoad();
+      this.onReportAdd = true;
+      this.reportId = null;
+      this.reportsLoad();
     },
     async reportDeletion() {
       let urlString = "/dashboard/delete";
@@ -140,7 +183,12 @@ export default {
         });
     },
     stopViewing() {
-      this.onView = false;
+      this.onReportView = false;
+    },
+    startExpenseAdd() {
+      console.log("yes");
+      this.onReportAdd = false;
+      this.added = false;
     },
     async expenseAddition(expense) {
       let formData = new FormData();
@@ -174,3 +222,36 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.navbar {
+  background-color: #932929;
+  top: -27px;
+  padding: 0; /*
+  height: 57px;*/
+}
+.button {
+  padding: 15px 25px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #932929;
+  border: none;
+  border-radius: 15px;
+  /* box-shadow: 0 9px #999;*/
+}
+
+.button:hover {
+  background-color: #fff;
+  color: #932929;
+}
+
+.button:active {
+  background-color: #932929;
+  /*box-shadow: 0 5px #666;
+  transform: translateY(4px);*/
+}
+</style>
+
