@@ -17,18 +17,30 @@
           <td>
             <h2>{{ reportToDisplay.libelle }}</h2>
           </td>
-          <td>
-            <button @click="onModify = true">Modifier</button>
+          <td style="padding-right: 2rem; padding-left:2rem;">
+            <button @click="onModify = true" class="btn btn-primary">Modifier</button>
           </td>
           <td>
-            <button @click="deletion">Supprimer</button>
+            <button @click="deletion" class="btn btn-primary">Supprimer</button>
           </td>
-        </tr> 
+        </tr>
       </table>
       <h5>Description : {{ reportToDisplay.description }}</h5>
-      <div>(ici prochainement les frais lié à cette NF)</div>
+      <div v-for="frais in expensesList" :key="frais.idfrais">
+        <table class="table">
+          <tr>{{frais.montantfrais}}€</tr>
+          <tr>{{frais.descriptionfrais}}</tr>
+          <tr>
+            <img
+              style="max-width: 30rem; max-height: 30rem;"
+              :src="image + frais.fichierfrais"
+              alt="imageFrais"
+            />
+          </tr>
+        </table>
+      </div>
     </div>
-    <button @click="hiding">fermer</button>
+    <button @click="hiding" class="btn btn-primary">fermer</button>
   </div>
 </template>
 
@@ -38,22 +50,39 @@ export default {
   data() {
     return {
       onModify: false,
-      newLabel: null,
-      newDescription: null
+      // Liste des frais à afficher
+      expensesList: null,
+      // Sauvegarde la note affichée pour vérifier la nécessité de mise à jour des données
+      reportCheck: null,
+      // Lien de récupération d'images
+      image: "http://localhost:3000/downloadImage/"
     };
   },
   props: {
-    reportToDisplay: {},
-   // done: null
-    /*,
-        notes: []*/
-  },/*
-  watch: {
-    done: function() {
-      if (this.done) this.onModify = false;
+    reportToDisplay: {}
+  },
+  mounted() {
+    this.getFrais();
+    this.reportCheck = this.$route.query.id;
+  },
+  async beforeUpdate() {
+    // Met à jour les frais si nécessaire
+    if (this.reportCheck !== this.$route.query.id) {
+      this.getFrais();
+      this.reportCheck = this.$route.query.id;
     }
-  },*/
+  },
   methods: {
+    // Récupère les frais de la note pour les ajouter à la liste des frais
+    async getFrais() {
+      await this.$axios
+        .post("/getAllExpenses", {
+          idnotefrais: this.$route.query.id
+        })
+        .then(response => {
+          this.expensesList = response.data;
+        });
+    },
     deletion() {
       this.$emit("reportDeleted");
     },

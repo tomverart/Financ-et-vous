@@ -9,7 +9,7 @@
     <br />
     <table>
       <tr>
-        <td>
+        <td valign="top">
           <ListExpenseReports
             :reportsList="reports"
             @reportDeleted="reportDeletion"

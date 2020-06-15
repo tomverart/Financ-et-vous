@@ -18,16 +18,18 @@ async function toExport (req, res) {
       let newFileName = await fraisModel.getMaxIdFrais();
       newFileName++;
       // Crée le chemin pour le nouveau fichier à partir de pathImages, de l'id max des frais et de l'extension du fichier.
-      const file = pathImages + newFileName + req.file.originalname.slice(req.file.originalname.lastIndexOf('.', req.file.originalname.length));
+      const fileFullPath = pathImages + newFileName + req.file.originalname.slice(req.file.originalname.lastIndexOf('.', req.file.originalname.length));
+      // Nom du fichier
+      newFileName = newFileName + req.file.originalname.slice(req.file.originalname.lastIndexOf('.', req.file.originalname.length));
       // Déplace et renomme le fichier temporaire vers le chemin renseigné au dessus
-      fs.rename(req.file.path, file, (err) => {
+      fs.rename(req.file.path, fileFullPath, (err) => {
         if (err) {
           res.status(401).send('erreur fichier');
           return;
         }
         else {
           // Crée le frais
-          fraisModel.createFrais(req.body.montantfrais, req.body.descfrais, file, req.body.idnotefrais);
+          fraisModel.createFrais(req.body.montantfrais, req.body.descfrais, newFileName, req.body.idnotefrais);
           res.sendStatus(200);
           return;
         }

@@ -5,7 +5,7 @@
       <label for="label">Objet</label>
       <input v-model="label" style="width: 25rem;" type="text" class="form-control" id="label" />
       <label for="reportDescription">Description</label>
-      <textarea id="reportDescription" placeholder="ajoutez une description" v-model="description"></textarea>
+      <textarea id="reportDescription" placeholder="ajoutez une description" class="form-control"  v-model="description"></textarea>
       <br />
       <button class="btn btn-dark">Créer</button>
     </form>

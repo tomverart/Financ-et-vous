@@ -18,11 +18,11 @@ class NOTEFRAIS {
     `;
   }
 
-  static async createNoteFrais (userId, label, publishDate) {
+  static async createNoteFrais (userId, label, description, publishDate) {
     const result = await database.client.query({
       text: `
-            INSERT INTO ${NOTEFRAIS.tableName}(idutilisateur, libelle, date) VALUES ($1, $2, $3) RETURNING idNoteFrais`,
-      values: [userId, label, publishDate]
+            INSERT INTO ${NOTEFRAIS.tableName}(idutilisateur, libelle, description, date) VALUES ($1, $2, $3, $4) RETURNING idNoteFrais`,
+      values: [userId, label, description, publishDate]
     });
     return result.rows[0];
   }
