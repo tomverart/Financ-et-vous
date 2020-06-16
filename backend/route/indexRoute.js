@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-//const multer = require('multer');
+const multer = require('multer');
 // Répertoire des images temporaires
-//const upload = multer({ dest: './ressources/tempImagesFrais' });
+const upload = multer({ dest: './ressources/tempImagesFrais' });
 
 
 // Controlleurs utilisateur
