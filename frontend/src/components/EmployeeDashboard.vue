@@ -28,7 +28,7 @@
           @hide="stopViewing"
         />
       </b-card>
-      
+
       <b-card v-else></b-card>
       <b-card style="max-width: 41%;">
         <ListExpenseReports
@@ -63,7 +63,7 @@
           <h2>Some useful informations</h2>
         </b-card>
       </b-card-group>
-      <button v-on:click="onListView = true; onReportView = false">Retour</button>
+      <button v-on:click="reportsLoad();onListView = true; onReportView = false">Retour</button>
     </div>
   </div>
 </template>
@@ -185,7 +185,6 @@ export default {
       this.onReportView = false;
     },
     startExpenseAdd() {
-      console.log("yes");
       this.onReportAdd = false;
       this.added = false;
     },

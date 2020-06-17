@@ -61,7 +61,8 @@ export default {
     };
   },
   props: {
-    reportToDisplay: {}
+    reportToDisplay: {},
+    onReportView: null
   },
   mounted() {
     this.getFrais();
@@ -74,7 +75,6 @@ export default {
       this.reportCheck = this.$route.query.id;
     }
   },
-    onReportView: null
   methods: {
     // Récupère les frais de la note pour les ajouter à la liste des frais
     async getFrais() {

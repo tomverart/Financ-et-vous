@@ -15,7 +15,12 @@
     >Retour à la création de note de frais</button>
     <div :disabled="validatedExpense" />
     <div v-for="(fraisAdd, index) in fraisSup" :key="index">
-      <component :is="fraisAdd" :idnotefraisprops="idnotefrais" @reportValidated="returnToExpensesReport"/>
+      <component
+        :is="fraisAdd"
+        :idnotefraisprops="idnotefrais"
+        @reportValidated="returnToExpensesReport"
+        @expenseAdded="expenseAdd"
+      />
     </div>
     <br />
     <form v-on:submit.prevent="onSubmit">
@@ -103,7 +108,7 @@ export default {
       formData.montantfrais = this.montantFrais;
       formData.descfrais = this.descFrais;
 
-      this.$emit("expenseAdded", formData); 
+      this.$emit("expenseAdded", formData);
 
       // Si le bouton "Valider et ajouter un autre frais" est cliqué
       if (addFrais) {
@@ -112,10 +117,14 @@ export default {
         this.fraisSup.push(createExpensesComponent);
         // Désactive les champs et boutons du composant actuel
         this.validatedExpense = true;
+      } else {
+        // this.$router.push('/dashboard');
+        this.returnToExpensesReport();
       }
-      else{
-        this.$router.push('/dashboard');
-      }
+    },
+    // Plus de spaghetti pour le spaghetti
+    expenseAdd(formData) {
+      this.$emit("expenseAdded", formData);
     },
     // Récupère le fichier téléversé
     handleFileUpload() {
