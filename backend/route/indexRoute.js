@@ -8,6 +8,7 @@ const upload = multer({ dest: './ressources/tempImagesFrais' });
 // Controlleurs utilisateur
 var getUserByLogin = require('../controllers/utilisateurControllers/getUserByLogin');
 var login = require('../controllers/utilisateurControllers/login.js');
+var createUser = require('../controllers/utilisateurControllers/createUser.js');
 
 // Controlleurs des notes de frais
 var getNoteFraisComptable = require('../controllers/noteFraisControllers/getComptable.notefrais');
@@ -17,10 +18,11 @@ var deleteExpenseReport = require('../controllers/noteFraisControllers/delete.ex
 var updateNoteFrais = require('../controllers/noteFraisControllers/update.notefrais');
 var getEtatNote = require('../controllers/etatNoteControllers/get.etatNote');
 var getExpenseReport = require('../controllers/noteFraisControllers/getExpenseReport');
+var getAllExpenses = require('../controllers/fraisControllers/getAll.expense');
 
-var createUser = require('../controllers/utilisateurControllers/createUser.js');
 // Controlleurs des frais
 var createFrais = require('../controllers/fraisControllers/create.frais');
+var createExpense = require('../controllers/fraisControllers/create.expense');
 var getImage = require('../controllers/fraisControllers/getImage.frais');
 
 
@@ -48,8 +50,10 @@ router.get('/connected', (req, res, next) => {
 router.post('/createUser', createUser);
 
 // Routes de gestion d'images
-router.post('/uploadImage', upload.single('file'), createFrais);
-router.get('/downloadImage', getImage);
+router.post('/uploadImage', upload.single('file'), createExpense);
+router.post('/getAllExpenses', getAllExpenses);
+router.get('/downloadImage/:imageName', getImage);
+
 
 router.get('/dashboard?:id', (req, res) => {
   let theUser = getUserByLogin(req.session.login);
