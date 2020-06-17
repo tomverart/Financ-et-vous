@@ -16,7 +16,7 @@
           <b-td @click="reportView(report.idnotefrais)">{{ report.libelle }}</b-td>
           <b-td @click="reportView(report.idnotefrais)">{{ report.date }}</b-td>
           <b-td @click="reportView(report.idnotefrais)">{{ report.idetatnote }}</b-td>
-          <b-td>à calculer</b-td>
+          <b-td @click="reportView(report.idnotefrais)">{{ report.montant }}</b-td>
         </b-tr>
       </b-tbody>
       <b-tfoot>

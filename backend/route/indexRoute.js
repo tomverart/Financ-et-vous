@@ -8,6 +8,7 @@ const upload = multer({ dest: './ressources/tempImagesFrais' });
 // Controlleurs utilisateur
 var getUserByLogin = require('../controllers/utilisateurControllers/getUserByLogin');
 var login = require('../controllers/utilisateurControllers/login.js');
+var createUser = require('../controllers/utilisateurControllers/createUser.js');
 
 // Controlleurs des notes de frais
 var getNoteFraisComptable = require('../controllers/noteFraisControllers/getComptable.notefrais');
@@ -19,7 +20,6 @@ var getEtatNote = require('../controllers/etatNoteControllers/get.etatNote');
 var getExpenseReport = require('../controllers/noteFraisControllers/getExpenseReport');
 var getAllExpenses = require('../controllers/fraisControllers/getAll.expense');
 
-var createUser = require('../controllers/utilisateurControllers/createUser.js');
 // Controlleurs des frais
 var createExpense = require('../controllers/fraisControllers/create.expense');
 var getImage = require('../controllers/fraisControllers/getImage.frais');

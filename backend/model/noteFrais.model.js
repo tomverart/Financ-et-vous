@@ -67,7 +67,7 @@ class NOTEFRAIS {
   static async selectByUserId (idUser) {
     const result = await database.client.query({
       text: `
-            SELECT * FROM ${NOTEFRAIS.tableName} where idutilisateur = ($1) ORDER BY ${NOTEFRAIS.tableName}.idnotefrais DESC`,
+            SELECT *, (SELECT sum(montantfrais) from frais where idnotefrais = $1) montant FROM ${NOTEFRAIS.tableName} where idutilisateur = ($1) ORDER BY ${NOTEFRAIS.tableName}.idnotefrais DESC`,
       values: [idUser]
     });
 
