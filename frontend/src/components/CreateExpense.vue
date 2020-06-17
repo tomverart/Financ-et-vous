@@ -121,9 +121,6 @@ export default {
         // this.$router.push('/dashboard');
         this.returnToExpensesReport();
       }
-      else{
-        this.$router.push('/dashboard');
-      }
     },
     // Plus de spaghetti pour le spaghetti
     expenseAdd(formData) {
