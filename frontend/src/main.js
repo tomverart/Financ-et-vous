@@ -79,6 +79,13 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
 });
 
+
+Vue.use(BootstrapVue, {
+  "BNavbar": {
+    "variant": null
+  }
+})
+
 new Vue({
   router,
   render: h => h(App)
