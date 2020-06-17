@@ -27,9 +27,12 @@ var getImage = require('../controllers/fraisControllers/getImage.frais');
 // Login
 router.post('/utilisateur', login);
 
-router.use((req, res, next) => {
+router.get('/connected', (req, res, next) => {
+  console.log(req.session);
   if (req.session.login) {
-    next();
+    res.json({
+      role: req.session.role
+    })
 
     return;
   } else {

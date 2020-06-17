@@ -11,12 +11,13 @@
   </head>
 
   <!-- Barre de navigation-->
-  <nav class="navbar navbar-light bg-light">
+  <!--<nav class="navbar navbar-light bg-light">
+    <img class="navbar-brand" @click="clickRoute('/')" style="cursor: pointer;"src="./img/miniature.png" />
     <a class="navbar-brand" @click="clickRoute('/')" style="cursor: pointer;">Financ-et-vous</a>
-  </nav>
+  </nav>-->
   <br />
   <div>
-    <router-view></router-view>
+    <router-view @login="connexion"></router-view>
   </div>
 </div>
 </template>

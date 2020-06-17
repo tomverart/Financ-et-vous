@@ -97,38 +97,25 @@ export default {
     // Envoie des données renseignées pour la création de frais
     async sendData(addFrais) {
       // Récupère les données du form
-      let formData = new FormData();
+      let formData = {};
+      formData.file = this.file;
+      formData.idnotefrais = this.idnotefrais;
+      formData.montantfrais = this.montantFrais;
+      formData.descfrais = this.descFrais;
 
-      formData.append("file", this.file);
-      formData.append("idnotefrais", this.idnotefrais);
-      formData.append("montantfrais", this.montantFrais);
-      formData.append("descfrais", this.descFrais);
+      this.$emit("expenseAdded", formData); 
 
-      // Crée le frais
-      await this.$axios
-        .post("/uploadImage", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
-        .then(response => {
-          if (response.status === 200) {
-            // Si le bouton "Valider et ajouter un autre frais" est cliqué
-            if (addFrais) {
-              // Ajoute ce composant en composant supplémentaire
-              // TODO : Virer le tableau.
-              this.fraisSup.push(createExpensesComponent);
-              // Désactive les champs et boutons du composant actuel
-              this.validatedExpense = true;
-            } else {
-              // this.$router.push("/dashboard");
-              this.returnToExpensesReport();
-            }
-          }
-        })
-        .catch(response => {
-          console.log(response);
-        });
+      // Si le bouton "Valider et ajouter un autre frais" est cliqué
+      if (addFrais) {
+        // Ajoute ce composant en composant supplémentaire
+        // TODO : Virer le tableau.
+        this.fraisSup.push(createExpensesComponent);
+        // Désactive les champs et boutons du composant actuel
+        this.validatedExpense = true;
+      }
+      else{
+        this.$router.push('/dashboard');
+      }
     },
     // Récupère le fichier téléversé
     handleFileUpload() {

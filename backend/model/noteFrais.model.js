@@ -11,7 +11,7 @@ class NOTEFRAIS {
             idNoteFrais SERIAL PRIMARY KEY,
             idUtilisateur INTEGER REFERENCES ${UTILISATEUR.tableName}(idUtilisateur),
             libelle VARCHAR NOT NULL,
-            description VARCHAR,
+            description VARCHAR NOT NULL,
             date DATE,
             idEtatNote INTEGER REFERENCES ${ETATNOTE.tableName}(idEtatNote) DEFAULT 1
         )
