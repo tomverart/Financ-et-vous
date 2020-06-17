@@ -1,3 +1,3 @@
 backend/ressources/imagesFrais/*
 !backend/ressources/imagesFrais/.gitkeep
-backend/config/db.config.js
+/backend/config/db.config.js

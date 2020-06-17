@@ -57,7 +57,7 @@ class FRAIS {
             SELECT * FROM ${FRAIS.tableName} where idnotefrais = ($1)`,
       values: [idNoteFrais]
     });
-    console.log(result.rows);
+    return result.rows;
   }
 
   static async getMaxIdFrais () {

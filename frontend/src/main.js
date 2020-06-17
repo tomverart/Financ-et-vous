@@ -13,10 +13,11 @@ import EmployeeDashboard from './components/EmployeeDashboard.vue';
 import noteFraisComptable from './components/NoteFraisComptable.vue';
 import createExpenseReport from './components/CreateExpenseReport.vue';
 import createExpense from './components/CreateExpense.vue';
-import VueAxios from 'vue-axios'
+//import VueAxios from 'vue-axios'
 import axios from 'axios';
-Vue.use(VueAxios, axios);
-
+//import { BootstrapVue } from 'bootstrap-vue';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 axios.defaults.withCredentials = true;
 Vue.config.productionTip = false;
 
@@ -77,6 +78,13 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
 });
+
+
+Vue.use(BootstrapVue, {
+  "BNavbar": {
+    "variant": null
+  }
+})
 
 new Vue({
   router,
