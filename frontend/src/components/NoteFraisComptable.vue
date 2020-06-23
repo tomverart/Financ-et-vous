@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto" style="width: 50rem;">
+  <div class="mx-auto" style="width: 75rem;">
     <label for="boutonsTri">Tri :</label>
     <br />
     <div
@@ -29,17 +29,34 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="noteFrais of ListNoteFraisToShow" :key="noteFrais.idnotefrais">
-            <th scope="row">{{noteFrais.idnotefrais}}</th>
-            <td>{{noteFrais.nomutilisateur}} {{noteFrais.prenomutilisateur}}</td>
-            <td>{{noteFrais.libelle}}</td>
-            <td>{{listEtatNote[noteFrais.idetatnote -1]}}</td>
-            <td>
-              <button class="btn" @click="updateEtatNote(noteFrais, 2)">✔</button>
-              &nbsp;
-              <button class="btn" @click="updateEtatNote(noteFrais, 3)">❌</button>
-            </td>
-          </tr>
+          <template v-for="(noteFrais, index) of ListNoteFraisToShow">
+            <tr :key="noteFrais.idnotefrais" v-on:click="expandReport(noteFrais)">
+              <th scope="row">{{noteFrais.idnotefrais}}</th>
+              <td>{{noteFrais.nomutilisateur}} {{noteFrais.prenomutilisateur}}</td>
+              <td>{{noteFrais.libelle}}</td>
+              <td>{{listEtatNote[noteFrais.idetatnote -1]}}</td>
+              <td>
+                <button class="btn" @click="updateEtatNote(noteFrais, 2)">✔</button>
+                &nbsp;
+                <button class="btn" @click="updateEtatNote(noteFrais, 3)">❌</button>
+                {{noteFrais.expand}}
+              </td>
+            </tr>
+            <tr :key="index" v-if="noteFrais.expand">
+              <ViewExpenseReports
+                :reportToDisplay="reportToShow"
+                :onReportView="true"
+                @hide="expandReport(noteFrais)"
+              />qsdkqsdjld
+              <!-- <ViewExpenseReports
+          :reportToDisplay="reportToShow"
+          :onReportView="onReportView"
+          @reportDeleted="reportDeletion"
+          @reportModified="reportModification"
+          @hide="stopViewing"
+              />-->
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -47,6 +64,8 @@
 </template>
 
 <script>
+import ViewExpenseReports from "./ViewExpenseReport";
+
 export default {
   name: "noteFraisComptable",
   data() {
@@ -58,8 +77,12 @@ export default {
       // Liste des notes de frais à afficher
       ListNoteFraisToShow: [],
       // Tri actuel
-      currentTri: 0
+      currentTri: 0,
+      reportToShow: null
     };
+  },
+  components: {
+    ViewExpenseReports
   },
   async mounted() {
     // Récupère la liste des états notes possibles
@@ -72,6 +95,8 @@ export default {
 
     // Ajoute les notes de frais à la liste des notes à afficher et à la liste complète
     this.fullListNoteFrais = this.ListNoteFraisToShow = await this.getFullListNoteFrais();
+
+    this.addExpand(this.fullListNoteFrais);
   },
   methods: {
     // Renvoie les notes de frais
@@ -121,6 +146,35 @@ export default {
         }
         this.ListNoteFraisToShow = tempListTri;
       }
+    },
+    addExpand(listToUpdate) {
+      listToUpdate.forEach(report => {
+        report.expand = false;
+      });
+    },
+    expandReport(reportToExpand) {
+      if (!reportToExpand.expand) {
+        this.$route.query.id = reportToExpand.idnotefrais;
+        reportToExpand.expand = !reportToExpand.expand;
+        if (this.reportToShow == null) {
+          this.reportToShow = reportToExpand;
+        } else {
+          this.ListNoteFraisToShow[
+            this.ListNoteFraisToShow.indexOf(this.reportToShow)
+          ].expand = false;
+        }
+      } else {
+        // console.log("close");
+        this.ListNoteFraisToShow[
+          this.ListNoteFraisToShow.indexOf(reportToExpand)
+        ].expand = false;
+        this.reportToShow = null;
+      }
+      this.ListNoteFraisToShow.splice(0, 1, this.ListNoteFraisToShow[0]);
+
+      this.ListNoteFraisToShow.forEach(frais => {
+        console.log(frais.idnotefrais + " : " + frais.expand);
+      });
     }
   }
 };
