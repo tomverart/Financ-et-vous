@@ -120,7 +120,7 @@ export default {
       } else {
         // this.$router.push('/dashboard');
         this.returnToExpensesReport();
-      }
+      } 
     },
     // Plus de spaghetti pour le spaghetti
     expenseAdd(formData) {

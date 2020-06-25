@@ -13,6 +13,7 @@
       <button type="button" class="btn btn-primary" @click="triListe(1)">En attente</button>
       <button type="button" class="btn btn-primary" @click="triListe(2)">Validées</button>
       <button type="button" class="btn btn-primary" @click="triListe(3)">Refusées</button>
+      <button type="button" class="btn btn-primary" @click="goCreateUser()"> Création d'un nouvel Utilisateur </button>
     </div>
 
     <div>
@@ -74,6 +75,9 @@ export default {
     this.fullListNoteFrais = this.ListNoteFraisToShow = await this.getFullListNoteFrais();
   },
   methods: {
+    async goCreateUser(){
+      this.$router.push("/createUser");
+    },
     // Renvoie les notes de frais
     async getFullListNoteFrais() {
       return await this.$axios.get("/dashboard?id=0").then(response => {
