@@ -8,7 +8,7 @@ import VueRouter from 'vue-router';
 import Home from './components/Home.vue';
 import Login from './components/ConnexionForm.vue';
 import EmployeeDashboard from './components/EmployeeDashboard.vue';
-
+import createUser from './components/creationUser.vue';
 // Notes de frais
 import noteFraisComptable from './components/NoteFraisComptable.vue';
 import createExpenseReport from './components/CreateExpenseReport.vue';
@@ -37,7 +37,6 @@ Vue.use(VueRouter);
   login: this.login,
   password: this.password
 });*/
-
 async function beforeEnter(to, from, next) {
   try {
     await myAxios.get("/connected");
@@ -47,29 +46,66 @@ async function beforeEnter(to, from, next) {
     next('/login')
   }
 }
-
-/*async function beforeLogin(to, from, next) {
+async function beforeEnterComptable(to, from, next) {
   try {
     const result = await myAxios.get("/connected");
-    console.log(result.data);
-      next('/dashboard')
-    
+    if(result.data.role == 'Comptable' || result.data.role == 'Administrateur')
+    {
+          next();
+
+    }
+
+  }
+  catch (error) {
+    next('/login')
+  }
+}
+
+async function beforeEnterEmploye(to, from, next) {
+  try {
+    const result = await myAxios.get("/connected");
+    if(result.data.role == 'Employé' || result.data.role == 'Administrateur')
+    {
+          next();
+
+    }
+  }
+  catch (error) {
+    next('/login')
+  }
+}
+
+
+async function beforeLogin(to, from, next) {
+  try {
+    const result = await myAxios.get("/connected");
+    console.log('coucou je suis le resultat', result);
+    if (result.data.role == 'Comptable')
+    {
+      next('/noteFrais')
+    } else if (result.data.role == 'Employé')
+    {
+            next('/dashboard')
+
+    }
+    result.data.role
   }
   catch (error) {
     next()
   }
-}*/
+}
 
 // Nom des routes liés aux composants
 const routes = [
   { path: '/', component: Home },
 
-  { path: '/login', component: Login /*, beforeEnter:beforeLogin*/},
+  { path: '/login', component: Login , beforeEnter:beforeLogin},
 
-  { path: '/noteFrais', component: noteFraisComptable, beforeEnter },
-  { path: '/dashboard', component: EmployeeDashboard, beforeEnter },
+  { path: '/noteFrais', component: noteFraisComptable, beforeEnter:beforeEnterComptable },
+  { path: '/dashboard', component: EmployeeDashboard, beforeEnter:beforeEnterEmploye },
   { path: '/createExpenses', component: createExpense, props: true, name: 'createExpenses', beforeEnter },
-  { path: '/createExpensesReport', component: createExpenseReport, beforeEnter }
+  { path: '/createExpensesReport', component: createExpenseReport, beforeEnter },
+  { path: '/createUser', component: createUser}
 ];
 
 

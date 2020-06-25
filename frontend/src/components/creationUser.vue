@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto" style="width: 35rem;">
-    <label for="login">Creation d'un utilisateur</label>
+    <label for="login">Login utilisateur</label>
     <input v-model="login" type="text" id="login" class="form-control" />
 
     <br />
@@ -45,7 +45,7 @@ export default {
   props: {},
   methods: {
     async sendData() {
-      const resp = await this.$axios.post("/createUser", {
+      await this.$axios.post("/createUser", {
         login: this.login,
         password: this.password,
         firstName: this.firstName,
