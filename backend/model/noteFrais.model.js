@@ -12,7 +12,7 @@ class NOTEFRAIS {
             idUtilisateur INTEGER REFERENCES ${UTILISATEUR.tableName}(idUtilisateur),
             libelle VARCHAR NOT NULL,
             description VARCHAR NOT NULL,
-            date DATE,
+            date DATE NOT NULL,
             idEtatNote INTEGER REFERENCES ${ETATNOTE.tableName}(idEtatNote) DEFAULT 1
         )
     `;

@@ -8,9 +8,9 @@ class FRAIS {
             -- idFrais, montantFrais, descriptionFrais, fichierFrais, #idNoteFrais
 
             idFrais SERIAL PRIMARY KEY,
-            montantFrais NUMERIC(2),
-            descriptionFrais VARCHAR,
-            fichierFrais VARCHAR,
+            montantFrais NUMERIC(2) NOT NULL,
+            descriptionFrais VARCHAR NOT NULL,
+            fichierFrais VARCHAR NOT NULL,
             idNoteFrais INTEGER REFERENCES ${NOTEFRAIS.tableName}(idNoteFrais)
         )
     `;
