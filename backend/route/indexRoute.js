@@ -21,13 +21,8 @@ var getExpenseReport = require('../controllers/noteFraisControllers/getExpenseRe
 var getAllExpenses = require('../controllers/fraisControllers/getAll.expense');
 
 // Controlleurs des frais
-var createFrais = require('../controllers/fraisControllers/create.frais');
 var createExpense = require('../controllers/fraisControllers/create.expense');
 var getImage = require('../controllers/fraisControllers/getImage.frais');
-
-
-router.post('/uploadImage', upload.single('file'), createFrais);
-router.get('/downloadImage', getImage);
 
 // Login
 router.post('/utilisateur', login);
