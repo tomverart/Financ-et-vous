@@ -17,7 +17,6 @@
 
     <div>
       <h3>Notes de frais</h3>
-      <!-- <br /> -->
       <table class="table">
         <thead>
           <tr>
@@ -47,14 +46,7 @@
                 :reportToDisplay="reportToShow"
                 :onReportView="true"
                 @hide="expandReport(noteFrais)"
-              />qsdkqsdjld
-              <!-- <ViewExpenseReports
-          :reportToDisplay="reportToShow"
-          :onReportView="onReportView"
-          @reportDeleted="reportDeletion"
-          @reportModified="reportModification"
-          @hide="stopViewing"
-              />-->
+              />
             </tr>
           </template>
         </tbody>
@@ -78,6 +70,7 @@ export default {
       ListNoteFraisToShow: [],
       // Tri actuel
       currentTri: 0,
+      // La note à développer
       reportToShow: null
     };
   },
@@ -96,6 +89,7 @@ export default {
     // Ajoute les notes de frais à la liste des notes à afficher et à la liste complète
     this.fullListNoteFrais = this.ListNoteFraisToShow = await this.getFullListNoteFrais();
 
+    // Ajoute le champ "expand" aux objets du tableau
     this.addExpand(this.fullListNoteFrais);
   },
   methods: {
@@ -147,34 +141,35 @@ export default {
         this.ListNoteFraisToShow = tempListTri;
       }
     },
+    // Ajoute le champ "expand" aux objets du tableau
     addExpand(listToUpdate) {
       listToUpdate.forEach(report => {
         report.expand = false;
       });
     },
+    // Méthode d'affichage des frais de la note de frais
     expandReport(reportToExpand) {
+      // Si la note choisie n'est pas déjà affichée
       if (!reportToExpand.expand) {
         this.$route.query.id = reportToExpand.idnotefrais;
         reportToExpand.expand = !reportToExpand.expand;
-        if (this.reportToShow == null) {
-          this.reportToShow = reportToExpand;
-        } else {
+        // Si il y a une note affichée actuellement, la cache.
+        if (this.reportToShow != null)
           this.ListNoteFraisToShow[
             this.ListNoteFraisToShow.indexOf(this.reportToShow)
           ].expand = false;
-        }
+
+        this.reportToShow = reportToExpand;
+        // Si la note choisie est déjà affichée, la cache.
       } else {
-        // console.log("close");
         this.ListNoteFraisToShow[
           this.ListNoteFraisToShow.indexOf(reportToExpand)
         ].expand = false;
         this.reportToShow = null;
       }
+      // L'affichage des tableaux Vue ne se mettent pas à jour quand une propriété d'un objet change mais se met à jour quand un tableau change.
+      // Supprime le premier élément du tableau et le rempalce par lui-même pour provoquer un changement.
       this.ListNoteFraisToShow.splice(0, 1, this.ListNoteFraisToShow[0]);
-
-      this.ListNoteFraisToShow.forEach(frais => {
-        console.log(frais.idnotefrais + " : " + frais.expand);
-      });
     }
   }
 };
