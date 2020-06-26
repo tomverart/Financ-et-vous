@@ -8,6 +8,7 @@ async function connex (req, res) {
 
   if(toSend){
     req.session.login = toSend.loginutilisateur;
+    req.session.role = toSend.stringrole;
     res.json(toSend);
 
   } else {

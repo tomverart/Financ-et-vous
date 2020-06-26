@@ -28,13 +28,13 @@ var getImage = require('../controllers/fraisControllers/getImage.frais');
 router.post('/utilisateur', login);
 
 router.get('/connected', (req, res, next) => {
-  console.log(req.session);
+  console.log(req.session);    console.log('son role' , req.session.role);
+
   if (req.session.login) {
-    res.json({
+    return res.json({
       role: req.session.role
     })
 
-    return;
   } else {
     console.log('stop ici, la personne n est pas connecte')
     console.log(req.session.login);
@@ -42,7 +42,7 @@ router.get('/connected', (req, res, next) => {
   }
 });
 
-router.post('/createUser', createUser);
+router.get('/createUser', createUser);
 
 // Routes de gestion d'images
 router.post('/uploadImage', upload.single('file'), createExpense);
