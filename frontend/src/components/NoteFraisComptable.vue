@@ -13,9 +13,15 @@
       <button type="button" class="btn btn-primary" @click="triListe(1)">En attente</button>
       <button type="button" class="btn btn-primary" @click="triListe(2)">Validées</button>
       <button type="button" class="btn btn-primary" @click="triListe(3)">Refusées</button>
-      <button type="button" class="btn btn-primary" @click="goCreateUser()"> Création d'un nouvel Utilisateur </button>
     </div>
-
+    <div>
+      <button
+        type="button"
+        class="btn btn-primary"
+        @click="goCreateUser()"
+      >Création d'un nouvel Utilisateur</button>
+    </div>
+    <br />
     <div>
       <h3>Notes de frais</h3>
       <table class="table">
@@ -94,7 +100,7 @@ export default {
     this.addExpand(this.fullListNoteFrais);
   },
   methods: {
-    async goCreateUser(){
+    async goCreateUser() {
       this.$router.push("/createUser");
     },
     // Renvoie les notes de frais
