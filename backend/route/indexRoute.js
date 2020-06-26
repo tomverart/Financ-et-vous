@@ -42,7 +42,7 @@ router.get('/connected', (req, res, next) => {
   }
 });
 
-router.get('/createUser', createUser);
+router.post('/createUser', createUser);
 
 // Routes de gestion d'images
 router.post('/uploadImage', upload.single('file'), createExpense);

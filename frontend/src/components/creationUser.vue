@@ -8,18 +8,19 @@
     <input v-model="password" type="text" id="password" class="form-control" />
     <br />
 
-    <label for="firstName">First Name </label>
+    <label for="firstName">First Name</label>
     <input v-model="firstName" type="text" id="firstName" class="form-control" />
 
-    <br /> 
+    <br />
 
-    <label for="lastName">Last Name </label>
+    <label for="lastName">Last Name</label>
     <input v-model="lastName" type="text" id="lastName" class="form-control" />
 
-    <br /> 
+    <br />
 
-    <label for="idRole">id Role </label>
-    <input v-model="idRole" type="text" id="idRole" class="form-control" /> 
+    <label for="idRole">id Role</label>
+    <input v-model="idRole" type="text" id="idRole" class="form-control" />
+    <br />
 
     <button class="btn btn-primary" v-on:click="sendData">envoyer donnée</button>
   </div>
@@ -27,8 +28,7 @@
 
 
 <script>
-
-// faire un bouton radio pour le choix du role comptable / employe 
+// faire un bouton radio pour le choix du role comptable / employe
 export default {
   name: "CreationForm",
   data() {
