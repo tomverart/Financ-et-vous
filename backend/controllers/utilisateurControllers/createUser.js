@@ -1,5 +1,4 @@
 const User = require('../../model/utilisateur.model');
-const Role = require('../../model/role.model')
 
 async function create (req, res) {
 //!! attention, ne pas pouvoir faire deux meme login
@@ -8,8 +7,9 @@ async function create (req, res) {
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const role = req.body.idRole;
+  const group = req.body.idgroup;
 
-    User.createUtilisateurs(login, passw, firstName, lastName, role);
+    User.createUtilisateurs(login, passw, firstName, lastName, role, group);
     return 
   }
  

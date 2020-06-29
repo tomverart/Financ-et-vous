@@ -61,11 +61,18 @@ class InitBDD {
   }
 
   async testnoteFraisComtpable () {
-    const noteFrais = require('./noteFrais.model');
+    // const noteFrais = require('./noteFrais.model');
     const utilisateur = require('./utilisateur.model');
+    const usergroup = require('./usergroup.model.js');
+    const utilisateurgroup = require('./utilisateurGroup.model.js');
 
-    await utilisateur.createUtilisateurs('JE', 'soleil123', 'Jean', 'Michel', 3);
-    await utilisateur.createUtilisateurs('JC', 'soleil123', 'Jean', 'MichelMichel', 2);
+    await usergroup.createGroup('Main group');
+    await usergroup.createGroup('Secondary group');
+
+    await utilisateur.createUtilisateurs('JE', 'soleil123', 'Jean', 'Michel', 3, 1);
+    await utilisateur.createUtilisateurs('JC', 'soleil123', 'Jean', 'MichelMichel', 2, 1);
+
+    await utilisateurgroup.createUtilisateurGroup(2, 2);
   }
 
 
