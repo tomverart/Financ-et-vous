@@ -1,5 +1,6 @@
 const database = require('./initBDD');
 const Role = require('./role.model.js');
+const utilisateurGroup = require('./utilisateurGroup.model');
 
 class UTILISATEUR {
   static toSqlTable () {
@@ -18,19 +19,20 @@ class UTILISATEUR {
   }
 
   // Création d'un utilisateur
-  static async createUtilisateurs (loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, idRole) {
+  static async createUtilisateurs (loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, idRole, idgroup) {
     try {
       // Vérifie si le rôle existe, si il n'existe pas, renvoie une erreur
       if (!await Role.existsByIdRole(idRole)) throw new Error("L'idRole est incorrect.");
-
       // Création de l'utilisateur
-      // const result = await database.client.query({
-      await database.client.query({
+      const idut = await database.client.query({
         text: `
-              INSERT INTO ${UTILISATEUR.tableName} (loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, idRole) VALUES ($1, $2, $3, $4, $5)`,
+              INSERT INTO ${UTILISATEUR.tableName} (loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, idRole) VALUES ($1, $2, $3, $4, $5) RETURNING idUtilisateur`,
         values: [loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, idRole]
       });
-      // console.log(result.rows);
+
+      // Ajoute l'utilisateur au groupe renseigné
+      utilisateurGroup.createUtilisateurGroup(idut.rows[0].idutilisateur, idgroup);
+
     } catch (err) {
       console.log(err);
     }
