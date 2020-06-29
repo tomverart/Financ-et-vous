@@ -88,7 +88,6 @@ async function beforeLogin(to, from, next) {
             next('/dashboard')
 
     }
-    result.data.role
   }
   catch (error) {
     next()
@@ -105,7 +104,7 @@ const routes = [
   { path: '/dashboard', component: EmployeeDashboard, beforeEnter:beforeEnterEmploye },
   { path: '/createExpenses', component: createExpense, props: true, name: 'createExpenses', beforeEnter },
   { path: '/createExpensesReport', component: createExpenseReport, beforeEnter },
-  { path: '/createUser', component: createUser}
+  { path: '/createUser', component: createUser, beforeEnterComptable}
 ];
 
 
