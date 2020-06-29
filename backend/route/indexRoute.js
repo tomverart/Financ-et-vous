@@ -24,6 +24,9 @@ var getAllExpenses = require('../controllers/fraisControllers/getAll.expense');
 var createExpense = require('../controllers/fraisControllers/create.expense');
 var getImage = require('../controllers/fraisControllers/getImage.frais');
 
+// Controlleurs des groupes
+var getAllusergroups = require('../controllers/groupControllers/getUserGroups.usergroup');
+
 // Login
 router.post('/utilisateur', login);
 
@@ -42,12 +45,15 @@ router.get('/connected', (req, res, next) => {
   }
 });
 
-router.get('/createUser', createUser);
+router.post('/createUser', createUser);
 
 // Routes de gestion d'images
 router.post('/uploadImage', upload.single('file'), createExpense);
 router.post('/getAllExpenses', getAllExpenses);
 router.get('/downloadImage/:imageName', getImage);
+
+// Routes de groupes
+router.get('/getUserGroups', getAllusergroups);
 
 
 router.get('/dashboard?:id', (req, res) => {
