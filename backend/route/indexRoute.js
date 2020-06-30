@@ -31,10 +31,10 @@ var getAllusergroups = require('../controllers/groupControllers/getUserGroups.us
 router.post('/utilisateur', login);
 
 router.get('/disconected', (req, res, next) => {
-//req.session.login == null;
-console.log('couc c moi je suis ici')
-req.session == null;
-return;
+req.session.login = null;
+req.session.role = null;
+
+res.sendStatus(200);
 });
 
 router.get('/connected', (req, res, next) => {

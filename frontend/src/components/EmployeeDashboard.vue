@@ -106,9 +106,8 @@ export default {
   },
   methods: {
     async deconnex() {
-      console.log('bonjour, tu souhaite deco');
-        await axios.get("/disconected");
-      this.$router.push("/login");
+       await this.$axios.get("/disconected");
+       this.$router.push("/login");
     },
     async reportsLoad() {
       let urlString = "/dashboard";

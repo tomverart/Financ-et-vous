@@ -79,7 +79,6 @@ async function beforeEnterEmploye(to, from, next) {
 async function beforeLogin(to, from, next) {
   try {
     const result = await myAxios.get("/connected");
-    console.log('coucou je suis le resultat', result);
     if (result.data.role == 'Comptable')
     {
       next('/noteFrais')

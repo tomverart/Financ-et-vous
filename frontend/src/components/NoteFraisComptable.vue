@@ -1,7 +1,9 @@
 <template>
+
   <div class="mx-auto" style="width: 75rem;">
     <label for="boutonsTri">Tri :</label>
     <br />
+    
     <div
       class="btn-group"
       role="group"
@@ -21,6 +23,7 @@
         @click="goCreateUser()"
       >Création d'un nouvel Utilisateur</button>
     </div>
+    
     <br />
     <div>
       <h3>Notes de frais</h3>
