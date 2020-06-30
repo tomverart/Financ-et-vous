@@ -9,12 +9,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item>
-            <button
-        type="button"
-        class="btn btn-primary"
-        @click="deconnex()"
-      >Déconnexion</button>
-    
+            <button type="button" class="btn btn-primary" @click="deconnex()">Déconnexion</button>
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -106,8 +101,8 @@ export default {
   },
   methods: {
     async deconnex() {
-       await this.$axios.get("/disconected");
-       this.$router.push("/login");
+      await this.$axios.get("/disconected");
+      this.$router.push("/login");
     },
     async reportsLoad() {
       let urlString = "/dashboard";
@@ -231,12 +226,6 @@ export default {
 </script>
 
 <style scoped>
-.navbar {
-  background-color: #932929;
-  top: -27px;
-  padding: 0; /*
-  height: 57px;*/
-}
 .button {
   padding: 15px 25px;
   font-size: 24px;

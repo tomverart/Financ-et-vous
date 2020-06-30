@@ -1,66 +1,88 @@
 <template>
+  <div>
+    <!-- Barre de navigation-->
+    <b-navbar toggleable="lg" type="light">
+      <b-navbar-brand>
+        <img style="margin-left:auto; margin-right: auto" src="../img/miniature_fond_fonce.png" />
+      </b-navbar-brand>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-collapse id="nav-collapse" is-nav>
+        <li class="nav-item">
+          <button type="button" class="btn btn-primary" @click="clickRoute('createUser')">Créer utilisateur</button>
+        </li>
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item>
+            <button type="button" class="btn btn-primary" @click="deconnex()">Déconnexion</button>
+          </b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
 
-  <div class="mx-auto" style="width: 75rem;">
-    <label for="boutonsTri">Tri :</label>
-    <br />
-    
-    <div
-      class="btn-group"
-      role="group"
-      aria-label="Basic example"
-      style="padding-bottom: 2rem;"
-      id="boutonsTri"
-    >
-      <button type="button" class="btn btn-primary" @click="triListe(0)">Tout</button>
-      <button type="button" class="btn btn-primary" @click="triListe(1)">En attente</button>
-      <button type="button" class="btn btn-primary" @click="triListe(2)">Validées</button>
-      <button type="button" class="btn btn-primary" @click="triListe(3)">Refusées</button>
-    </div>
-    <div>
-      <button
-        type="button"
-        class="btn btn-primary"
-        @click="goCreateUser()"
-      >Création d'un nouvel Utilisateur</button>
-    </div>
-    
-    <br />
-    <div>
-      <h3>Notes de frais</h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Utilisateur</th>
-            <th scope="col">Libelle</th>
-            <th scope="col">Etat</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <template v-for="(noteFrais, index) of ListNoteFraisToShow">
-            <tr :key="noteFrais.idnotefrais" v-on:click="expandReport(noteFrais)">
-              <th scope="row">{{noteFrais.idnotefrais}}</th>
-              <td>{{noteFrais.nomutilisateur}} {{noteFrais.prenomutilisateur}}</td>
-              <td>{{noteFrais.libelle}}</td>
-              <td>{{listEtatNote[noteFrais.idetatnote -1]}}</td>
-              <td>
-                <button class="btn" @click="updateEtatNote(noteFrais, 2)">✔</button>
-                &nbsp;
-                <button class="btn" @click="updateEtatNote(noteFrais, 3)">❌</button>
-                {{noteFrais.expand}}
-              </td>
+    <div class="mx-auto" style="width: 75rem;">
+      <label for="boutonsTri">Tri :</label>
+      <br />
+
+      <div
+        class="btn-group"
+        role="group"
+        aria-label="Basic example"
+        style="padding-bottom: 2rem;"
+        id="boutonsTri"
+      >
+        <button type="button" class="btn btn-primary" @click="triListe(0)">Tout</button>
+        <button type="button" class="btn btn-primary" @click="triListe(1)">En attente</button>
+        <button type="button" class="btn btn-primary" @click="triListe(2)">Validées</button>
+        <button type="button" class="btn btn-primary" @click="triListe(3)">Refusées</button>
+      </div>
+      <!-- <div>
+        <button
+          type="button"
+          class="btn btn-primary"
+          @click="goCreateUser()"
+        >Création d'un nouvel Utilisateur</button>
+      </div> -->
+
+      <br />
+      <div>
+        <h3>Notes de frais</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Utilisateur</th>
+              <th scope="col">Libelle</th>
+              <th scope="col">Etat</th>
+              <th scope="col">Actions</th>
             </tr>
-            <tr :key="index" v-if="noteFrais.expand">
-              <ViewExpenseReports
-                :reportToDisplay="reportToShow"
-                :onReportView="true"
-                @hide="expandReport(noteFrais)"
-              />
-            </tr>
-          </template>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <template v-for="(noteFrais, index) of ListNoteFraisToShow">
+              <tr :key="noteFrais.idnotefrais" v-on:click="expandReport(noteFrais)">
+                <th scope="row">{{noteFrais.idnotefrais}}</th>
+                <td>{{noteFrais.nomutilisateur}} {{noteFrais.prenomutilisateur}}</td>
+                <td>{{noteFrais.libelle}}</td>
+                <td>{{listEtatNote[noteFrais.idetatnote -1]}}</td>
+                <td>
+                  <button class="btn" @click="updateEtatNote(noteFrais, 2)">✔</button>
+                  &nbsp;
+                  <button
+                    class="btn"
+                    @click="updateEtatNote(noteFrais, 3)"
+                  >❌</button>
+                  {{noteFrais.expand}}
+                </td>
+              </tr>
+              <tr :key="index" v-if="noteFrais.expand">
+                <ViewExpenseReports
+                  :reportToDisplay="reportToShow"
+                  :onReportView="true"
+                  @hide="expandReport(noteFrais)"
+                />
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -183,6 +205,14 @@ export default {
       // L'affichage des tableaux Vue ne se mettent pas à jour quand une propriété d'un objet change mais se met à jour quand un tableau change.
       // Supprime le premier élément du tableau et le rempalce par lui-même pour provoquer un changement.
       this.ListNoteFraisToShow.splice(0, 1, this.ListNoteFraisToShow[0]);
+    },
+    // Déconnecter
+    async deconnex() {
+      await this.$axios.get("/disconected");
+      this.$router.push("/login");
+    },
+    clickRoute(pathToRoute) {
+      this.$router.push(pathToRoute);
     }
   }
 };

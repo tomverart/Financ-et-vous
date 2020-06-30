@@ -1,49 +1,68 @@
 <template>
-  <div class="mx-auto" style="width: 35rem;">
-    <label for="login">Login utilisateur</label>
-    <input v-model="login" type="text" id="login" class="form-control" />
+  <div>
+    <!-- Barre de navigation-->
+    <b-navbar toggleable="lg" type="light">
+      <b-navbar-brand>
+        <img style="margin-left:auto; margin-right: auto" src="../img/miniature_fond_fonce.png" />
+      </b-navbar-brand>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <li class="nav-item">
+        <button type="button" class="btn btn-primary" @click="clickRoute('/noteFrais')">Notes de frais</button>
+      </li>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item>
+            <button type="button" class="btn btn-primary" @click="deconnex()">Déconnexion</button>
+          </b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
+    <div class="mx-auto" style="width: 35rem;">
+      <label for="login">Login utilisateur</label>
+      <input v-model="login" type="text" id="login" class="form-control" />
 
-    <br />
-    <label for="password">Password</label>
-    <input v-model="password" type="text" id="password" class="form-control" />
-    <br />
+      <br />
+      <label for="password">Password</label>
+      <input v-model="password" type="text" id="password" class="form-control" />
+      <br />
 
-    <label for="firstName">First Name</label>
-    <input v-model="firstName" type="text" id="firstName" class="form-control" />
+      <label for="firstName">First Name</label>
+      <input v-model="firstName" type="text" id="firstName" class="form-control" />
 
-    <br />
+      <br />
 
-    <label for="lastName">Last Name</label>
-    <input v-model="lastName" type="text" id="lastName" class="form-control" />
+      <label for="lastName">Last Name</label>
+      <input v-model="lastName" type="text" id="lastName" class="form-control" />
 
-    <br />
+      <br />
 
-    <div class="form-check">
-      <input
-        class="form-check-input"
-        type="radio"
-        id="radioEmploy"
-        checked
-        value="3"
-        v-model="idRole"
-      />
-      <label class="form-check-label" for="radioEmploy">Employé</label>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          id="radioEmploy"
+          checked
+          value="3"
+          v-model="idRole"
+        />
+        <label class="form-check-label" for="radioEmploy">Employé</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" id="radioCompt" value="2" v-model="idRole" />
+        <label class="form-check-label" for="radioCompt">Comptable</label>
+      </div>
+      <br />
+      <label for="groupChoice">Groupe</label>
+      <select v-model="idusergroup" id="groupChoice" class="form-control">
+        <option
+          v-for="usergroup in usergrouplist"
+          v-bind:key="usergroup.idusergroup"
+        >{{ usergroup.stringgroup }}</option>
+      </select>
+      <br />
+
+      <button class="btn btn-primary" v-on:click="sendData">Créer utilisateur</button>
     </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" id="radioCompt" value="2" v-model="idRole" />
-      <label class="form-check-label" for="radioCompt">Comptable</label>
-    </div>
-    <br />
-    <label for="groupChoice">Groupe</label>
-    <select v-model="idusergroup" id="groupChoice" class="form-control">
-      <option
-        v-for="usergroup in usergrouplist"
-        v-bind:key="usergroup.idusergroup"
-      >{{ usergroup.stringgroup }}</option>
-    </select>
-    <br />
-
-    <button class="btn btn-primary" v-on:click="sendData">Créer utilisateur</button>
   </div>
 </template>
 
@@ -119,6 +138,14 @@ export default {
         }
       }
       return -1;
+    },
+    // Déconnecter
+    async deconnex() {
+      await this.$axios.get("/disconected");
+      this.$router.push("/login");
+    },
+    clickRoute(pathToRoute) {
+      this.$router.push(pathToRoute);
     }
   }
 };
