@@ -22,11 +22,13 @@
           <b-col sm>
             <!--Création note de frais-->
             <CreateExpenseReport
-              :addSuccess="reportAdded"
               :newReport="reportOnAdd"
-              :onExpenseAdd="doneExpenseAdd"
+              :onReportAdd="onReportAdd"
+              :onExpenseAdd="onExpenseAdd"
+              :expenses="expensesArray"
               @reportAdded="reportAddition"
-              @abandonAdd="reportDeletion"
+              @save="saveReporting"
+              @abandonAdd="abandonReporting"
             />
           </b-col>
 
@@ -48,15 +50,39 @@
 
     <!--Liste des notes de frais-->
     <div id="list">
-      <ListExpenseReports :reportsList="reports" @reportViewed="reportDisplay" />
+      <ListExpenseReports
+        :reportsList="reports"
+        @reportDeleted="reportDeletion"
+        @reportViewed="reportDisplay"
+        @reportModified="reportModify"
+      />
     </div>
 
     <!--Fenêtre de visualisation d'une note de frais-->
     <div v-if="reportToShow">
       <b-modal id="report-on-modal" hide-footer no-close-on-backdrop>
-        <template v-slot:modal-title>{{ reportToShow.libelle }}</template>
+        <template v-slot:modal-title>
+          <input type="text" :value="reportToShow.libelle" v-if="modalOnModify" />
+          <i v-else>{{ reportToShow.libelle }}</i>
+      
+          <button id="myButton"  @click="modalOnModify = false" v-if="modalOnModify">
+            <img src="../img/icone_enregistrer.png" /> &nbsp;Enregistrer
+          </button>
 
+          <button id="myButton"  @click="modalOnModify = true" v-else >
+            <img src="../img/icone_modifier.png"/> Modifier
+          </button>
+        </template>
         <div class="d-block text-center">{{ reportToShow.description }}</div>
+
+        <div>
+          <ul>
+            <li
+              v-for="expense in expensesToShow"
+              :key="expense.description"
+            >{{ expense.descriptionfrais }}</li>
+          </ul>
+        </div>
 
         <b-button class="mt-3" block @click="$bvModal.hide('report-on-modal')">Fermer</b-button>
       </b-modal>
@@ -83,14 +109,18 @@ export default {
     return {
       reports: null,
       reportToShow: null,
+      expensesToShow: null,
       //onListView: true,
       onExpenseAdd: false,
-      reportAdded: false,
+      onReportAdd: false,
+      //reportAdded: false,
       expenseAdded: false,
+      expensesArray: [],
       doneExpenseAdd: false,
       reportOnAdd: {
         idnotefrais: 0
-      }
+      },
+      modalOnModify: false
       //onReportView: false
     };
   },
@@ -116,19 +146,17 @@ export default {
         });
     },
     async reportDisplay(id) {
-      /* + this.$route.query.id */
       let urlString = "dashboard?id=" + id;
       await axios
         .get(urlString, {
           baseURL: "http://localhost:3000"
         })
         .then(response => {
-          this.reportToShow = response.data;
+          this.reportToShow = response.data.expenseReport;
+          if (response.data.expenses.length > 0)
+            this.expensesToShow = response.data.expenses;
+
           this.$bvModal.show("report-on-modal");
-          //this.onReportView = true;
-          //console.log(this.$refs)
-          //this.$refs['report-on-modal'].show();
-          //if(this.reportToShow != null)
         })
         .catch(err => {
           console.log("error from ExpenseReportList.vue: ", err);
@@ -144,9 +172,9 @@ export default {
           if (response.data.date) {
             //this. = false;
             this.reportOnAdd = response.data;
-            this.reportAdded = true;
+            this.onReportAdd = true;
+            //this.reportAdded = true;
             this.onExpenseAdd = true;
-            this.reportsLoad();
           } else console.log("zero");
         })
         .catch(err => {
@@ -155,7 +183,6 @@ export default {
     },
     async reportValidateExpense() {
       this.reportId = null;
-      this.reportsLoad();
     },
     async reportDeletion(reportId) {
       let urlString = "/dashboard/delete";
@@ -211,7 +238,8 @@ export default {
         )
         .then(() => {
           this.expenseAdded = true;
-          this.reportsLoad();
+          this.expensesArray.push(expense);
+
           console.log("ajouté");
         })
         .catch(err => {
@@ -219,7 +247,25 @@ export default {
         });
     },
     finishExpenseAdd() {
-      this.doneExpenseAdd = true;
+      this.onExpenseAdd = false;
+      //this.doneExpenseAdd = true;
+    },
+    saveReporting() {
+      this.onReportAdd = false;
+      //notification bien ajouté
+
+      this.reportsLoad();
+    },
+    abandonReporting(idnotefrais) {
+      this.onExpenseAdd = false;
+      this.onReportAdd = false;
+
+      this.reportDeletion(idnotefrais);
+      //notification bien ajouté
+    },
+    reportModify(id) {
+      this.reportDisplay(id);
+      this.modalOnModify = true;
     }
   }
 };
@@ -248,6 +294,16 @@ export default {
   background-color: #932929;
   /*box-shadow: 0 5px #666;
   transform: translateY(4px);*/
+}
+
+#myButton {
+  /* background-color: #11ffee00;  couleur transaparente*/
+  background-color: #932929;
+  border: 0px solid #932929;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 8%;
 }
 
 #list {
