@@ -91,8 +91,11 @@ export default {
         { key: "etat", label: "etat", sortable: true },
         { key: "montant", label: "montant", sortable: true }
       ],
-      selectMode: "range",
+      selectMode: "range"
     };
+  },
+  mounted() {
+    console.log(this.reports);
   },
   computed: {
     currentUrl: function() {
@@ -119,7 +122,7 @@ export default {
             libelle: report.libelle,
             date: report.date,
             etat: state,
-            montant: "à calculer"
+            montant: report.montant
           });
         });
       }
@@ -150,9 +153,33 @@ export default {
       reportRow._showDetails = !reportRow._showDetails;
     },
     modifyReport(row) {
-      console.log(row);
+      //récupération de l'id de la NF en question
+      let id;
+      this.reportsList.forEach(report => {
+        if (report.libelle === row.item.libelle) id = report.idnotefrais;
+      });
+      if (id) {
+          this.$emit("reportModified", id);
+      } else console.log("impossible d'ouvrir cettre nf");
     },
-    deleteReport() {},
+    deleteReport(row) {
+      //récupération de l'id de la NF en question
+      let id;
+      this.reportsList.forEach(report => {
+        if (report.libelle === row.item.libelle) id = report.idnotefrais;
+      });
+      if (id) {
+        if (
+          confirm(
+            'Etes-vous sur de vouloir supprimer la note de frais "' +
+              row.item.libelle +
+              '"?'
+          )
+        ) {
+          this.$emit("reportDeleted", id);
+        }
+      } else console.log("impossible de supprimer cettre nf");
+    },
     showReport(row) {
       let id;
 

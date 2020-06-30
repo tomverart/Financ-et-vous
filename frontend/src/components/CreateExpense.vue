@@ -26,7 +26,7 @@
             </td>
             <td>
               <input
-                :disabled="validatedExpense"
+                :disabled="!onExpenseAdd"
                 v-model="montantFrais"
                 type="number"
                 id="montantfrais"
@@ -46,7 +46,7 @@
                 type="text"
                 id="descFrais"
                 class="form-control"
-                :disabled="validatedExpense"
+                :disabled="!onExpenseAdd"
               />
             </td>
           </tr>
@@ -61,17 +61,17 @@
                 type="file"
                 ref="file"
                 v-on:change="handleFileUpload()"
-                :disabled="validatedExpense"
+                :disabled="!onExpenseAdd"
               />
             </td>
           </tr>
 
           <tr>
             <td>
-              <button class="btn btn-primary" :disabled="validatedExpense" @click="onSubmit">Ajouter</button>
+              <button class="btn btn-primary" :disabled="!onExpenseAdd" @click="onSubmit">Ajouter</button>
             </td>&nbsp;
             <td>
-              <button :disabled="validatedExpense" @click="done()">Terminer</button>
+              <button :disabled="!onExpenseAdd" @click="done()">Terminer</button>
             </td>
           </tr>
         </table>
@@ -89,6 +89,10 @@ export default {
     createExpensesComponent
   }, */
   props: {
+    /*     onExpenseAdd: null,
+
+ */
+
     onExpenseAdd: null,
     addSuccess: null,
     idnotefraisprops: {
@@ -98,7 +102,12 @@ export default {
   },
   watch: {
     onExpenseAdd: function() {
-      if (this.onExpenseAdd) this.validatedExpense = false;
+      if (!this.onExpenseAdd) {   //si le formulaire est désactivé
+        //vider les champs
+        this.montantFrais = 0;
+        this.descFrais = "";
+        document.getElementById("file").value = "";
+      }
     }
   },
   data() {
@@ -107,8 +116,7 @@ export default {
       descFrais: "",
       montantFrais: 0,
       idnotefrais: this.idnotefraisprops,
-      fraisSup: [],
-      validatedExpense: true
+      fraisSup: []
       // Merci de ne pas supprimer ça, je le ferais bientôt
       // image: "http://localhost:3000/downloadImage"
     };
@@ -127,7 +135,11 @@ export default {
 
       if (this.addSuccess) {
         //notification "bien ajouté"
-        //on vide les champs du formulaire
+
+        //vide les champs du formulaire
+        this.montantFrais = 0;
+        this.descFrais = "";
+        document.getElementById("file").value = "";
       } else {
         //notification d'erreur de formulaire
       }
@@ -137,7 +149,7 @@ export default {
           
           console.log("bien ajouté");
         } else {
-          this.validatedExpense = true;
+          this.onExpenseAdd = true;
         }
       } else {
         //notification d'erreur de formulaire
@@ -150,10 +162,10 @@ export default {
         // TODO : Virer le tableau.
                     //this.fraisSup.push(createExpensesComponent);
         // Désactive les champs et boutons du composant actuel
-        this.validatedExpense = false;
+        this.onExpenseAdd = false;
       } else {
         //this.$router.push("/dashboard");
-        this.validatedExpense = true;
+        this.onExpenseAdd = true;
       } */
     },
     done() {
@@ -165,7 +177,6 @@ export default {
       document.getElementById("file").value = "";
 
       //désactive le formulaire de saisie d'un nouveau frais
-      this.validatedExpense = true;
     },
     // Récupère le fichier téléversé
     handleFileUpload() {

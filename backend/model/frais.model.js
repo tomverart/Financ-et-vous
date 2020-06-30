@@ -34,6 +34,16 @@ class FRAIS {
     console.log(result.rows);
   }
 
+
+  static async deleteByIdNoteFrais (idnotefrais) {
+    const result = await database.client.query({
+      text: `
+            DELETE FROM ${FRAIS.tableName} where idnotefrais = ($1)`,
+      values: [idnotefrais]
+    });
+    console.log(result.rows);
+  }
+
   static async selectAllFrais () {
     const result = await database.client.query({
       text: `
