@@ -18,10 +18,11 @@
           <td>
             <h2>{{ reportToDisplay.libelle }}</h2>
           </td>
-          <td style="padding-right: 2rem; padding-left:2rem;">
+          
+          <td v-if="isComptable != true" style="padding-right: 2rem; padding-left:2rem;">
             <button @click="onModify = true" class="btn btn-primary">Modifier</button>
           </td>
-          <td>
+          <td v-if="isComptable != true" >
             <button @click="deletion" class="btn btn-primary">Supprimer</button>
           </td>
         </tr>
@@ -57,11 +58,13 @@ export default {
       // Sauvegarde la note affichée pour vérifier la nécessité de mise à jour des données
       reportCheck: null,
       // Lien de récupération d'images
-      image: "http://localhost:3000/downloadImage/"
+      image: "http://localhost:3000/downloadImage/",
+      isComptable: this.comptable
     };
   },
   props: {
-    reportToDisplay: {}
+    reportToDisplay: {},
+    comptable: null
   },
   mounted() {
     this.getFrais();

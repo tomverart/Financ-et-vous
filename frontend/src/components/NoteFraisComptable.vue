@@ -76,6 +76,7 @@
                 <ViewExpenseReports
                   :reportToDisplay="reportToShow"
                   :onReportView="true"
+                  :comptable="true"
                   @hide="expandReport(noteFrais)"
                 />
               </tr>
