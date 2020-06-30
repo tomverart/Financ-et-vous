@@ -105,7 +105,6 @@ export default {
       if (confirmation) {
         //notification "note de frais enregistrée"
         this.$emit("save");
-
         // vide les champs du formulaire
         this.description = "";
         this.label = "";

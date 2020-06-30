@@ -64,13 +64,13 @@
         <template v-slot:modal-title>
           <input type="text" :value="reportToShow.libelle" v-if="modalOnModify" />
           <i v-else>{{ reportToShow.libelle }}</i>
-      
-          <button id="myButton"  @click="modalOnModify = false" v-if="modalOnModify">
+
+          <button id="myButton" @click="modalOnModify = false" v-if="modalOnModify">
             <img src="../img/icone_enregistrer.png" /> &nbsp;Enregistrer
           </button>
 
-          <button id="myButton"  @click="modalOnModify = true" v-else >
-            <img src="../img/icone_modifier.png"/> Modifier
+          <button id="myButton" @click="modalOnModify = true" v-else>
+            <img src="../img/icone_modifier.png" /> Modifier
           </button>
         </template>
         <div class="d-block text-center">{{ reportToShow.description }}</div>
@@ -259,7 +259,7 @@ export default {
     abandonReporting(idnotefrais) {
       this.onExpenseAdd = false;
       this.onReportAdd = false;
-
+      this.expensesToShow = [];
       this.reportDeletion(idnotefrais);
       //notification bien ajouté
     },
