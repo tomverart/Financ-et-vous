@@ -57,7 +57,7 @@
               <b-col sm="3" class="text-sm-right">
                 <b>Montant:</b>
               </b-col>
-              <b-col>{{ row.item.montant }}</b-col>
+              <b-col>{{ row.item.montant }} €</b-col>
             </b-row>
 
             <b-row class="mb-2">
@@ -119,7 +119,7 @@ export default {
             libelle: report.libelle,
             date: report.date,
             etat: state,
-            montant: report.montant
+            montant: report.montant + ' €'
           });
         });
       }
