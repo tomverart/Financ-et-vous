@@ -10,7 +10,7 @@ async function create (req, res) {
   const group = req.body.idgroup;
 
     User.createUtilisateurs(login, passw, firstName, lastName, role, group);
-    return 
+    res.sendStatus(200); 
   }
  
   

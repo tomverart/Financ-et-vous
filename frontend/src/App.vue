@@ -50,4 +50,10 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+.navbar {
+  background-color: #932929;
+  top: -27px;
+  padding: 0; /*
+  height: 57px;*/
+}
 </style>

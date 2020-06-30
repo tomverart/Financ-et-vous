@@ -23,6 +23,9 @@ class UTILISATEUR {
     try {
       // Vérifie si le rôle existe, si il n'existe pas, renvoie une erreur
       if (!await Role.existsByIdRole(idRole)) throw new Error("L'idRole est incorrect.");
+      
+      const sha = require('sha256');
+      mdpUtilisateur = mdpUtilisateur + sha(loginUtilisateur);
       // Création de l'utilisateur
       const idut = await database.client.query({
         text: `
@@ -81,6 +84,8 @@ class UTILISATEUR {
  */
 static async userAuth (login, password) {
   // console.log(login, password);
+  const sha = require('sha256');
+  password = password + sha(login);
   const result = await database.client.query({
     text: `
     SELECT loginutilisateur, stringrole

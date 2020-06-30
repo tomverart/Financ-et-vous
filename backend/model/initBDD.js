@@ -61,6 +61,8 @@ class InitBDD {
   }
 
   async testnoteFraisComtpable () {
+    const sha = require('sha256');
+
     // const noteFrais = require('./noteFrais.model');
     const utilisateur = require('./utilisateur.model');
     const usergroup = require('./usergroup.model.js');
@@ -69,8 +71,8 @@ class InitBDD {
     await usergroup.createGroup('Main group');
     await usergroup.createGroup('Secondary group');
 
-    await utilisateur.createUtilisateurs('JE', 'soleil123', 'Jean', 'Michel', 3, 1);
-    await utilisateur.createUtilisateurs('JC', 'soleil123', 'Jean', 'MichelMichel', 2, 1);
+    await utilisateur.createUtilisateurs('JE', sha('soleil123'), 'Jean', 'Michel', 3, 1);
+    await utilisateur.createUtilisateurs('JC', sha('soleil123'), 'Jean', 'MichelMichel', 2, 1);
 
     await utilisateurgroup.createUtilisateurGroup(2, 2);
   }
