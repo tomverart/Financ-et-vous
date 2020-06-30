@@ -119,7 +119,7 @@ export default {
             libelle: report.libelle,
             date: report.date,
             etat: state,
-            montant: report.montant
+            montant: report.montant + ' €'
           });
         });
       }
