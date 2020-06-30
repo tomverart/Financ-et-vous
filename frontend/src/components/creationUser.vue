@@ -61,6 +61,7 @@ export default {
   props: {},
   methods: {
     async sendData() {
+      const sha = require("sha256");
       // Récupère l'id du groupe
       let indexGroupList = this.getIdGroup(
         this.usergrouplist,
@@ -70,7 +71,7 @@ export default {
 
       await this.$axios.post("/createUser", {
         login: this.login,
-        password: this.password,
+        password: sha(this.password),
         firstName: this.firstName,
         lastName: this.lastName,
         idRole: this.idRole,
