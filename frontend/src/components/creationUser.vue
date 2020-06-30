@@ -18,18 +18,32 @@
 
     <br />
 
-    <label for="idRole">id Role</label>
-    <input v-model="idRole" type="text" id="idRole" class="form-control" />
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        id="radioEmploy"
+        checked
+        value="3"
+        v-model="idRole"
+      />
+      <label class="form-check-label" for="radioEmploy">Employé</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" id="radioCompt" value="2" v-model="idRole" />
+      <label class="form-check-label" for="radioCompt">Comptable</label>
+    </div>
     <br />
-
-    <select v-model="idusergroup">
+    <label for="groupChoice">Groupe</label>
+    <select v-model="idusergroup" id="groupChoice" class="form-control">
       <option
         v-for="usergroup in usergrouplist"
         v-bind:key="usergroup.idusergroup"
       >{{ usergroup.stringgroup }}</option>
     </select>
+    <br />
 
-    <button class="btn btn-primary" v-on:click="sendData">envoyer donnée</button>
+    <button class="btn btn-primary" v-on:click="sendData">Créer utilisateur</button>
   </div>
 </template>
 
@@ -44,7 +58,7 @@ export default {
       password: null,
       firstName: null,
       lastName: null,
-      idRole: null,
+      idRole: 3,
       // Choix du select
       idusergroup: 1,
 
@@ -69,14 +83,27 @@ export default {
         this.idusergroup
       );
 
-      await this.$axios.post("/createUser", {
-        login: this.login,
-        password: sha(this.password),
-        firstName: this.firstName,
-        lastName: this.lastName,
-        idRole: this.idRole,
-        idgroup: this.usergrouplist[indexGroupList].idgroup
-      });
+      await this.$axios
+        .post("/createUser", {
+          login: this.login,
+          password: sha(this.password),
+          firstName: this.firstName,
+          lastName: this.lastName,
+          idRole: this.idRole,
+          idgroup: this.usergrouplist[indexGroupList].idgroup
+        })
+        .then(() => {
+          // En cas de réussite, retourne aux valeurs par défaut et affiche un message de confirmation
+          this.login = null;
+          this.password = null;
+          this.firstName = null;
+          this.lastName = null;
+          window.alert("Utilisateur créé");
+        })
+        .catch(err => {
+          window.alert("ERR : ", err);
+          console.log("ERR : ", err);
+        });
     },
     // Récupère tous les groupes
     async getGroups() {
