@@ -59,7 +59,7 @@
 
         <b-row class="my-1">
           <b-col md>
-            <button class="btn btn-dark">Créer</button>
+            <button class="myButton">Créer</button>
           </b-col>
         </b-row>
       </form>
@@ -117,3 +117,16 @@ export default {
   }
 };
 </script>
+ 
+ <style>
+
+.myButton {
+  /* background-color: #11ffee00;  couleur transaparente*/
+  background-color: #932929;
+  border: 0px solid #932929;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 8%;
+}
+ </style>

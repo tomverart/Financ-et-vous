@@ -2,7 +2,7 @@
   <div id="theContainer">
     <div>
       <b-table
-        class="b-table"
+        class="b-table table-hover"
         ref="selectableTable"
         selectable
         :select-mode="selectMode"
@@ -12,29 +12,28 @@
         :busy="aya"
         sort-icon-left
         responsive
-        hover
         :no-border-collapse="true"
         sticky-header
         @row-clicked="openDetails"
       >
         <!--Customed culumn "Libelle"-->
         <template v-slot:head(libelle)="data">
-          <span>{{ data.label.toUpperCase() }}</span>
+          <span style="color: #932929">{{ data.label.toUpperCase() }}</span>
         </template>
 
         <!--Customed culumn "Date"-->
         <template v-slot:head(date)="data">
-          <span>{{ data.label.toUpperCase() }}</span>
+          <span style="color: #932929">{{ data.label.toUpperCase() }}</span>
         </template>
 
         <!--Customed culumn "Etat"-->
         <template v-slot:head(etat)="data">
-          <span class="text-info">{{ data.label.toUpperCase() }}</span>
+          <span style="color: #932929">{{ data.label.toUpperCase() }}</span>
         </template>
 
         <!--Customed culumn "Montant"-->
         <template v-slot:head(montant)="data">
-          <span class="text-info">{{ data.label.toUpperCase() }}</span>
+          <span style="color: #932929">{{ data.label.toUpperCase() }}</span>
         </template>
 
         <!--Customed culumn "Select" culumn of checkboxes-->
@@ -52,7 +51,7 @@
 
         <!--Details revealed after selection of an expense report on the list-->
         <template v-slot:row-details="row">
-          <b-card>
+          <b-card style="background-color: #ddd9cf">
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right">
                 <b>Montant:</b>
@@ -68,9 +67,9 @@
               <b-col>{{ row.item.etat }}</b-col>
             </b-row>
 
-            <b-button size="sm" @click="showReport(row)">Ouvrir</b-button>
-            <b-button size="sm" @click="deleteReport(row)">Supprimer</b-button>
-            <b-button size="sm" @click="modifyReport(row)">Modifier</b-button>
+            <b-button class="myButton" size="sm" @click="showReport(row)">Ouvrir</b-button>
+            <b-button class="myButton" size="sm" @click="deleteReport(row)">Supprimer</b-button>
+            <b-button class="myButton" size="sm" @click="modifyReport(row)">Modifier</b-button>
           </b-card>
         </template>
       </b-table>
@@ -122,7 +121,7 @@ export default {
             libelle: report.libelle,
             date: report.date,
             etat: state,
-            montant: report.montant + ' €'
+            montant: report.montant + " €"
           });
         });
       }
@@ -159,7 +158,7 @@ export default {
         if (report.libelle === row.item.libelle) id = report.idnotefrais;
       });
       if (id) {
-          this.$emit("reportModified", id);
+        this.$emit("reportModified", id);
       } else console.log("impossible d'ouvrir cettre nf");
     },
     deleteReport(row) {
@@ -207,11 +206,22 @@ export default {
 }*/
 .b-table {
   margin: 0 auto;
+  
   /* background-color: rgb(179, 157, 128); */
 }
 .b-table-sticky-header {
   max-height: 450px;
-} /*
+} 
+.myButton {
+  /* background-color: #11ffee00;  couleur transaparente*/
+  background-color: #932929;
+  border: 0px solid #932929;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 8%;
+  margin: 4px;
+}/*
 /*b-table-simple {
   max-height: 100%;
   background-color: blue;

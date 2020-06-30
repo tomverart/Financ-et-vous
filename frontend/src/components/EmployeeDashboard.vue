@@ -9,15 +9,15 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item>
-            <button type="button" class="btn btn-primary" @click="deconnex()">Déconnexion</button>
+            <button type="button" class="myButton" @click="deconnex()">Déconnexion</button>
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
 
     <!--Ajout de notes de frais-->
-    <div id="newReport">
-      <b-card>
+    <div >
+      <b-card id="newReport">
         <b-row align-h="center">
           <b-col sm>
             <!--Création note de frais-->
@@ -65,11 +65,11 @@
           <input type="text" :value="reportToShow.libelle" v-if="modalOnModify" />
           <i v-else>{{ reportToShow.libelle }}</i>
 
-          <button id="myButton" @click="modalOnModify = false" v-if="modalOnModify">
+          <button class="myButton" @click="modalOnModify = false" v-if="modalOnModify">
             <img src="../img/icone_enregistrer.png" /> &nbsp;Enregistrer
           </button>
 
-          <button id="myButton" @click="modalOnModify = true" v-else>
+          <button class="myButton" @click="modalOnModify = true" v-else>
             <img src="../img/icone_modifier.png" /> Modifier
           </button>
         </template>
@@ -296,7 +296,7 @@ export default {
   transform: translateY(4px);*/
 }
 
-#myButton {
+.myButton {
   /* background-color: #11ffee00;  couleur transaparente*/
   background-color: #932929;
   border: 0px solid #932929;
@@ -314,6 +314,7 @@ export default {
 
 #newReport {
   width: 80%;
+  background-color: #ddd9cf;
 }
 </style>
 
