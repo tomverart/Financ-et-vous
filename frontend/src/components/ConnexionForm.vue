@@ -11,7 +11,6 @@
       <td class="col-md-3"></td>
       <td class="col-md-6">
         <b-form v-on:submit.prevent="sendData">
-          <label class="sr-only" for="login">Nom d'utilisateur</label>
           <b-input
             id="login"
             v-model="login"
@@ -19,7 +18,6 @@
             placeholder="Nom d'utilisateur"
           ></b-input>
           <br />
-          <label class="sr-only" for="password">Mot de passe</label>
           <b-input-group prepend="🔒" class="mb-2 mr-sm-2 mb-sm-0">
             <b-input v-model="password" id="password" placeholder="Mot de passe"></b-input>
           </b-input-group>
