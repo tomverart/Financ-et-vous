@@ -61,8 +61,7 @@ export default {
     };
   },
   props: {
-    reportToDisplay: {},
-    onReportView: null
+    reportToDisplay: {}
   },
   mounted() {
     this.getFrais();
