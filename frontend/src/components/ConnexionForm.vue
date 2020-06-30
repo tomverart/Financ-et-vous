@@ -50,7 +50,7 @@ export default {
       const resp = await this.$axios.post("/utilisateur", {
         login: this.login,
         password: sha(this.password)
-      });
+      }).catch(window.alert('Le Login et / ou le Mot de passe sont incorect, veuillez réesayer'));
       const user = resp.data;
 
       if (user.stringrole == "Comptable") {
