@@ -119,7 +119,7 @@ export default {
       // Récupère les données du form
       let formData = {};
       formData.file = this.file;
-      formData.idnotefrais = this.idnotefrais;
+      formData.idnotefrais = this.idnotefraisprops;
       formData.montantfrais = this.montantFrais;
       formData.descfrais = this.descFrais;
 
