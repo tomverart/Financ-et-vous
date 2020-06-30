@@ -79,7 +79,6 @@ async function beforeEnterEmploye(to, from, next) {
 async function beforeLogin(to, from, next) {
   try {
     const result = await myAxios.get("/connected");
-    console.log('coucou je suis le resultat', result);
     if (result.data.role == 'Comptable')
     {
       next('/noteFrais')
@@ -104,7 +103,7 @@ const routes = [
   { path: '/dashboard', component: EmployeeDashboard, beforeEnter:beforeEnterEmploye },
   { path: '/createExpenses', component: createExpense, props: true, name: 'createExpenses', beforeEnter },
   { path: '/createExpensesReport', component: createExpenseReport, beforeEnter },
-  { path: '/createUser', component: createUser, beforeEnterComptable}
+  { path: '/createUser', component: createUser, beforeEnter:beforeEnterComptable}
 ];
 
 

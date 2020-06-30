@@ -30,6 +30,13 @@ var getAllusergroups = require('../controllers/groupControllers/getUserGroups.us
 // Login
 router.post('/utilisateur', login);
 
+router.get('/disconected', (req, res, next) => {
+req.session.login = null;
+req.session.role = null;
+
+res.sendStatus(200);
+});
+
 router.get('/connected', (req, res, next) => {
   console.log(req.session);    console.log('son role' , req.session.role);
 
