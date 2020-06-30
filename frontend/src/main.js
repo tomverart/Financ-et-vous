@@ -104,7 +104,7 @@ const routes = [
   { path: '/dashboard', component: EmployeeDashboard, beforeEnter:beforeEnterEmploye },
   { path: '/createExpenses', component: createExpense, props: true, name: 'createExpenses', beforeEnter },
   { path: '/createExpensesReport', component: createExpenseReport, beforeEnter },
-  { path: '/createUser', component: createUser, beforeEnterComptable}
+  { path: '/createUser', component: createUser, beforeEnter:beforeEnterComptable}
 ];
 
 

@@ -9,7 +9,12 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item>
-            <a href style="color: white">Déconnexion</a>
+            <button
+        type="button"
+        class="btn btn-primary"
+        @click="deconnex()"
+      >Déconnexion</button>
+    
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -100,6 +105,11 @@ export default {
     this.reportsLoad();
   },
   methods: {
+    async deconnex() {
+      console.log('bonjour, tu souhaite deco');
+        await axios.get("/disconected");
+      this.$router.push("/login");
+    },
     async reportsLoad() {
       let urlString = "/dashboard";
       await axios
