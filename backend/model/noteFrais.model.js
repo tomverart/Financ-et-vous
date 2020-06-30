@@ -74,7 +74,12 @@ console.log(frais);
   static async selectByUserId (idUser) {
     const result = await database.client.query({
       text: `
-            SELECT *, (SELECT sum(montantfrais) from frais where idnotefrais = $1) montant FROM ${NOTEFRAIS.tableName} where idutilisateur = ($1) ORDER BY ${NOTEFRAIS.tableName}.idnotefrais DESC`,
+      SELECT ${NOTEFRAIS.tableName}.idnotefrais, ${NOTEFRAIS.tableName}.idutilisateur, ${NOTEFRAIS.tableName}.libelle, ${NOTEFRAIS.tableName}.description, ${NOTEFRAIS.tableName}.date, ${NOTEFRAIS.tableName}.idetatnote, sum(frais.montantfrais) montant
+      FROM NOTEFRAIS, frais
+      where frais.idnotefrais = ${NOTEFRAIS.tableName}.idnotefrais 
+      and idutilisateur = ($1)
+      GROUP BY ${NOTEFRAIS.tableName}.idnotefrais 
+      ORDER BY NOTEFRAIS.idnotefrais DESC`,
       values: [idUser]
     });
 
