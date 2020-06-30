@@ -1,5 +1,6 @@
 <template>
-  <div class="mx-auto" style="width: 50rem;">
+  <!-- <div class="mx-auto"> -->
+  <b-card>
     <!-- Merci de ne pas supprimer ça, je le ferais bientôt -->
     <!-- <h1>Frais</h1>
     <span v-if="image === null">chargement...</span>
@@ -7,77 +8,97 @@
     <img style="max-width: 30rem; max-height: 30rem;" :src="image" alt="Base64 encoded image" />
     </span>-->
 
-    <!-- Composant supplémentaire -->
-    <button
-      v-show="!validatedExpense"
-      class="btn btn-primary"
-      @click="returnToExpensesReport"
-    >Retour à la création de note de frais</button>
-    <div :disabled="validatedExpense" />
-    <div v-for="(fraisAdd, index) in fraisSup" :key="index">
-      <component :is="fraisAdd" :idnotefraisprops="idnotefrais" @reportValidated="returnToExpensesReport"/>
-    </div>
-    <br />
-    <form v-on:submit.prevent="onSubmit">
-      <label for="montantfrais">Montant</label>
-      <input
-        :disabled="validatedExpense"
-        v-model="montantFrais"
-        type="number"
-        id="montantfrais"
-        class="form-control"
-        style="max-width: 5rem"
+    <!-- <div v-for="(fraisAdd, index) in fraisSup" :key="index">
+      <component
+        :is="fraisAdd"
+        :idnotefraisprops="idnotefrais"
+        @reportValidated="returnToExpensesReport"
       />
-      <br />
-      <label for="descFrais">Description</label>
-      <textarea
-        v-model="descFrais"
-        type="text"
-        id="descFrais"
-        class="form-control"
-        :disabled="validatedExpense"
-      />
+    </div>-->
+    <h5>Ajouter une dépense</h5>
 
-      <br />
-      <label for="file">Photo</label>
-      <br />
-      <input
-        id="file"
-        type="file"
-        ref="file"
-        v-on:change="handleFileUpload()"
-        :disabled="validatedExpense"
-      />
+    <form v-on:submit.prevent="onSubmit" id="form">
+      <div class="table-responsive">
+        <table>
+          <tr>
+            <td>
+              <label for="montantfrais">Montant</label>
+            </td>
+            <td>
+              <input
+                :disabled="validatedExpense"
+                v-model="montantFrais"
+                type="number"
+                id="montantfrais"
+                class="form-control"
+                style="max-width: 5rem"
+              />
+            </td>
+          </tr>
 
-      <br />
-      <br />
-      <button
-        class="btn btn-primary"
-        v-on:click="sendData(false)"
-        v-show="!validatedExpense"
-      >Valider</button>
-      &nbsp;
-      <button
-        class="btn btn-primary"
-        v-on:click="sendData(true)"
-        v-show="!validatedExpense"
-      >Valider et ajouter un autre frais</button>
+          <tr>
+            <td>
+              <label for="descFrais">Description</label>
+            </td>
+            <td>
+              <textarea
+                v-model="descFrais"
+                type="text"
+                id="descFrais"
+                class="form-control"
+                :disabled="validatedExpense"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label for="file">Justificatif</label>
+            </td>
+            <td>
+              <input
+                id="file"
+                type="file"
+                ref="file"
+                v-on:change="handleFileUpload()"
+                :disabled="validatedExpense"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <button class="btn btn-primary" :disabled="validatedExpense" @click="onSubmit">Ajouter</button>
+            </td>&nbsp;
+            <td>
+              <button :disabled="validatedExpense" @click="done()">Terminer</button>
+            </td>
+          </tr>
+        </table>
+      </div>
     </form>
-  </div>
+  </b-card>
 </template>
 
 <script>
-import createExpensesComponent from "./CreateExpense.vue";
+//import createExpensesComponent from "./CreateExpense.vue";
 
 export default {
   name: "createExpense",
-  components: {
+  /* components: {
     createExpensesComponent
-  },
+  }, */
   props: {
+    onExpenseAdd: null,
+    addSuccess: null,
     idnotefraisprops: {
       type: Number,
       required: true
+    }
+  },
+  watch: {
+    onExpenseAdd: function() {
+      if (this.onExpenseAdd) this.validatedExpense = false;
     }
   },
   data() {
@@ -87,15 +108,14 @@ export default {
       montantFrais: 0,
       idnotefrais: this.idnotefraisprops,
       fraisSup: [],
-      validatedExpense: false
+      validatedExpense: true
       // Merci de ne pas supprimer ça, je le ferais bientôt
       // image: "http://localhost:3000/downloadImage"
     };
   },
-  mounted() {},
   methods: {
     // Envoie des données renseignées pour la création de frais
-    async sendData(addFrais) {
+    async sendData() {
       // Récupère les données du form
       let formData = {};
       formData.file = this.file;
@@ -103,19 +123,49 @@ export default {
       formData.montantfrais = this.montantFrais;
       formData.descfrais = this.descFrais;
 
-      this.$emit("expenseAdded", formData); 
+      this.$emit("expenseAdded", formData);
 
-      // Si le bouton "Valider et ajouter un autre frais" est cliqué
+      if (this.addSuccess) {
+        //notification "bien ajouté"
+        //on vide les champs du formulaire
+      } else {
+        //notification d'erreur de formulaire
+      }
+      /* 
+        
+        if (addFrais) {
+          
+          console.log("bien ajouté");
+        } else {
+          this.validatedExpense = true;
+        }
+      } else {
+        //notification d'erreur de formulaire
+        console.log("erreur")
+      } */
+
+      /* // Si le bouton "Valider et ajouter un autre frais" est cliqué
       if (addFrais) {
         // Ajoute ce composant en composant supplémentaire
         // TODO : Virer le tableau.
-        this.fraisSup.push(createExpensesComponent);
+                    //this.fraisSup.push(createExpensesComponent);
         // Désactive les champs et boutons du composant actuel
+        this.validatedExpense = false;
+      } else {
+        //this.$router.push("/dashboard");
         this.validatedExpense = true;
-      }
-      else{
-        this.$router.push('/dashboard');
-      }
+      } */
+    },
+    done() {
+      this.$emit("doneExpenseAdd");
+
+      // vide les champs du formulaire
+      this.montantFrais = 0;
+      this.descFrais = "";
+      document.getElementById("file").value = "";
+
+      //désactive le formulaire de saisie d'un nouveau frais
+      this.validatedExpense = true;
     },
     // Récupère le fichier téléversé
     handleFileUpload() {
@@ -123,10 +173,9 @@ export default {
     },
     // Empêche le changement de page du form
     onSubmit() {
-      // console.log("prevent");
-    },
-    returnToExpensesReport() {
-      this.$emit("reportValidated");
+      //vérifier les champs
+
+      this.sendData();
     }
   }
 };

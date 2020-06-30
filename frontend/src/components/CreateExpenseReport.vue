@@ -1,41 +1,49 @@
 <template>
-  <div class="mx-auto" style="width: 50rem;">
-    <h3>Déclarer note de frais</h3>
-    <br />
+  <div class="mx-auto">
+    <h5>Déclarer note de frais</h5>
+
     <div v-if="addSuccess">
-      Ajouté avec succès !
+      Nouvelle note de frais créée.
       <h4>{{ newReport.titre}}</h4>
       <p>{{ newReport.description }}</p>
-      <button v-on:click="onExpenseAddition">ajouter un frais</button>
+      <button :disabled="!onExpenseAdd" @click="confirmAdd(true)">Enregistrer</button>
+      <button @click="confirmAdd(false)">Abandonner</button>
     </div>
+
     <div v-else>
       <form v-on:submit.prevent="onSubmit">
-        <div class="form-group">
-          <label for="label">Titre</label>
-          <input
-            v-model="label"
-            style="width: 50%;"
-            type="text"
-            class="form-control"
-            id="label"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="reportDescription">Description</label>
-          <textarea
-            class="form-control"
-            rows="4"
-            id="reportDescription"
-            placeholder="ajoutez une description"
-            v-model="description"
-            required
-          ></textarea>
-          <br />
-        </div>
-        <div class="form-group">
-          <button class="btn btn-dark">Créer</button>
-        </div>
+        <b-row class="my-1">
+          <b-col sm>
+            <input
+              v-model="label"
+              style="width: 50%;"
+              type="text"
+              class="form-control"
+              id="label"
+              placeholder="Titre"
+              required
+            />
+          </b-col>
+        </b-row>
+
+        <b-row class="my-1">
+          <b-col md>
+            <textarea
+              class="form-control"
+              rows="2"
+              id="reportDescription"
+              placeholder="Ajoutez une description"
+              v-model="description"
+              required
+            ></textarea>
+          </b-col>
+        </b-row>
+
+        <b-row class="my-1">
+          <b-col md>
+            <button class="btn btn-dark">Créer</button>
+          </b-col>
+        </b-row>
       </form>
     </div>
     <!--<div v-else>
@@ -83,6 +91,7 @@ export default {
   props: {
     addSuccess: null,
     newReport: null,
+    onExpenseAdd: null
   },
   methods: {
     // Création de la note de frais
@@ -91,10 +100,15 @@ export default {
         label: this.label,
         description: this.description
       });
-      event.target.reset();
     },
-    onExpenseAddition() {
-      this.$emit("expenseAddRequested");
+    confirmAdd(confirmation) {
+      if (confirmation) {
+        //notification "note de frais enregistrée"
+      } else {
+        //notification "déclaration annulée"
+        //suppression de note de frais previously ajouté (pas la meilleure façon de faire mais bon..)
+        this.$emit("abandonAdd", this.newReport.idnotefrais);
+      }
     }
   }
 };

@@ -1,18 +1,17 @@
 <template>
   <div>
     <div v-if="onReportView">
-
-    <div v-if="onModify">
-      <h3>Modification</h3>
-      <form @submit.prevent="modification">
-        <label for="reportLabel">Libellé</label>
-        <input id="reportLabel" type="text" v-model="reportToDisplay.libelle" />
-        <br />
-        <label for="reportDescription">Description</label>
-        <textarea id="reportDescription" v-model="reportToDisplay.description"></textarea>
-        <input type="submit" value="Enregistrer" />
-      </form>
-    </div>
+      <div v-if="onModify">
+        <h3>Modification</h3>
+        <form @submit.prevent="modification">
+          <label for="reportLabel">Libellé</label>
+          <input id="reportLabel" type="text" v-model="reportToDisplay.libelle" />
+          <br />
+          <label for="reportDescription">Description</label>
+          <textarea id="reportDescription" v-model="reportToDisplay.description"></textarea>
+          <input type="submit" value="Enregistrer" />
+        </form>
+      </div>
 
       <table v-else>
         <tr>
@@ -25,7 +24,7 @@
           <td>
             <button @click="deletion">Supprimer</button>
           </td>
-        </tr> 
+        </tr>
       </table>
       <h5>Description : {{ reportToDisplay.description }}</h5>
       <div>(ici prochainement les frais lié à cette NF)</div>
@@ -38,7 +37,8 @@
 export default {
   name: "ViewExpenseReport",
   data() {
-    return {
+    return {    
+      onReportView: true,
       onModify: false,
       newLabel: null,
       newDescription: null
@@ -46,7 +46,6 @@ export default {
   },
   props: {
     reportToDisplay: {},
-    onReportView: null
    // done: null
     /*,
         notes: []*/

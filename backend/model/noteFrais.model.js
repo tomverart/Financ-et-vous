@@ -28,6 +28,13 @@ class NOTEFRAIS {
   }
 
   static async deleteNoteFrais (idNoteFrais) {
+    //récupération des frais associés à cette NF
+let frais = FRAIS.selectByIdNoteFrais(idNoteFrais);
+console.log(frais);
+
+    //suppression des frais associés à cette NF
+
+    
     const result = await database.client.query({
       text: `
             DELETE FROM ${NOTEFRAIS.tableName} where idNoteFrais = ($1)`,
