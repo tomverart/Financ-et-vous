@@ -47,21 +47,27 @@ export default {
   },
   methods: {
     async sendData() {
-      const resp = await this.$axios.post("/utilisateur", {
+       await this.$axios.post("/utilisateur", {
         login: this.login,
         password: sha(this.password)
-      }).catch(window.alert('Le Login et / ou le Mot de passe sont incorect, veuillez réesayer'));
-      const user = resp.data;
+      }).then(Response => {
 
-      if (user.stringrole == "Comptable") {
+        
+        const user = Response.data;
+        if (user.stringrole == "Comptable") {
         this.$router.push("/noteFrais");
       } else if (user.stringrole == "Employé") {
         this.$router.push("/dashboard");
       } else if (user.stringrole == "Administrateur") {
         console.log("it's an admin");
       } else {
-        console.log("unknown role");
+        console.log('inconnu');
       }
+
+      }
+);
+
+      
     }
   }
 };

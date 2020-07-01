@@ -5,14 +5,15 @@ async function connex (req, res) {
   const passw = req.body.password;
 
   const toSend = await user.userAuth(login, passw);
+console.log(toSend);
+  if(toSend != undefined){
 
-  if(toSend){
     req.session.login = toSend.loginutilisateur;
     req.session.role = toSend.stringrole;
     res.json(toSend);
 
   } else {
-    res.status(401).send('utilisateur inconnu')
+    res.sendStatus(401);
   }
 
 }
