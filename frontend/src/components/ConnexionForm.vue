@@ -50,14 +50,8 @@ export default {
        const resp = await this.$axios.post("/utilisateur", {
         login: this.login,
         password: sha(this.password)
-      })/*.catch(window.alert('Le Login et / ou le Mot de passe sont incorect, veuillez réesayer'));
-      const user = resp.data; */
-
-    
-      //const user = resp.data;
-      console.log("here: ",resp)
-      /* if(resp.data != 401) {
-
+      }).catch(window.alert('Le Login et / ou le Mot de passe sont incorect, veuillez réesayer'));
+      const user = resp.data;
       if (user.stringrole == "Comptable") {
         this.$router.push("/noteFrais");
       } else if (user.stringrole == "Employé") {
@@ -67,7 +61,6 @@ export default {
       } else {
         console.log("unknown role");
       }
-    } else console.log(resp.data)  *//* window.alert('Le Login et / ou le Mot de passe sont incorect, veuillez réesayer') */
     }
   }
 };
