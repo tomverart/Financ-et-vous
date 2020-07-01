@@ -1,13 +1,31 @@
 <template>
   <div class="mx-auto">
-    <h5>Déclarer note de frais</h5>
+    <h4>Déclarer note de frais</h4>
 
-    <div v-if="addSuccess">
-      Nouvelle note de frais créée.
-      <h4>{{ newReport.titre}}</h4>
-      <p>{{ newReport.description }}</p>
-      <button :disabled="!onExpenseAdd" @click="confirmAdd(true)">Enregistrer</button>
-      <button @click="confirmAdd(false)">Abandonner</button>
+    <div v-if="onReportAdd">
+      <b-row>
+        <b-col>
+          <h5>{{ newReport.libelle}}</h5>
+          <p>{{ newReport.description }}</p>
+        </b-col>
+      </b-row>
+
+      <b-row>
+        <b-col>
+          <div style="max-height: 20%">
+            <ul>
+              <li v-for="expense in expenses" :key="expense.description">{{ expense.description }}</li>
+            </ul>
+          </div>
+        </b-col>
+      </b-row>
+
+      <b-row>
+        <b-col>
+          <button :disabled="onExpenseAdd" @click="confirmAdd(true)">Enregistrer</button>
+          <button @click="confirmAdd(false)">Abandonner</button>
+        </b-col>
+      </b-row>
     </div>
 
     <div v-else>
@@ -41,7 +59,7 @@
 
         <b-row class="my-1">
           <b-col md>
-            <button class="btn btn-dark">Créer</button>
+            <button class="myButton">Créer</button>
           </b-col>
         </b-row>
       </form>
@@ -59,9 +77,21 @@ export default {
     };
   },
   props: {
-    addSuccess: null,
+    //addSuccess: null,
+    onReportAdd: null,
     newReport: null,
-    onExpenseAdd: null
+    onExpenseAdd: null,
+    expenses: null
+  },
+  watch: {
+    onReportAdd: function() {
+      if (this.onExpenseAdd) {
+        //si la NF est déjà saisie et enregistrée
+        //vider les champs auparavant remplis
+        this.description = "";
+        this.label = "";
+      }
+    }
   },
   methods: {
     // Création de la note de frais
@@ -74,6 +104,10 @@ export default {
     confirmAdd(confirmation) {
       if (confirmation) {
         //notification "note de frais enregistrée"
+        this.$emit("save");
+        // vide les champs du formulaire
+        this.description = "";
+        this.label = "";
       } else {
         //notification "déclaration annulée"
         //suppression de note de frais previously ajouté (pas la meilleure façon de faire mais bon..)
@@ -83,3 +117,16 @@ export default {
   }
 };
 </script>
+ 
+ <style>
+
+.myButton {
+  /* background-color: #11ffee00;  couleur transaparente*/
+  background-color: #932929;
+  border: 0px solid #932929;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 8%;
+}
+ </style>
