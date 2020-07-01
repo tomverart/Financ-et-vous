@@ -13,8 +13,8 @@
       <b-row>
         <b-col>
           <div style="max-height: 20%">
-            <ul>
-              <li v-for="expense in expenses" :key="expense.description">{{ expense.description }}</li>
+            <ul v-for="expense in expenses" :key="expense.idnotefrais">
+              <li >{{ expense.descfrais }}</li>
             </ul>
           </div>
         </b-col>
@@ -81,7 +81,7 @@ export default {
     onReportAdd: null,
     newReport: null,
     onExpenseAdd: null,
-    expenses: null
+    expenses: []
   },
   watch: {
     onReportAdd: function() {

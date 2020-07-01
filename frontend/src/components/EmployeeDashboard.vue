@@ -16,7 +16,7 @@
     </b-navbar>
 
     <!--Ajout de notes de frais-->
-    <div >
+    <div>
       <b-card id="newReport">
         <b-row align-h="center">
           <b-col sm>
@@ -75,14 +75,14 @@
         </template>
         <div class="d-block text-center">{{ reportToShow.description }}</div>
 
-        <div>
+        <!-- <div>
           <ul>
             <li
               v-for="expense in expensesToShow"
               :key="expense.description"
             >{{ expense.descriptionfrais }}</li>
           </ul>
-        </div>
+        </div> -->
 
         <b-button class="mt-3" block @click="$bvModal.hide('report-on-modal')">Fermer</b-button>
       </b-modal>
@@ -239,7 +239,7 @@ export default {
         .then(() => {
           this.expenseAdded = true;
           this.expensesArray.push(expense);
-
+          
           console.log("ajouté");
         })
         .catch(err => {
@@ -260,6 +260,7 @@ export default {
       this.onExpenseAdd = false;
       this.onReportAdd = false;
       this.expensesToShow = [];
+      this.expensesArray = [];
       this.reportDeletion(idnotefrais);
       //notification bien ajouté
     },

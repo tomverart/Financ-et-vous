@@ -19,7 +19,7 @@
           ></b-input>
           <br />
           <b-input-group prepend="🔒" class="mb-2 mr-sm-2 mb-sm-0">
-            <b-input type="password" v-model="password" id="password" placeholder="Mot de passe"></b-input>
+            <b-input v-model="password" type="password" id="password" placeholder="Mot de passe"></b-input>
           </b-input-group>
           <br />
           <button class="button">

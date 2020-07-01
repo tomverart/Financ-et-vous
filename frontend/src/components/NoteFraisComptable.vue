@@ -8,11 +8,11 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <li class="nav-item">
-          <button type="button" class="btn btn-primary" @click="clickRoute('createUser')">Créer utilisateur</button>
+          <button type="button" class="myButton" @click="clickRoute('createUser')">Créer utilisateur</button>
         </li>
         <b-navbar-nav class="ml-auto">
           <b-nav-item>
-            <button type="button" class="btn btn-primary" @click="deconnex()">Déconnexion</button>
+            <button type="button" class="myButton" @click="deconnex()">Déconnexion</button>
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -29,10 +29,10 @@
         style="padding-bottom: 2rem;"
         id="boutonsTri"
       >
-        <button type="button" class="btn btn-primary" @click="triListe(0)">Tout</button>
-        <button type="button" class="btn btn-primary" @click="triListe(1)">En attente</button>
-        <button type="button" class="btn btn-primary" @click="triListe(2)">Validées</button>
-        <button type="button" class="btn btn-primary" @click="triListe(3)">Refusées</button>
+        <button type="button" class="myButton" @click="triListe(0)">Tout</button>
+        <button type="button" class="myButton" @click="triListe(1)">En attente</button>
+        <button type="button" class="myButton" @click="triListe(2)">Validées</button>
+        <button type="button" class="myButton" @click="triListe(3)">Refusées</button>
       </div>
       <!-- <div>
         <button
@@ -218,3 +218,17 @@ export default {
   }
 };
 </script>
+
+<style>
+
+.myButton {
+  /* background-color: #11ffee00;  couleur transaparente*/
+  background-color: #932929;
+  border: 0px solid #932929;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 8%;
+  margin: 4px;
+}
+</style>
