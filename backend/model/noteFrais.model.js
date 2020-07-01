@@ -1,9 +1,10 @@
 const database = require('./initBDD');
 const UTILISATEUR = require('./utilisateur.model.js');
 const ETATNOTE = require('./etatNote.model.js');
+const FRAIS = require('./frais.model.js');
 
 class NOTEFRAIS {
-  static toSqlTable () {
+  static toSqlTable() {
     return `
         CREATE TABLE ${NOTEFRAIS.tableName} (
             -- idNoteFrais, #idUtilisateur, #idEtatNote
@@ -18,7 +19,7 @@ class NOTEFRAIS {
     `;
   }
 
-  static async createNoteFrais (userId, label, description, publishDate) {
+  static async createNoteFrais(userId, label, description, publishDate) {
     const result = await database.client.query({
       text: `
             INSERT INTO ${NOTEFRAIS.tableName}(idutilisateur, libelle, description, date) VALUES ($1, $2, $3, $4) RETURNING idNoteFrais`,
@@ -27,14 +28,19 @@ class NOTEFRAIS {
     return result.rows[0];
   }
 
-  static async deleteNoteFrais (idNoteFrais) {
+  static async deleteNoteFrais(idNoteFrais) {
     //récupération des frais associés à cette NF
-let frais = FRAIS.selectByIdNoteFrais(idNoteFrais);
-console.log(frais);
+    let relatedExpenses = FRAIS.selectByIdNoteFrais(idNoteFrais);
 
-    //suppression des frais associés à cette NF
+    //suppression des frais associés à cette NF s'il y en a
+    relatedExpenses.then((exps) => {
+      exps.forEach((exp) => {
+        console.log("here: ", exp.idnotefrais);
+        //FRAIS.deleteByIdNoteFrais(exp.idnotefrais);
+      })
+    })
 
-    
+    //supression de cette NF
     const result = await database.client.query({
       text: `
             DELETE FROM ${NOTEFRAIS.tableName} where idNoteFrais = ($1)`,
@@ -42,7 +48,7 @@ console.log(frais);
     });
   }
 
-  static async selectAllNoteFrais () {
+  static async selectAllNoteFrais() {
     const result = await database.client.query({
       text: `
             SELECT * FROM ${NOTEFRAIS.tableName}`
@@ -51,7 +57,7 @@ console.log(frais);
     return result.rows;
   }
 
-  static async selectNomPrenomAllNoteFrais () {
+  static async selectNomPrenomAllNoteFrais() {
     const result = await database.client.query({
       text: `
             SELECT idNoteFrais, ntfrais.idUtilisateur, idEtatNote, nomUtilisateur, prenomUtilisateur, libelle
@@ -62,7 +68,7 @@ console.log(frais);
   }
 
 
-  static async selectAllNoteFraisByIdEtatNote (idEtatNote) {
+  static async selectAllNoteFraisByIdEtatNote(idEtatNote) {
     const result = await database.client.query({
       text: `
             SELECT * FROM ${NOTEFRAIS.tableName} WHERE idEtatNote = ($1)`,
@@ -71,7 +77,7 @@ console.log(frais);
     console.log(result.rows);
   }
 
-  static async selectByUserId (idUser) {
+  static async selectByUserId(idUser) {
     const result = await database.client.query({
       text: `
       SELECT ${NOTEFRAIS.tableName}.idnotefrais, ${NOTEFRAIS.tableName}.idutilisateur, ${NOTEFRAIS.tableName}.libelle, ${NOTEFRAIS.tableName}.description, ${NOTEFRAIS.tableName}.date, ${NOTEFRAIS.tableName}.idetatnote, sum(frais.montantfrais) montant
@@ -86,7 +92,7 @@ console.log(frais);
     return result.rows;
   }
 
-  static async selectByIdNoteFrais (idNoteFrais) {
+  static async selectByIdNoteFrais(idNoteFrais) {
     const result = await database.client.query({
       text: `
             SELECT * FROM ${NOTEFRAIS.tableName} where idNoteFrais = ($1)`,
@@ -96,7 +102,7 @@ console.log(frais);
     return result.rows[0];
   }
 
-  static async modifyByIdNoteFrais (idNoteFrais, label, description) {
+  static async modifyByIdNoteFrais(idNoteFrais, label, description) {
     await database.client.query({
       text: `
             UPDATE ${NOTEFRAIS.tableName} SET libelle = ($1), description = ($2) WHERE idNoteFrais = ($3)`,
@@ -104,7 +110,7 @@ console.log(frais);
     });
   }
 
-  static async updateByIdNoteFrais (idNoteFrais, idEtatNote) {
+  static async updateByIdNoteFrais(idNoteFrais, idEtatNote) {
     // const result = await database.client.query({
     await database.client.query({
       text: `
@@ -114,7 +120,7 @@ console.log(frais);
     // console.log(result.rows);
   }
 
-  static async existsByIdNoteFrais (idNoteFrais) {
+  static async existsByIdNoteFrais(idNoteFrais) {
     const result = await database.client.query({
       text: `
             SELECT exists(SELECT 1 FROM ${NOTEFRAIS.tableName} where idNoteFrais = ($1))`,
