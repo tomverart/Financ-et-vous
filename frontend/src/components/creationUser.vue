@@ -7,12 +7,12 @@
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <li class="nav-item">
-        <button type="button" class="btn btn-primary" @click="clickRoute('/noteFrais')">Notes de frais</button>
+        <button type="button" class="myButton" @click="clickRoute('/noteFrais')">Notes de frais</button>
       </li>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item>
-            <button type="button" class="btn btn-primary" @click="deconnex()">Déconnexion</button>
+            <button type="button" class="myButton" @click="deconnex()">Déconnexion</button>
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -61,7 +61,7 @@
       </select>
       <br />
 
-      <button class="btn btn-primary" v-on:click="sendData">Créer utilisateur</button>
+      <button class="myButton" v-on:click="sendData">Créer utilisateur</button>
     </div>
   </div>
 </template>

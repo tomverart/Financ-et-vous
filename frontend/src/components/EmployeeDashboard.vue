@@ -297,16 +297,6 @@ export default {
   transform: translateY(4px);*/
 }
 
-.myButton {
-  /* background-color: #11ffee00;  couleur transaparente*/
-  background-color: #932929;
-  border: 0px solid #932929;
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 15px;
-  border-radius: 8%;
-}
-
 #list {
   /* max-width: 90%;*/
   height: 70%;

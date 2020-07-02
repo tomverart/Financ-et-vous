@@ -14,7 +14,7 @@
         <b-col>
           <div style="max-height: 20%">
             <ul v-for="expense in expenses" :key="expense.idnotefrais">
-              <li >{{ expense.descfrais }}</li>
+              <li>{{ expense.descfrais }}</li>
             </ul>
           </div>
         </b-col>
@@ -117,16 +117,3 @@ export default {
   }
 };
 </script>
- 
- <style>
-
-.myButton {
-  /* background-color: #11ffee00;  couleur transaparente*/
-  background-color: #932929;
-  border: 0px solid #932929;
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 15px;
-  border-radius: 8%;
-}
- </style>

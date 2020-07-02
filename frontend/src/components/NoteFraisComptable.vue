@@ -37,7 +37,7 @@
       <!-- <div>
         <button
           type="button"
-          class="btn btn-primary"
+          class="myButton"
           @click="goCreateUser()"
         >Création d'un nouvel Utilisateur</button>
       </div> -->
