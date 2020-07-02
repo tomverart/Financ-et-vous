@@ -33,7 +33,7 @@
 </template>
 
 <script>
-const sha = require('sha256');
+const sha = require("sha256");
 
 export default {
   name: "ConnexionForm",
@@ -47,27 +47,29 @@ export default {
   },
   methods: {
     async sendData() {
-       await this.$axios.post("/utilisateur", {
-        login: this.login,
-        password: sha(this.password)
-      }).then(Response => {
-
+      try {
+        const resp = await this.$axios
+        .post("/utilisateur", {
+          login: this.login,
+          password: sha(this.password)
+        })
+        const user = resp.data;
         
-        const user = Response.data;
         if (user.stringrole == "Comptable") {
-        this.$router.push("/noteFrais");
-      } else if (user.stringrole == "Employé") {
-        this.$router.push("/dashboard");
-      } else if (user.stringrole == "Administrateur") {
-        console.log("it's an admin");
-      } else {
-        console.log('inconnu');
+          this.$router.push("/noteFrais");
+        } else if (user.stringrole == "Employé") {
+          this.$router.push("/dashboard");
+        } else if (user.stringrole == "Administrateur") {
+          console.log("it's an admin");
+        } else {
+          console.log("inconnu");
+        }
       }
+      catch(err) {
 
+        window.alert('login ou mot de passe invalide')
       }
-);
-
-      
+        
     }
   }
 };
