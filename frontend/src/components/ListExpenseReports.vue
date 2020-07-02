@@ -36,6 +36,7 @@
           <span style="color: #932929">{{ data.label.toUpperCase() }}</span>
         </template>
 
+        <!-- NE PAS SUPPRIMER  -->
         <!--Customed culumn "Select" culumn of checkboxes-->
         <!--     <template v-slot:cell(select)="{ rowSelected }">
         <template v-if="rowSelected">-->
@@ -93,9 +94,7 @@ export default {
       selectMode: "range"
     };
   },
-  mounted() {
-    console.log(this.reports);
-  },
+  mounted() {},
   computed: {
     currentUrl: function() {
       return this.$router.history.current.fullPath;
@@ -104,24 +103,30 @@ export default {
       var them = [];
 
       if (this.reportsList) {
-        this.reportsList.forEach(report => {
-          var state = report.idetatnote;
+        this.reportsList.forEach(reportAndExpenses => {
+          var state = reportAndExpenses.report.idetatnote;
 
-          if (report.idetatnote === 1) {
+          if (reportAndExpenses.report.idetatnote === 1) {
             state = "En attente";
-          } else if (report.idetatnote === 2) {
+          } else if (reportAndExpenses.report.idetatnote === 2) {
             state = "Acceptée";
-          } else if (report.idetatnote === 3) {
+          } else if (reportAndExpenses.report.idetatnote === 3) {
             state = "Refusée";
           } else {
             state = "Non défini";
           }
 
+          //montant total de cette  NF
+          let amount = 0;
+          for (let i = 0; i < reportAndExpenses.expenses.length; i++) {
+            amount += Number(reportAndExpenses.expenses[i].montantfrais);
+          }
+
           them.push({
-            libelle: report.libelle,
-            date: report.date,
+            libelle: reportAndExpenses.report.libelle,
+            date: reportAndExpenses.report.date,
             etat: state,
-            montant: report.montant + " €"
+            montant: amount + " €"
           });
         });
       }
@@ -129,14 +134,12 @@ export default {
     }
   },
   props: {
-    reportsList: null,
+    reportsList: null, //==> [  {  report: {} , expenses: []   }  ]
     reportToShow: null
   },
   methods: {
     async reportView(id) {
-      if (this.currentUrl !== "/dashboard?id=" + id)
-        this.$router.push("/dashboard?id=" + id);
-      this.$emit("reportViewed");
+      this.$emit("reportViewed", id);
     },
     unselectOtherRows(selectedOne) {
       let reportsRows = this.$refs.selectableTable.items;
@@ -154,8 +157,9 @@ export default {
     modifyReport(row) {
       //récupération de l'id de la NF en question
       let id;
-      this.reportsList.forEach(report => {
-        if (report.libelle === row.item.libelle) id = report.idnotefrais;
+      this.reportsList.forEach(reportAndExpenses => {
+        if (reportAndExpenses.report.libelle === row.item.libelle)
+          id = reportAndExpenses.report.idnotefrais;
       });
       if (id) {
         this.$emit("reportModified", id);
@@ -164,8 +168,9 @@ export default {
     deleteReport(row) {
       //récupération de l'id de la NF en question
       let id;
-      this.reportsList.forEach(report => {
-        if (report.libelle === row.item.libelle) id = report.idnotefrais;
+      this.reportsList.forEach(reportAndExpenses => {
+        if (reportAndExpenses.report.libelle === row.item.libelle)
+          id = reportAndExpenses.report.idnotefrais;
       });
       if (id) {
         if (
@@ -182,8 +187,9 @@ export default {
     showReport(row) {
       let id;
 
-      this.reportsList.forEach(report => {
-        if (row.item.libelle === report.libelle) id = report.idnotefrais;
+      this.reportsList.forEach(reportAndExpenses => {
+        if (row.item.libelle === reportAndExpenses.report.libelle)
+          id = reportAndExpenses.report.idnotefrais;
       });
 
       if (id) this.$emit("reportViewed", id);
@@ -193,27 +199,18 @@ export default {
 </script>
 
 <style scoped>
-/*#theList {
-  height: 800px;
-
-}*/
 #theContainer {
   height: 400px;
-} /*
-.b-table-simple {
-  background-color: red;
-  
-}*/
+}
+
 .b-table {
   margin: 0 auto;
-  
-  /* background-color: rgb(179, 157, 128); */
 }
+
 .b-table-sticky-header {
   max-height: 450px;
-} 
+}
 .myButton {
-  /* background-color: #11ffee00;  couleur transaparente*/
   background-color: #932929;
   border: 0px solid #932929;
   color: #ffffff;
@@ -221,19 +218,5 @@ export default {
   font-size: 15px;
   border-radius: 8%;
   margin: 4px;
-}/*
-/*b-table-simple {
-  max-height: 100%;
-  background-color: blue;
 }
-  /*
-#theList b-table {
-  width: 100%;
- }
-#theList b-table b-tbody {
-  width: 100%;
- }
-#theList b-table b-tbody b-tr {
-  width: 100%;
- }*/
 </style>

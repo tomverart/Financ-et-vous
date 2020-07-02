@@ -75,14 +75,14 @@
         </template>
         <div class="d-block text-center">{{ reportToShow.description }}</div>
 
-        <!-- <div>
+         <div>
           <ul>
             <li
               v-for="expense in expensesToShow"
-              :key="expense.description"
+              :key="expense.idfrais"
             >{{ expense.descriptionfrais }}</li>
           </ul>
-        </div> -->
+        </div>
 
         <b-button class="mt-3" block @click="$bvModal.hide('report-on-modal')">Fermer</b-button>
       </b-modal>
@@ -94,8 +94,7 @@
 import ListExpenseReports from "./ListExpenseReports";
 import CreateExpenseReport from "./CreateExpenseReport";
 import CreateExpense from "./CreateExpense";
-/* import ViewExpenseReport from "./ViewExpenseReport";
- */ import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "EmployeeDashboard",
@@ -103,43 +102,48 @@ export default {
     CreateExpenseReport,
     CreateExpense,
     ListExpenseReports
-    /* ViewExpenseReport */
   },
   data() {
     return {
       reports: null,
       reportToShow: null,
       expensesToShow: null,
-      //onListView: true,
       onExpenseAdd: false,
       onReportAdd: false,
-      //reportAdded: false,
       expenseAdded: false,
-      expensesArray: [],
+      expensesArray: null,
       doneExpenseAdd: false,
       reportOnAdd: {
         idnotefrais: 0
       },
       modalOnModify: false
-      //onReportView: false
     };
   },
   mounted() {
-    this.reportsLoad();
+    this.reportsLoad(true);
   },
   methods: {
     async deconnex() {
       await this.$axios.get("/disconected");
       this.$router.push("/login");
     },
-    async reportsLoad() {
+    async reportsLoad(reload) {
       let urlString = "/dashboard";
       await axios
         .get(urlString, {
           baseURL: "http://localhost:3000"
         })
         .then(response => {
-          this.reports = response.data;
+          if (reload) this.reports = response.data;   //pour recharger la liste des NF affichée
+          else {        //pour utiliser la réponse sans recharger les NF affichées
+            let allExp = response.data;
+            
+            allExp.forEach(element => {
+              if(this.reportOnAdd.idnotefrais === element.report.idnotefrais) {
+                this.expensesArray = element.expenses;
+              }
+            });
+            }
         })
         .catch(err => {
           console.log("error from ExpenseReportList.vue: ", err);
@@ -151,10 +155,13 @@ export default {
         .get(urlString, {
           baseURL: "http://localhost:3000"
         })
-        .then(response => {
-          this.reportToShow = response.data.expenseReport;
-          if (response.data.expenses.length > 0)
-            this.expensesToShow = response.data.expenses;
+        .then(response => {     
+          //response = [ { report: {attributes of NF in database}, expenses: [ {attributes of FRAIS in database} ] } ]   
+          //response.length=1
+
+          this.reportToShow = response.data[0].report;
+          if (response.data[0].expenses.length > 0)
+            this.expensesToShow = response.data[0].expenses;
 
           this.$bvModal.show("report-on-modal");
         })
@@ -170,10 +177,8 @@ export default {
         })
         .then(response => {
           if (response.data.date) {
-            //this. = false;
             this.reportOnAdd = response.data;
             this.onReportAdd = true;
-            //this.reportAdded = true;
             this.onExpenseAdd = true;
           } else console.log("zero");
         })
@@ -196,7 +201,7 @@ export default {
         )
         .then(() => {
           //response.status = 204
-          this.reportsLoad();
+          this.reportsLoad(true);
         })
         .catch(err => {
           console.log("error(list) : ", err);
@@ -209,7 +214,7 @@ export default {
           baseURL: "http://localhost:3000"
         })
         .then(() => {
-          this.reportsLoad();
+          this.reportsLoad(true);
         })
         .catch(err => {
           console.log("error(list) : ", err);
@@ -238,9 +243,8 @@ export default {
         )
         .then(() => {
           this.expenseAdded = true;
-          this.expensesArray.push(expense);
-          
-          console.log("ajouté");
+
+          this.reportsLoad(false);
         })
         .catch(err => {
           console.log("error(list) : ", err);
@@ -248,13 +252,12 @@ export default {
     },
     finishExpenseAdd() {
       this.onExpenseAdd = false;
-      //this.doneExpenseAdd = true;
     },
     saveReporting() {
       this.onReportAdd = false;
       //notification bien ajouté
 
-      this.reportsLoad();
+      this.reportsLoad(true);
     },
     abandonReporting(idnotefrais) {
       this.onExpenseAdd = false;
@@ -283,7 +286,6 @@ export default {
   background-color: #932929;
   border: none;
   border-radius: 15px;
-  /* box-shadow: 0 9px #999;*/
 }
 
 .button:hover {
@@ -293,8 +295,6 @@ export default {
 
 .button:active {
   background-color: #932929;
-  /*box-shadow: 0 5px #666;
-  transform: translateY(4px);*/
 }
 
 .myButton {

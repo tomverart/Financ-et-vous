@@ -1,20 +1,26 @@
 const Notefrais = require('../../model/noteFrais.model.js');
 const Frais = require('../../model/frais.model.js');
+const User = require('../../model/utilisateur.model.js')
 
-// Retourne une notes de frais gràace à son id "id" dans la query string
+// Retourne une note de frais grâce à son id req.query.id
 async function toExport(req, res) {
-  let theReport = {
-    expenseReport: {},
-    expenses: []
-  };
+  let reports = [];
 
-  //récupération des informations relatives à la NF
-  theReport.expenseReport = await Notefrais.selectByIdNoteFrais(req.query.id);
+  //récupération des NF associées à l'utilisateur
+  var theReport = await Notefrais.selectByIdNoteFrais(req.query.id);
 
-  //récupération des frais associés à cette NF
-  theReport.expenses = await Frais.selectByIdNoteFrais(req.query.id);
+  //récupération des frais associés
+  var expensesRelated = await Frais.selectByIdNoteFrais(req.query.id);
+  let them = [];
+  for (let j = 0; j < expensesRelated.length; j++) {
+    if (expensesRelated[j].idnotefrais === theReport.idnotefrais)
+      them.push(expensesRelated[j]);
+  }
 
-  res.json(theReport);
+  //création de la réponse
+  reports.push({ report: theReport, expenses: them });
+
+  res.json(reports);
 }
 
 module.exports = toExport;
