@@ -57,11 +57,15 @@ class NOTEFRAIS {
     return result.rows;
   }
 
-  static async selectNomPrenomAllNoteFrais() {
+  static async selectNomPrenomMontantAllNoteFrais() {
     const result = await database.client.query({
       text: `
-            SELECT idNoteFrais, ntfrais.idUtilisateur, idEtatNote, nomUtilisateur, prenomUtilisateur, libelle
-            FROM ${NOTEFRAIS.tableName} ntfrais INNER JOIN ${UTILISATEUR.tableName} uti ON ntfrais.idUtilisateur = uti.idUtilisateur`
+      SELECT ntfrais.idnotefrais, ntfrais.idutilisateur, uti.nomUtilisateur, uti.prenomUtilisateur, ntfrais.libelle, ntfrais.description, ntfrais.date, ntfrais.idetatnote, sum(frais.montantfrais) montant
+      FROM ${NOTEFRAIS.tableName} ntfrais, frais, UTILISATEUR uti
+      where frais.idnotefrais = ntfrais.idnotefrais
+      and ntfrais.idutilisateur = uti.idutilisateur
+      GROUP BY ntfrais.idnotefrais, uti.idutilisateur
+      ORDER BY ntfrais.idnotefrais DESC`
     });
     // console.log(result.rows);
     return result.rows;
