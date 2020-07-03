@@ -41,7 +41,6 @@ class FRAIS {
             DELETE FROM ${FRAIS.tableName} where idnotefrais = ($1)`,
       values: [idnotefrais]
     });
-    console.log(result.rows);
   }
 
   static async selectAllFrais () {
@@ -49,7 +48,8 @@ class FRAIS {
       text: `
             SELECT * FROM ${FRAIS.tableName}`
     });
-    console.log(result.rows);
+
+    return result.rows;
   }
 
   static async selectByIdFrais (idFrais) {
