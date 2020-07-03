@@ -17,7 +17,7 @@ var addExpenseReport = require('../controllers/noteFraisControllers/add.expenseR
 var deleteExpenseReport = require('../controllers/noteFraisControllers/delete.expenseReport');
 var updateNoteFrais = require('../controllers/noteFraisControllers/update.notefrais');
 var getEtatNote = require('../controllers/etatNoteControllers/get.etatNote');
-var getExpenseReport = require('../controllers/noteFraisControllers/getExpenseReport');
+var getEmployeeExpenseReport = require('../controllers/noteFraisControllers/getExpenseReport');
 var getAllExpenses = require('../controllers/fraisControllers/getAll.expense');
 
 // Controlleurs des frais
@@ -31,14 +31,14 @@ var getAllusergroups = require('../controllers/groupControllers/getUserGroups.us
 router.post('/utilisateur', login);
 
 router.get('/disconected', (req, res, next) => {
-req.session.login = null;
-req.session.role = null;
+  req.session.login = null;
+  req.session.role = null;
 
-res.sendStatus(200);
+  res.sendStatus(200);
 });
 
 router.get('/connected', (req, res, next) => {
-  console.log(req.session);    console.log('son role' , req.session.role);
+  console.log(req.session); console.log('son role', req.session.role);
 
   if (req.session.login) {
     return res.json({
@@ -71,10 +71,9 @@ router.get('/dashboard?:id', (req, res) => {
     } else if (user.idrole === 2) {    //partie comptable
       getNoteFraisComptable(req, res);
     } else if (user.idrole === 3) {   //employee
-      if (req.query.id) {
-        getExpenseReport(req, res);
-      } else {
-        getEmployeeExpenseReports(req, res);
+      if (req.session.login) {
+        if (req.query.id) getEmployeeExpenseReport(req, res);
+        else getEmployeeExpenseReports(req, res);
       }
     } else {
       console.log("unknown role : ");

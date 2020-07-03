@@ -17,7 +17,7 @@
     </div>-->
     <h5>Ajouter une dépense</h5>
 
-    <form v-on:submit.prevent="onSubmit" id="form">
+    <form v-on:submit.prevent="sendData" id="form">
       <div class="table-responsive">
         <table>
           <tr>
@@ -68,10 +68,10 @@
 
           <tr>
             <td>
-              <button class="myButton" :disabled="!onExpenseAdd" @click="onSubmit">Ajouter</button>
+              <button class="myButton" :disabled="!onExpenseAdd" @click="terminate = false">Ajouter</button>
             </td>&nbsp;
             <td>
-              <button :disabled="!onExpenseAdd" @click="done()" class="myButton">Terminer</button>
+              <button :disabled="!onExpenseAdd" @click="terminate = true" class="myButton">Terminer</button>
             </td>
           </tr>
         </table>
@@ -89,10 +89,6 @@ export default {
     createExpensesComponent
   }, */
   props: {
-    /*     onExpenseAdd: null,
-
- */
-
     onExpenseAdd: null,
     addSuccess: null,
     idnotefraisprops: {
@@ -101,12 +97,20 @@ export default {
     }
   },
   watch: {
-    onExpenseAdd: function() {
-      if (!this.onExpenseAdd) {   //si le formulaire est désactivé
+    onExpenseAdd: function() {    //si on est en train d'ajouter un frais
+      if (!this.onExpenseAdd) {
         //vider les champs
-        this.montantFrais = 0;
-        this.descFrais = "";
-        document.getElementById("file").value = "";
+        this.resetForm();
+      }
+    },
+    addSuccess: function() {    
+      if (this.addSuccess) {
+        //si l'ajout de frais a bien été pris en compte
+
+        //vide les champs du formulaire
+        this.resetForm();
+      } else {
+        //notification d'erreur de formulaire d'ajout de frais
       }
     }
   },
@@ -116,84 +120,49 @@ export default {
       descFrais: "",
       montantFrais: 0,
       idnotefrais: this.idnotefraisprops,
-      fraisSup: []
+      fraisSup: [],
+      terminate: null
       // Merci de ne pas supprimer ça, je le ferais bientôt
       // image: "http://localhost:3000/downloadImage"
     };
   },
   methods: {
+    resetForm() {
+      this.montantFrais = 0;
+      this.descFrais = "";
+      document.getElementById("file").value = "";
+    },
     // Envoie des données renseignées pour la création de frais
     async sendData() {
-      // Récupère les données du form
-      let formData = {};
-      formData.file = this.file;
-      formData.idnotefrais = this.idnotefraisprops;
-      formData.montantfrais = this.montantFrais;
-      formData.descfrais = this.descFrais;
-
-      this.$emit("expenseAdded", formData);
-
-      if (this.addSuccess) {
-        //notification "bien ajouté"
-
-        //vide les champs du formulaire
-        this.montantFrais = 0;
-        this.descFrais = "";
-        document.getElementById("file").value = "";
+      if (this.terminate) {
+        //click sur terminer
+        this.done();
       } else {
-        //notification d'erreur de formulaire
+        //click sur ajouter
+        // Récupère les données du form
+        let formData = {};
+        formData.file = this.file;
+        formData.idnotefrais = this.idnotefraisprops;
+        formData.montantfrais = this.montantFrais;
+        formData.descfrais = this.descFrais;
+
+        this.$emit("expenseAdded", formData);
       }
-      /* 
-        
-        if (addFrais) {
-          
-          console.log("bien ajouté");
-        } else {
-          this.onExpenseAdd = true;
-        }
-      } else {
-        //notification d'erreur de formulaire
-        console.log("erreur")
-      } */
-
-      /* // Si le bouton "Valider et ajouter un autre frais" est cliqué
-      if (addFrais) {
-        // Ajoute ce composant en composant supplémentaire
-        // TODO : Virer le tableau.
-                    //this.fraisSup.push(createExpensesComponent);
-        // Désactive les champs et boutons du composant actuel
-        this.onExpenseAdd = false;
-      } else {
-        //this.$router.push("/dashboard");
-        this.onExpenseAdd = true;
-      } */
     },
     done() {
       this.$emit("doneExpenseAdd");
 
       // vide les champs du formulaire
-      this.montantFrais = 0;
-      this.descFrais = "";
-      document.getElementById("file").value = "";
-
-      //désactive le formulaire de saisie d'un nouveau frais
+      this.resetForm();
     },
-    // Récupère le fichier téléversé
-    handleFileUpload() {
+    handleFileUpload() {     // Récupère le fichier téléversé
       this.file = this.$refs.file.files[0];
-    },
-    // Empêche le changement de page du form
-    onSubmit() {
-      //vérifier les champs
-
-      this.sendData();
     }
   }
 };
 </script>
 
 <style>
-
 .myButton {
   /* background-color: #11ffee00;  couleur transaparente*/
   background-color: #932929;

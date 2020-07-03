@@ -30,15 +30,14 @@ class NOTEFRAIS {
 
   static async deleteNoteFrais(idNoteFrais) {
     //récupération des frais associés à cette NF
-    let relatedExpenses = FRAIS.selectByIdNoteFrais(idNoteFrais);
+    let relatedExpenses = await FRAIS.selectByIdNoteFrais(idNoteFrais);
 
     //suppression des frais associés à cette NF s'il y en a
-    relatedExpenses.then((exps) => {
-      exps.forEach((exp) => {
-        console.log("here: ", exp.idnotefrais);
-        //FRAIS.deleteByIdNoteFrais(exp.idnotefrais);
-      })
-    })
+    if (relatedExpenses.length > 0) {
+      relatedExpenses.forEach((exps) => {
+          FRAIS.deleteByIdNoteFrais(exps.idnotefrais);
+      });
+    }
 
     //supression de cette NF
     const result = await database.client.query({
@@ -79,13 +78,14 @@ class NOTEFRAIS {
 
   static async selectByUserId(idUser) {
     const result = await database.client.query({
-      text: `
+      /* text: `
       SELECT ${NOTEFRAIS.tableName}.idnotefrais, ${NOTEFRAIS.tableName}.idutilisateur, ${NOTEFRAIS.tableName}.libelle, ${NOTEFRAIS.tableName}.description, ${NOTEFRAIS.tableName}.date, ${NOTEFRAIS.tableName}.idetatnote, sum(frais.montantfrais) montant
       FROM NOTEFRAIS, frais
       where frais.idnotefrais = ${NOTEFRAIS.tableName}.idnotefrais 
       and idutilisateur = ($1)
       GROUP BY ${NOTEFRAIS.tableName}.idnotefrais 
-      ORDER BY NOTEFRAIS.idnotefrais DESC`,
+      ORDER BY NOTEFRAIS.idnotefrais DESC`, */
+      text: `SELECT * FROM ${NOTEFRAIS.tableName} WHERE idutilisateur = ($1)`,
       values: [idUser]
     });
 
@@ -98,7 +98,7 @@ class NOTEFRAIS {
             SELECT * FROM ${NOTEFRAIS.tableName} where idNoteFrais = ($1)`,
       values: [idNoteFrais]
     });
-    
+
     return result.rows[0];
   }
 
