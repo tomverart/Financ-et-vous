@@ -1,6 +1,7 @@
 const database = require('./initBDD');
 const Role = require('./role.model.js');
 const utilisateurGroup = require('./utilisateurGroup.model');
+const bcrypt = require('bcrypt');
 
 class UTILISATEUR {
   static toSqlTable () {
@@ -23,14 +24,15 @@ class UTILISATEUR {
     try {
       // Vérifie si le rôle existe, si il n'existe pas, renvoie une erreur
       if (!await Role.existsByIdRole(idRole)) throw new Error("L'idRole est incorrect.");
+
+      const hashedPassword = await bcrypt.hash(mdpUtilisateur, 10);
       
-      const sha = require('sha256');
-      mdpUtilisateur = mdpUtilisateur + sha(loginUtilisateur);
+      
       // Création de l'utilisateur
       const idut = await database.client.query({
         text: `
               INSERT INTO ${UTILISATEUR.tableName} (loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, idRole) VALUES ($1, $2, $3, $4, $5) RETURNING idUtilisateur`,
-        values: [loginUtilisateur, mdpUtilisateur, nomUtilisateur, prenomUtilisateur, idRole]
+        values: [loginUtilisateur, hashedPassword, nomUtilisateur, prenomUtilisateur, idRole]
       });
 
       // Ajoute l'utilisateur au groupe renseigné
@@ -84,18 +86,31 @@ class UTILISATEUR {
  */
 static async userAuth (login, password) {
   // console.log(login, password);
-  const sha = require('sha256');
-  password = password + sha(login);
+
   const result = await database.client.query({
     text: `
-    SELECT loginutilisateur, stringrole
+    SELECT loginutilisateur, stringrole, mdputilisateur
     FROM ${UTILISATEUR.tableName} uti INNER JOIN ${Role.tableName} role ON (uti.idRole = role.idRole)
-    WHERE loginutilisateur = $1
-    AND mdputilisateur = $2 `,
-    values: [login, password]
+    WHERE loginutilisateur = $1`,
+    values: [login]
   });
-  // console.log(result.rows[0]);
-  return result.rows[0];
+  if(result.rowCount != 0) {
+const user = result.rows[0];
+
+  const currentPassword = user.mdputilisateur;
+  const isSame = await bcrypt.compare(password, currentPassword)
+
+  if (isSame){
+    delete result.rows[0].mdputilisateur;
+      return result.rows[0];
+
+  } else {
+    return null;
+  }
+} else {
+  return null;
+}
+
 }
 }
 
