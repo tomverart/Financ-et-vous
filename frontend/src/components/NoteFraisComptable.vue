@@ -19,40 +19,40 @@
     </b-navbar>
 
     <div class="mx-auto" style="width: 90rem;">
-      <label for="boutonsTri">Tri :</label>
       <br />
+      <h3>Notes de frais</h3>
 
-      <div
-        class="btn-group"
-        role="group"
-        aria-label="Basic example"
-        style="padding-bottom: 2rem;"
-        id="boutonsTri"
-      >
-        <button type="button" class="myButton" @click="triListe(1)">En attente</button>
-        <button type="button" class="myButton" @click="triListe(2)">Validées</button>
-        <button type="button" class="myButton" @click="triListe(3)">Refusées</button>
-        <button type="button" class="myButton" @click="triListe(0)">Tout</button>
-      </div>
-
+      <br />
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a id="sort1" class="nav-link active" @click="triListe(1)">En attente</a>
+        </li>
+        <li class="nav-item">
+          <a id="sort2" class="nav-link" @click="triListe(2)">Validées</a>
+        </li>
+        <li class="nav-item">
+          <a id="sort3" class="nav-link" @click="triListe(3)">Refusées</a>
+        </li>
+        <li class="nav-item">
+          <a id="sort0" class="nav-link" @click="triListe(0)">Toutes</a>
+        </li>
+      </ul>
       <br />
       <div>
-        <h3>Notes de frais</h3>
-        <table class="table">
+        <h5 v-if="ListNoteFraisToShow.length === 0">Aucune note à afficher</h5>
+        <table v-else class="table">
           <thead>
             <tr>
-              <!-- <th scope="col">#</th> -->
-              <th class="tenrem" scope="col">Utilisateur</th>
-              <th class="autowidth" scope="col">Libelle</th>
-              <th class="tenrem" scope="col">Montant</th>
-              <th class="tenrem" scope="col">Etat</th>
-              <th style="width: 14rem;" scope="col">Actions</th>
+              <th style="border-top: none;" class="tenrem" scope="col">Utilisateur</th>
+              <th style="border-top: none;" class="autowidth" scope="col">Libelle</th>
+              <th style="border-top: none;" class="tenrem" scope="col">Montant</th>
+              <th style="border-top: none;" class="tenrem" scope="col">Etat</th>
+              <th style="border-top: none; width: 14rem;" scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
             <template v-for="(noteFrais, index) of ListNoteFraisToShow">
               <tr :key="noteFrais.idnotefrais">
-                <!-- <th scope="row" v-on:click="expandReport(noteFrais)">{{noteFrais.idnotefrais}}</th> -->
                 <td
                   v-on:click="expandReport(noteFrais)"
                 >{{noteFrais.nomutilisateur}} {{noteFrais.prenomutilisateur}}</td>
@@ -169,10 +169,16 @@ export default {
     // Tri les notes de frais
     async triListe(idEtatNoteToSort) {
       let tempListTri = [];
+
+      // Change la classe de l'onglet sélectionné et de l'onglet actuel
+      document
+        .getElementById("sort" + this.currentTri)
+        .classList.remove("active");
       this.currentTri = idEtatNoteToSort;
+      document.getElementById("sort" + this.currentTri).classList.add("active");
 
       // Si il y a actuellement une notes de frais affichée, la cache
-      if(this.reportToShow !== null){
+      if (this.reportToShow !== null) {
         this.expandReport(this.reportToShow);
       }
       // Si "Tout", affiche la liste complète
