@@ -33,7 +33,6 @@
 </template>
 
 <script>
-const sha = require("sha256");
 
 export default {
   name: "ConnexionForm",
@@ -51,7 +50,7 @@ export default {
         const resp = await this.$axios
         .post("/utilisateur", {
           login: this.login,
-          password: sha(this.password)
+          password: this.password
         })
         const user = resp.data;
         
