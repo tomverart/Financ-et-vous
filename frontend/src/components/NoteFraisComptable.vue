@@ -18,61 +18,63 @@
       </b-collapse>
     </b-navbar>
 
-    <div class="mx-auto" style="width: 75rem;">
-      <label for="boutonsTri">Tri :</label>
+    <div class="mx-auto" style="width: 90rem;">
       <br />
+      <h3>Notes de frais</h3>
 
-      <div
-        class="btn-group"
-        role="group"
-        aria-label="Basic example"
-        style="padding-bottom: 2rem;"
-        id="boutonsTri"
-      >
-        <button type="button" class="myButton" @click="triListe(0)">Tout</button>
-        <button type="button" class="myButton" @click="triListe(1)">En attente</button>
-        <button type="button" class="myButton" @click="triListe(2)">Validées</button>
-        <button type="button" class="myButton" @click="triListe(3)">Refusées</button>
-      </div>
-      <!-- <div>
-        <button
-          type="button"
-          class="btn btn-primary"
-          @click="goCreateUser()"
-        >Création d'un nouvel Utilisateur</button>
-      </div> -->
-
+      <br />
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a id="sort1" class="nav-link active" @click="triListe(1)">En attente</a>
+        </li>
+        <li class="nav-item">
+          <a id="sort2" class="nav-link" @click="triListe(2)">Validées</a>
+        </li>
+        <li class="nav-item">
+          <a id="sort3" class="nav-link" @click="triListe(3)">Refusées</a>
+        </li>
+        <li class="nav-item">
+          <a id="sort0" class="nav-link" @click="triListe(0)">Toutes</a>
+        </li>
+      </ul>
       <br />
       <div>
-        <h3>Notes de frais</h3>
-        <table class="table">
+        <h5 v-if="ListNoteFraisToShow.length === 0">Aucune note à afficher</h5>
+        <table v-else class="table">
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Utilisateur</th>
-              <th scope="col">Libelle</th>
-              <th scope="col">Etat</th>
-              <th scope="col">Actions</th>
+              <th style="border-top: none;" class="tenrem" scope="col">Utilisateur</th>
+              <th style="border-top: none;" class="autowidth" scope="col">Libelle</th>
+              <th style="border-top: none;" class="tenrem" scope="col">Montant</th>
+              <th style="border-top: none;" class="tenrem" scope="col">Etat</th>
+              <th style="border-top: none; width: 14rem;" scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
             <template v-for="(noteFrais, index) of ListNoteFraisToShow">
-              <tr :key="noteFrais.idnotefrais" v-on:click="expandReport(noteFrais)">
-                <th scope="row">{{noteFrais.idnotefrais}}</th>
-                <td>{{noteFrais.nomutilisateur}} {{noteFrais.prenomutilisateur}}</td>
-                <td>{{noteFrais.libelle}}</td>
-                <td>{{listEtatNote[noteFrais.idetatnote -1]}}</td>
+              <tr :key="noteFrais.idnotefrais">
+                <td
+                  v-on:click="expandReport(noteFrais)"
+                >{{noteFrais.nomutilisateur}} {{noteFrais.prenomutilisateur}}</td>
+                <td v-on:click="expandReport(noteFrais)">{{noteFrais.libelle}}</td>
+                <td v-on:click="expandReport(noteFrais)">{{noteFrais.montant}}€</td>
+                <td v-on:click="expandReport(noteFrais)">{{listEtatNote[noteFrais.idetatnote -1]}}</td>
                 <td>
-                  <button class="btn" @click="updateEtatNote(noteFrais, 2)">✔</button>
+                  <button
+                    v-if="noteFrais.idetatnote != 2"
+                    class="myButton"
+                    @click="updateEtatNote(noteFrais, 2)"
+                  >✔ Valider</button>
                   &nbsp;
                   <button
-                    class="btn"
+                    v-if="noteFrais.idetatnote != 3"
+                    class="myButton"
                     @click="updateEtatNote(noteFrais, 3)"
-                  >❌</button>
-                  {{noteFrais.expand}}
+                  >❌ Refuser</button>
                 </td>
               </tr>
               <tr :key="index" v-if="noteFrais.expand">
+                <td />
                 <ViewExpenseReports
                   :reportToDisplay="reportToShow"
                   :onReportView="true"
@@ -119,11 +121,14 @@ export default {
       this.listEtatNote.push(etatNote.stringetatnote);
     });
 
-    // Ajoute les notes de frais à la liste des notes à afficher et à la liste complète
-    this.fullListNoteFrais = this.ListNoteFraisToShow = await this.getFullListNoteFrais();
+    // Ajoute les notes de frais à la liste à la liste complète
+    this.fullListNoteFrais = await this.getFullListNoteFrais();
 
     // Ajoute le champ "expand" aux objets du tableau
     this.addExpand(this.fullListNoteFrais);
+
+    // Affiche les notes de frais en attente par défaut
+    this.triListe(1);
   },
   methods: {
     async goCreateUser() {
@@ -164,8 +169,19 @@ export default {
     // Tri les notes de frais
     async triListe(idEtatNoteToSort) {
       let tempListTri = [];
+
+      // Change la classe de l'onglet sélectionné et de l'onglet actuel
+      document
+        .getElementById("sort" + this.currentTri)
+        .classList.remove("active");
       this.currentTri = idEtatNoteToSort;
-      // Si "Tout", aucun tri, affiche la liste complète
+      document.getElementById("sort" + this.currentTri).classList.add("active");
+
+      // Si il y a actuellement une notes de frais affichée, la cache
+      if (this.reportToShow !== null) {
+        this.expandReport(this.reportToShow);
+      }
+      // Si "Tout", affiche la liste complète
       if (idEtatNoteToSort === 0) {
         this.ListNoteFraisToShow = this.fullListNoteFrais;
       } else {
@@ -220,7 +236,6 @@ export default {
 </script>
 
 <style>
-
 .myButton {
   /* background-color: #11ffee00;  couleur transaparente*/
   background-color: #932929;
@@ -230,5 +245,11 @@ export default {
   font-size: 15px;
   border-radius: 8%;
   margin: 4px;
+}
+.tenrem {
+  width: 10rem;
+}
+.autowidth {
+  width: auto;
 }
 </style>

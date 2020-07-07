@@ -20,10 +20,10 @@
           </td>
           
           <td v-if="isComptable != true" style="padding-right: 2rem; padding-left:2rem;">
-            <button @click="onModify = true" class="btn btn-primary">Modifier</button>
+            <button @click="onModify = true" class="myButton">Modifier</button>
           </td>
           <td v-if="isComptable != true" >
-            <button @click="deletion" class="btn btn-primary">Supprimer</button>
+            <button @click="deletion" class="myButton">Supprimer</button>
           </td>
         </tr>
       </table>
@@ -42,7 +42,7 @@
         </table>
       </div>
     </div>
-    <button @click="hiding" class="btn btn-primary">fermer</button>
+    <button @click="hiding" class="myButton">fermer</button>
   </div>
 </template>
 
